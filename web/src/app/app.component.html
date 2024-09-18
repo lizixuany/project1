@@ -1,0 +1,32 @@
+<div class="container">
+  <h2>登陆</h2>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>用户名：</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="username"
+        placeholder="用户名"
+      />
+      <div *ngIf="formGroup.get('username')?.invalid && formGroup.get('username')?.touched" class="text-danger">
+        用户名不能为空
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>密码：</label>
+      <input
+        type="password"
+        class="form-control"
+        formControlName="password"
+        placeholder="密码"
+      />
+      <div *ngIf="formGroup.get('password')?.invalid && formGroup.get('password')?.touched" class="text-danger">
+        密码不能为空
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">登陆</button>
+  </form>
+</div>
