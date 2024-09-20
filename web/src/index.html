@@ -1,13 +1,287 @@
-<!doctype html>
-<html lang="en">
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="utf-8">-->
+<!--  <title>Web</title>-->
+<!--  <base href="/">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--  <link rel="icon" type="image/x-icon" href="favicon.ico">-->
+<!--</head>-->
+<!--<body>-->
+<!--  <app-root></app-root>-->
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-  <meta charset="utf-8">
-  <title>Web</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>课表查询</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- 引入Bootstrap JS -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.min.js"
+          crossorigin="anonymous"></script>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.bundle.min.js"
+          crossorigin="anonymous"></script>
+  <!-- 引入sweetalert2 -->
+  <script src="/schedule-inquiry-system/thinkphp5/public/static/sweetalert2.js"></script>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* 顶部导航栏样式 */
+    .top-bar {
+      height: 60px;
+      width :100%;
+      background-color: #7b087b; /* 紫色 */
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: fixed;
+      z-index: 999;
+    }
+    .top-bar .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .top-bar .name {
+      margin-left : 80%;
+      cursor: pointer;
+      color: white;
+    }
+    .top-bar .logout {
+      margin-left: auto; /* 自动填充到右边 */
+      cursor: pointer;
+      color: white;
+    }
+    /* 侧边导航栏样式 */
+    .sidebar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 180px;
+      background-color: #F5F5F5;
+      position: fixed;
+      top: 60px;
+      height: 100%;
+      overflow: auto;
+      cursor: pointer;
+    }
+
+    .sidebar ul li a {
+      display:block;
+      color:#333;
+      padding:10px;
+      text-align:center;
+      border-radius: 5px;
+      text-decoration:none;
+    }
+    .sidebar ul li a:hover {
+      background-color: #E0E0E0;
+    }
+
+    .footer {
+      background-color: #7b087b;
+      color: #333;
+      text-align: center;
+      padding: 10px 20px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+      z-index: 999;
+    }
+    /* 主内容区域 */
+    .main-content {
+      margin-left:200px;
+      padding: 20px;
+      padding-top: 70px;
+      padding-bottom: 80px;
+    }
+    .main-content h2 {
+      margin-top:20px;
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      .top-bar {
+        justify-content: space-between;
+      }
+      .sidebar {
+        width: 100%;
+        height: 100%;
+        top: 0;
+      }
+      .main-content {
+        margin-left: 0;
+        padding-top: 20px;
+      }
+    }
+    a{
+      text-decoration: none;
+    }
+    .special-heading {
+      /* 文字阴影效果，增加深度 */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      /* 自定义颜色，根据设计调整 */
+      color: #3498db; /* 一种清新的蓝色 */
+      /* 字体样式调整，使标题更具特色 */
+      font-family: 'Arial', sans-serif;
+      font-weight: bold;
+      /* 可选：添加过渡效果，当鼠标悬停时改变颜色或阴影 */
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .special-heading:hover {
+      /* 鼠标悬停时改变颜色，增强互动性 */
+      color: #2980b9; /* 深一度的蓝色 */
+      text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .my-search-form .custom-input {
+      /* 使输入框高度适应内容 */
+      height: auto;
+      /* 设置最小高度以保证一定的视觉效果 */
+      min-height: 34px; /* 调整数值以适应设计需求 */
+      /* 确保placeholder字体大小与输入框高度相协调 */
+      font-size: inherit; /* 或设置具体的字号，如14px */
+    }
+    .btn-outline-success {
+      min-width: 80px; /* 根据文字内容调整这个值，确保文字能横向显示 */
+    }
+    /* 可选：进一步微调，比如调整padding以完美适配 */
+    .my-search-form .custom-input::-webkit-input-placeholder { /* WebKit browsers */
+      font-size: inherit;
+    }
+    .my-search-form .custom-input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      font-size: inherit;
+      opacity: 1; /* Firefox 19+ doesn't need this */
+    }
+    .my-search-form .custom-input::-moz-placeholder { /* Mozilla Firefox 19+ */
+      font-size: inherit;
+    }
+    .my-search-form .custom-input:-ms-input-placeholder { /* Internet Explorer 10+ */
+      font-size: inherit;
+    }
+    .password-form {
+      display: none; /* 默认不显示密码修改表单 */
+    }
+    table {
+      border-collapse: collapse;
+      border-spacing: 10px;
+    }
+    th, td {
+      border: 1px solid #c6bebe;/*设置边框样式*/
+      padding: 5px;/* 设置单元格内边距，这将确保内容与边框有一定距离 */
+      text-align: center;/*文本居中对齐*/
+      white-space: normal;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    /* 模态框样式 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border: none;
+      width: 30%;
+      position: relative; /* 添加相对定位，使关闭按钮能绝对定位 */
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute; /* 使用绝对定位 */
+      top: 10px; /* 上偏移量 */
+      right: 10px; /* 右偏移量 */
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+    }
+
+    .alert {
+      display: none;
+      color: red;
+      margin-top: 10px;
+    }
+    .active a {
+      background-color: #feffff;
+      color: #050000; /* 设置激活状态的颜色 */
+      font-weight: bold; /* 可选：设置加粗或其他样式 */
+    }
+  </style>
 </head>
 <body>
+<div class="top-bar">
+  <div class="title">课程管理系统</div>
+<!--  <div class="name">{$Think.session.name}</div>-->
+  <a class="logout" href="#">退出登录</a>
+</div>
+
+<div>
+  <div class="sidebar">
+    <ul>
+      <li>
+      <a href="#">首页</a>
+      </li>
+      <li>
+      <a href="#">用户管理</a>
+      </li>
+      <li>
+      <a href="#">学校管理</a>
+      </li>
+      <li>
+      <a href="#">班级管理</a>
+      </li>
+      <li>
+      <a href="#">学期管理</a>
+      </li>
+      <li>
+      <a href="#">课程管理</a>
+      </li>
+      <li>
+      <a href="#">课表查询</a>
+      </li>
+      <li>
+      <a href="#">个人中心</a>
+      </li>
+    </ul>
+  </div>
+  <!-- 主内容区样式 -->
   <app-root></app-root>
+</div>
+
+<footer class="footer">
+  <p>&copy; 2024 梦云智 课程管理系统</p>
+</footer>
+
 </body>
 </html>
