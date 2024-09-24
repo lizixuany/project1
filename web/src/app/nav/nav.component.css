@@ -1,0 +1,78 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+/* 顶部导航栏样式 */
+.top-bar {
+  height: 180px;
+  width :120%;
+  background-color: #990099;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  margin: 10px 10px -20px -16px;
+  box-shadow: -50px 2px 4px rgba(0,0,0,0.1);
+  position: fixed;
+  z-index: 999;
+}
+.top-bar .title {
+  margin: 25px 20px -40px 20px;
+  font-size: 33px;
+  font-weight: bold;
+}
+.top-bar .name {
+  margin-left : 80%;
+  cursor: pointer;
+  color: white;
+}
+.top-bar .logout {
+  margin-top: 60px;
+  margin-left: 1700px;
+  font-size: 33px;
+  cursor: pointer;
+  color: white;
+}
+/* 侧边导航栏样式 */
+.sidebar ul {
+  list-style-type: none;
+  margin: 53px 10px 20px -16px;
+  padding: 0;
+  width: 180px;
+  background-color: #F5F5F5;
+  position: fixed;
+  top: 60px;
+  height: 100%;
+  overflow: auto;
+  cursor: pointer;
+}
+
+.sidebar ul li a {
+  font-size: 20px;
+  display:block;
+  color:#333;
+  padding:10px;
+  text-align:center;
+  border-radius: 5px;
+  text-decoration:none;
+}
+.sidebar ul li a:hover {
+  background-color: #E0E0E0;
+}
+
+.footer {
+  background-color: #990099;
+  color: #333;
+  font-size: 19px;
+  text-align: center;
+  line-height: 53px;
+  padding: 10px 20px;
+  margin: 10px 100px -10px -16px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+  z-index: 999;
+}
