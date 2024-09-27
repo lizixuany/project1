@@ -19,6 +19,11 @@
     "@angular/platform-browser": "~8.2.5",
     "@angular/platform-browser-dynamic": "~8.2.5",
     "@angular/router": "~8.2.5",
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "bootstrap": "^4.6.0",
+    "jquery": "^3.5.1",
+    "notiflix": "^3.0.1",
+    "popper.js": "^1.16.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
