@@ -8,9 +8,12 @@ import {User} from './entity/user';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  // 初始化教师数组
+  // 初始化数组
   users = [
-    {name: 'zhangsan', username: 'username'} as User
+    {
+      name: 'zhangsan',
+      username: 'username'
+    } as User
   ] as User[];
 
   constructor(private httpClient: HttpClient) {

@@ -14,10 +14,11 @@ export class PersonalCenterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const url = '/api/User';
+    const url = '/api/Personalcenter';
     this.httpClient.get<User>(url)
       .subscribe(user => {
           console.log('请求当前登录用户成功');
+          console.log(new Date().toTimeString(), '子组件进行了数据弹射', user);
           console.log(user);
           this.me = user;
         },

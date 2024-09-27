@@ -1,6 +1,7 @@
 import {Component, EventEmitter, NgZone, OnInit, Output} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../entity/user';
+import {UserService} from '../service/user.service';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,8 @@ import {User} from '../entity/user';
 })
 export class LoginComponent implements OnInit {
   user = new User();
+  data: any;
+  errorMessage: string;
 
   @Output()
   beLogin = new EventEmitter<User>();
@@ -17,28 +20,41 @@ export class LoginComponent implements OnInit {
    * 是否显示错误信息
    */
   showError = false;
+  private code: any;
 
-  constructor(private httpClient: HttpClient, private ngZone: NgZone) {
-  }
+  constructor(private httpClient: HttpClient,
+              private ngZone: NgZone,
+              private userService: UserService) {}
 
   ngOnInit(): void {
   }
+
 
   onSubmit(): void {
     console.log('点击了登录按钮');
     const authString = encodeURIComponent(this.user.username) + ':'
       + encodeURIComponent(this.user.password);
     const authToken = btoa(authString);
-
+    const loginData = {
+      username: this.user.username,
+      password: this.user.password
+    };
     let httpHeaders = new HttpHeaders();
     httpHeaders = httpHeaders.append('Authorization', 'Basic ' + authToken);
     this.httpClient
       .post<User>(
         '/api/login',
-        {headers: httpHeaders})
-      .subscribe(user => this.beLogin.emit(user),
+        loginData, {headers: httpHeaders})
+      .subscribe(user => {
+          console.log(user);
+          if (user) {
+            this.beLogin.emit(user);
+          } else {
+            this.showErrorDelay();
+          }
+        },
         error => {
-          console.log('发生错误, 登录失败', error);
+          console.log('发生错误, 登录失败。', error);
           this.showErrorDelay();
         });
   }
