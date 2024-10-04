@@ -1,6 +1,7 @@
-<form>
+{{school | json}}
+<form (ngSubmit)="onSubmit()">
   <div>
-    学校名称：<input value="天津职业技术师范大学">
+    姓名：<input value="张三" name="name" [(ngModel)]="school.name">
   </div>
   <div>
     <button>保存</button>

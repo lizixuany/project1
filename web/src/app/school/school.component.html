@@ -22,10 +22,10 @@
       <td>{{ i+1 }}</td>
       <td>{{school.name}}</td>
       <td>
-        <a class="btn btn-outline-primary btn-sm" href="#">
+        <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{school.school_id}}">
           <i class="fas fa-pen"></i>编辑
         </a>
-        <span class="btn btn-sm btn-outline-danger" (click)="onDelete(school.school_id)">
+        <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, school.school_id)">
           <i class="far fa-trash-alt"></i>删除
         </span>
       </td>

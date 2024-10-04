@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SchoolService} from "../../service/school.service";
 import { HttpClient } from '@angular/common/http';
 import { Confirm } from 'notiflix';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-school',
@@ -16,7 +17,8 @@ export class SchoolComponent implements OnInit {
   schools: any[];
 
   constructor(private schoolService: SchoolService,
-              private httpClient: HttpClient) { }
+              private httpClient: HttpClient,
+              private router: Router) { }
 
   ngOnInit() {
     this.fetchSchools();
@@ -33,23 +35,15 @@ export class SchoolComponent implements OnInit {
     );
   }
 
-  onDelete(school_id: number): void {
-    if (confirm('确认要删除这所学校？')) {
-      console.log(school_id);
-      const Data = {
-        school_id: school_id
-      };
-      console.log(Data);
-      this.schoolService.deleteSchool(school_id).subscribe({
-        next: () => {
-          this.schools = this.schools.filter(s => s.school_id !== school_id);
-          console.log(this.schools);
+  onDelete(index: number, school_id: number): void {
+    Confirm.show('请确认', '该操作不可逆', '确认', '取消',
+      () => {
+      this.httpClient.delete(`/api/school/delete/${school_id}`)
+        .subscribe(() => {
+          console.log('删除成功');
+          this.schools.splice(index, 1);
         },
-        error: (error) => {
-          console.error('删除失败', error);
-          alert('删除失败操作');
-        }
-      });
-    }
+          error => console.log('删除失败', error));
+    });
   }
 }
