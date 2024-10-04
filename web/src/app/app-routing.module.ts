@@ -8,6 +8,13 @@ import {AppComponent} from './app.component';
 
 const routes: Routes = [
   {
+    path: 'school',
+    loadChildren: () => import('./school/school.module').then(m => m.SchoolModule)
+  },
+  {
+    path: 'term',
+    loadChildren: () => import('./term/term.module').then(m => m.TermModule)
+  },{
     path: '',
     component: WelcomeComponent
   },
