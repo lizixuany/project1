@@ -22,11 +22,11 @@ import {SexPipe} from './personal-center/sex.pipe';
     SexPipe
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [IndexComponent]
