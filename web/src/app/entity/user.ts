@@ -11,7 +11,6 @@ export class User {
   state: number;
   name: string;
 
-
   constructor(data = {} as {
     id?: number, username?: string, name?: string, password?: string, sex?: boolean, role: number, clazzId: number, state: number}) {
     this.id = data.id as number;
