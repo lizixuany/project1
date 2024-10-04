@@ -2,6 +2,7 @@ import {Component, EventEmitter, NgZone, OnInit, Output} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../entity/user';
 import {UserService} from '../service/user.service';
+import {SharedService} from '../service/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               private ngZone: NgZone,
-              private userService: UserService) {}
+              private userService: UserService,
+              private sharedService: SharedService) {}
 
   ngOnInit(): void {
   }
@@ -48,6 +50,7 @@ export class LoginComponent implements OnInit {
       .subscribe(user => {
           console.log(user);
           if (user) {
+            this.sharedService.setData(user);
             this.beLogin.emit(user);
           } else {
             this.showErrorDelay();

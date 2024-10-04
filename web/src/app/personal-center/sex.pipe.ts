@@ -17,5 +17,4 @@ export class SexPipe implements PipeTransform {
       return '女';
     }
   }
-
 }

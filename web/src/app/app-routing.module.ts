@@ -5,6 +5,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {PersonalCenterComponent} from './personal-center/personal-center.component';
 import {WelcomeComponent} from './welcome.component';
 import {AppComponent} from './app.component';
+import {LoginComponent} from './login/login.component';
 
 const routes: Routes = [
   {

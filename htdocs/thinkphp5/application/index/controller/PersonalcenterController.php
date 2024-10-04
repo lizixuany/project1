@@ -25,7 +25,7 @@ class PersonalcenterController extends Controller
             if ($user && $password == $user->password) {
                 // 登录成功，设置会话
                 session('user_id', $user->id);
-                return json(['code' => 0, 'msg' => 'Success','user' => $user]);
+                return json(['user' => $user]);
             }
         } catch (\Exception $e) {
             return '系统错误' . $e->getMessage();

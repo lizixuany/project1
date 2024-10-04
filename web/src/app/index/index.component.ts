@@ -10,6 +10,7 @@ import {UserService} from '../service/user.service';
 export class IndexComponent implements OnInit {
 
   login = false;
+  user: User = new User();
 
   constructor(private userService: UserService) {
     console.log('index组件成功注入userService', userService);
