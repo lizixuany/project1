@@ -1,33 +1,36 @@
-<router-outlet></router-outlet>
-<div class="container">
-  <h2>登录</h2>
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label>用户名：</label>
-      <input
-        type="text"
-        class="form-control"
-        formControlName="username"
-        placeholder="用户名"
-      />
-      <div *ngIf="formGroup.get('username')?.invalid && formGroup.get('username')?.touched" class="text-danger">
-        用户名不能为空
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>密码：</label>
-      <input
-        type="password"
-        class="form-control"
-        formControlName="password"
-        placeholder="密码"
-      />
-      <div *ngIf="formGroup.get('password')?.invalid && formGroup.get('password')?.touched" class="text-danger">
-        密码不能为空
-      </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary">登录</button>
-  </form>
+<div class="row">
+  <div class="col-12 text-right">
+    <a class="btn btn-primary mr-2" routerLink="add"><i class="fas fa-plus"></i>新增</a>
+  </div>
 </div>
+
+<table class="table table-striped mt-2">
+  <thead>
+  <tr class="table-primary">
+    <th>序号</th>
+    <th>姓名</th>
+    <th>用户名</th>
+    <th>邮箱</th>
+    <th>性别</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users; index as index">
+    <td>{{index + 1}}</td>
+    <td>{{user.name}}</td>
+    <td>
+      <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{user.id}}">
+        <i class="fas fa-pen"></i>编辑
+      </a>
+<!--      <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, user.id)">-->
+<!--          <i class="far fa-trash-alt"></i>删除-->
+<!--        </span>-->
+    </td>
+  </tr>
+  </tbody>
+</table>
+<router-outlet></router-outlet>
+<ng-template #femaleBlock>
+  <td>女</td>
+</ng-template>

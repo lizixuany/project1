@@ -3,38 +3,41 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { UserService } from '../service/user.service';
 import { HttpClient } from '@angular/common/http';
 
+import {User} from './entity/user';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  formGroup: FormGroup;
+  // 初始化数组
+  users = [
+    {
+      name: 'zhangsan',
+      username: 'username'
+    } as User
+  ] as User[];
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
               private httpClient: HttpClient) {
-  }
 
+  /**
+   * 组件初始化完成后将被自动执行一次
+   */
   ngOnInit(): void {
-    this.initFormGroup();
+    this.httpClient.get<User[]>('/api/login')
+      .subscribe(users => {
+        this.users = users;
+        console.log(this.users, 'value');
+      });
   }
 
-  initFormGroup(): void {
-    this.formGroup = new FormGroup({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
-    });
-  }
-
-  onSubmit(): void {
-
-    // tslint:disable-next-line:no-non-null-assertion
-    const username = this.formGroup.get('username')!!.value;
-    // tslint:disable-next-line:no-non-null-assertion
-    const password = this.formGroup.get('password')!!.value;
-    this.userService.login(username, password).subscribe(user => {
-      console.log(user);
-    });
+  onDelete(id: number): void {
+    const url = `/user/${id}`;
+    this.httpClient.delete(url)
+      .subscribe(() => this.ngOnInit(),
+        error => console.log('删除失败', error));
   }
 }
