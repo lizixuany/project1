@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../service/user.service';
-import { HttpClient } from '@angular/common/http';
-
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {User} from './entity/user';
 
 @Component({
@@ -19,9 +16,9 @@ export class AppComponent implements OnInit {
     } as User
   ] as User[];
 
-  constructor(private fb: FormBuilder,
-              private userService: UserService,
-              private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient) {
+    console.log(httpClient);
+  }
 
   /**
    * 组件初始化完成后将被自动执行一次

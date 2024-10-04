@@ -25,10 +25,16 @@ class LoginController extends Controller
             if ($user && $password == $user->password) {
                 // 登录成功，设置会话
                 session('user_id', $user->id);
-                return json(['code' => 0, 'msg' => 'Success','user' => $user]);
+                return json($user);
             }
         } catch (\Exception $e) {
             return '系统错误' . $e->getMessage();
         }
+    }
+
+    public function logout() {
+        // 清除所有会话数据
+        session(null);
+        return 0;
     }
 }
