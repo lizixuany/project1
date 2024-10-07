@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { SchoolService } from "../../../service/school.service";
-import { FormGroup } from "@angular/forms";
-import { School } from '../../../entity/school'
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {SchoolService} from '../../../service/school.service';
+import {FormGroup} from '@angular/forms';
+import {School} from '../../../entity/school';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add',
