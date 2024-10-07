@@ -6,6 +6,7 @@ import {PersonalCenterComponent} from './personal-center/personal-center.compone
 import {WelcomeComponent} from './welcome.component';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
+import {SchoolRoutingModule} from './school/school-routing.module';
 
 const routes: Routes = [
   {
@@ -15,7 +16,8 @@ const routes: Routes = [
   {
     path: 'term',
     loadChildren: () => import('./term/term.module').then(m => m.TermModule)
-  },{
+  },
+  {
     path: '',
     component: WelcomeComponent
   },
@@ -46,7 +48,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes),
+            SchoolRoutingModule
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

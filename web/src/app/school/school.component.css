@@ -5,3 +5,7 @@
 .btn > svg {
   margin-right: 0.3em;
 }
+.main {
+  margin: 130px auto;
+  font-size: 24px;
+}
