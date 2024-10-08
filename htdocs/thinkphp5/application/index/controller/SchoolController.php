@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\Controller;
-use app\index\model\School;
+use app\common\model\School;
 use think\request;
 
 class SchoolController extends Controller
