@@ -8,31 +8,31 @@
   <br>
   <table class="table table-striped">
     <thead>
-    <tr class="table-primary">
-      <th>序号</th>
-      <th>学校</th>
-      <th>学期</th>
-      <th>开始时间</th>
-      <th>结束时间</th>
-      <th>操作</th>
-    </tr>
+      <tr class="table-primary">
+        <th>序号</th>
+        <th>学校</th>
+        <th>学期</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>操作</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>
-        <a class="btn btn-outline-primary btn-sm" href="#">
-          <i class="fas fa-pen"></i>编辑
-        </a>
-        <span class="btn btn-sm btn-outline-danger" href="#">
-            <i class="far fa-trash-alt"></i>删除
-        </span>
-      </td>
-    </tr>
+      <tr *ngFor="let term of terms;index as i">
+        <td>{{ i+1 }}</td>
+        <td>学校</td>
+        <td>{{ term.term }}</td>
+        <td>{{ term.start_time }}</td>
+        <td>{{ term.end_time }}</td>
+        <td>
+          <a class="btn btn-outline-primary btn-sm" href="#">
+            <i class="fas fa-pen"></i>编辑
+          </a>
+          <span class="btn btn-sm btn-outline-danger" href="#">
+              <i class="far fa-trash-alt"></i>删除
+          </span>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

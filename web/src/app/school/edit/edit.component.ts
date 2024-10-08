@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Assert } from '@yunzhi/ng-mock-api';
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import { School } from "../../../entity/school";
-import { SchoolService } from "../../../service/school.service";
+import { SchoolService } from "../../service/school.service";
 
 @Component({
   selector: 'app-edit',

@@ -5,7 +5,7 @@ import {AppComponent} from '../app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterTestingModule} from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms'; // 导入 ReactiveFormsModule
-import {SchoolService} from "../../service/school.service";
+import {SchoolService} from "../service/school.service";
 
 describe('SchoolComponent', () => {
     beforeEach(async () => {
