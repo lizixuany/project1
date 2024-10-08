@@ -9,7 +9,7 @@ class TermController extends Controller
     // 获取学期列表
     public function index()
     {
-        $terms = Term::all();
+        $terms = Term::with('school')->select();
         return json($terms);
     }
 }
