@@ -17,7 +17,7 @@
     <tbody>
       <tr *ngFor="let school of schools;index as i">
         <td>{{ i+1 }}</td>
-        <td>{{school.name}}</td>
+        <td>{{ school.name }}</td>
         <td>
           <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{school.school_id}}">
             <i class="fas fa-pen"></i>编辑

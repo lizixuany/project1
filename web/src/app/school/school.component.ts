@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { SchoolService} from "../../service/school.service";
-import { HttpClient } from '@angular/common/http';
-import { Confirm } from 'notiflix';
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {SchoolService} from '../service/school.service';
+import {HttpClient} from '@angular/common/http';
+import {Confirm} from 'notiflix';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-school',
