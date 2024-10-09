@@ -21,26 +21,14 @@ const routes: Routes = [
     path: '',
     component: WelcomeComponent
   },
-  // {
-  //   path: 'clazz',
-  //   loadChildren: () => import('./clazz/clazz.module').then(m => m.ClazzModule)
-  // },
-  // {
-  //   path: 'student',
-  //   loadChildren: () => import('./student/student.module').then(m => m.StudentModule)
-  // },
+  {
+    path: 'clazz',
+    loadChildren: () => import('./clazz/clazz.module').then(m => m.ClazzModule)
+  },
   {
     path: 'user',
     component: AppComponent
   },
-  // {
-  //   path: 'user/add',
-  //   component: AddComponent
-  // },
-  // {
-  //   path: 'user/edit/:id',
-  //   component: EditComponent
-  // },
   {
     path: 'personal-center',
     component: PersonalCenterComponent

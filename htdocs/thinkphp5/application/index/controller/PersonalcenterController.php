@@ -9,24 +9,7 @@ class PersonalcenterController extends Controller
 {
     public function index() {
         try {
-            session_start();
-
-            // 获取 POST 请求的数据
-            $request =  Request::instance()->getContent();
-            $data = json_decode($request, true);
-
-            $username = $data['username'];
-            $password = $data['password'];
             
-            // 获取相应账号的数据
-            $user = User::where('username', $username)->find();
-
-            // 验证用户是否存在及密码是否正确
-            if ($user && $password == $user->password) {
-                // 登录成功，设置会话
-                session('user_id', $user->id);
-                return json(['user' => $user]);
-            }
         } catch (\Exception $e) {
             return '系统错误' . $e->getMessage();
         }

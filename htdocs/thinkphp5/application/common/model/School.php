@@ -9,3 +9,4 @@ class School extends Model
     // 定义主键
     protected $pk = 'school_id';
 }
+

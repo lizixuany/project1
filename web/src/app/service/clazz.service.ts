@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {Clazz} from '../entity/clazz';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Page} from '../entity/page';
+import {School} from '../entity/school';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,10 @@ export class ClazzService {
   /**
    * 新增班级.
    */
-  add(data: { name: string, schoolId: number }): Observable<Clazz> {
+  add(data: { name: string, school: School }): Observable<Clazz> {
     const clazz = new Clazz({
       name: data.name,
-      schoolId: data.schoolId,
+      school: data.school,
     });
     // 将预请求信息返回
     return this.httpClient.post<Clazz>('/clazz', clazz);

@@ -8,7 +8,7 @@ describe('User', () => {
       password: 'password',
       sex: true,
       role: 1,
-      clazzId: 1,
+      clazz_id: 1,
       state: 1
     })).toBeTruthy();
   });

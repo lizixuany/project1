@@ -1,20 +1,20 @@
 import {NgModule} from '@angular/core';
-import {Route, RouterModule} from '@angular/router';
+import {Route, RouterModule, Routes} from '@angular/router';
 import {PersonalCenterComponent} from './personal-center.component';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 
-const routes = [
+const routes: Routes = [
   {
     path: '',
     component: PersonalCenterComponent,
     children: [
       {
-        path: 'personal-center/change-password',
+        path: 'change-password',
         component: ChangePasswordComponent
       }
     ]
   }
-] as Route[];
+];
 
 @NgModule({
   imports: [

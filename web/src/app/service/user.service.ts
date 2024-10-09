@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
 import {User} from '../entity/user';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,24 +10,41 @@ import {User} from '../entity/user';
 
 export class UserService {
   private key;
-  private apiUrl = '/api/login';
+  private apiUrl = '/api';
   /**
    * Subject是个大V.
    * 本大V只需要发送一个未认证的通知，并不需要传递具体数据，所以泛型为void
    */
   public unUserSubject = new Subject<void>();
-  private handleError: any;
 
-  constructor(private http: HttpClient) {
+  constructor(private httpClient: HttpClient) {
     console.log('UserService构造函数被调用');
     this.key = Math.random();
   }
 
-  getData(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  /**
+   * 获取学生
+   * @param id 学生ID
+   */
+  getById(id: number): Observable<User> {
+    return this.httpClient.get<User>('/personal-center/change-password/' + id.toString());
   }
 
-  logout(): Observable<any> {
-    return this.http.post(this.apiUrl + '/logout', {});
+  changePassword(oldPassword: string, newPassword: string): Observable<User> {
+    // 发送请求到后端API以更新密码
+    const body = {
+      oldPassword,
+      newPassword
+    };
+    return this.httpClient.post(this.apiUrl + '/change-password', body)
+      .pipe(
+        catchError(this.handleError) // 处理HTTP请求错误
+      );
+  }
+
+  private handleError(error: any): Observable<any> {
+    // 处理错误，例如显示错误消息
+    console.error('An error occurred:', error);
+    return Observable.throw(error.message || 'Server error');
   }
 }
