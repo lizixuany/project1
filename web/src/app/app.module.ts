@@ -10,6 +10,7 @@ import {NavComponent} from './nav/nav.component';
 import {LoginComponent} from './login/login.component';
 import {PersonalCenterComponent} from './personal-center/personal-center.component';
 import {SexPipe} from './personal-center/sex.pipe';
+import {SchoolModule} from './school/school.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {SexPipe} from './personal-center/sex.pipe';
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SchoolModule
   ],
   providers: [],
   bootstrap: [IndexComponent]

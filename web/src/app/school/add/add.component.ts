@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { SchoolService } from "../../../service/school.service";
-import { FormGroup } from "@angular/forms";
-import { School } from '../../../entity/school'
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add',
@@ -11,15 +8,11 @@ import {Router} from "@angular/router";
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-  formGroup: FormGroup;
   school = {
     name: ''
   };
-  schools: any[] = [];
-  private url: 'school';
 
   constructor(private httpClient: HttpClient,
-              private schoolService: SchoolService,
               private router: Router) {
   }
 
