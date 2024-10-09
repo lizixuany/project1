@@ -43,4 +43,35 @@ class TermController extends Controller
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
+    // 删除学期
+    public function delete()
+    {
+        try {
+            $term = TermController::getTerm();
+            if (!$term) {
+                return json(['status' => 'error', 'message' => '学期不存在']);
+            }
+
+            // 删除学期
+            if ($term->delete()) {
+                return json(['status' => 'success', 'message' => '删除成功']);
+            } else {
+                return json(['status' => 'error', 'message' => '删除失败']);
+            }
+        } catch (Exception $e) {
+            // 异常处理
+            return json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public static function getTerm() {
+        $request = Request::instance();
+        $term_id = IndexController::getParamId($request);
+        if (!$term_id) {
+            return json(['success' => true, 'message' => 'term_id不存在']);
+        }
+        $term = Term::get($term_id);
+        return $term;
+    }
 }

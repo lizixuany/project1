@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {SchoolService} from '../service/school.service';
 import {HttpClient} from '@angular/common/http';
 import {Confirm} from 'notiflix';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-school',
@@ -17,8 +16,7 @@ export class SchoolComponent implements OnInit {
   schools: any[];
 
   constructor(private schoolService: SchoolService,
-              private httpClient: HttpClient,
-              private router: Router) { }
+              private httpClient: HttpClient) { }
 
   ngOnInit() {
     this.fetchSchools();
