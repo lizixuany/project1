@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import {UserService} from '../../service/user.service';
 
 @Component({
   selector: 'app-change-password',
@@ -8,29 +9,19 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./change-password.component.css']
 })
 export class ChangePasswordComponent {
-  passwordData = {
-    oldPassword: '',
-    newPassword: '',
-    confirmNewPassword: ''
-  };
-  passwordMismatch = false;
+  oldPassword: string;
+  newPassword: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private userService: UserService) {}
 
-  onChangePassword(form: NgForm) {
-    if (this.passwordData.newPassword !== this.passwordData.confirmNewPassword) {
-      this.passwordMismatch = true;
-      return;
-    }
-    this.passwordMismatch = false;
-
-    this.http.post('/api/Changepassword', this.passwordData).subscribe(
+  onSubmit() {
+    this.userService.changePassword(this.oldPassword, this.newPassword).subscribe(
       (response) => {
-        // Handle success
+        // 处理成功响应
         console.log('Password changed successfully', response);
       },
       (error) => {
-        // Handle error
+        // 处理错误响应
         console.error('Error changing password', error);
       }
     );

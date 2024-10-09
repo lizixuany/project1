@@ -1,0 +1,6 @@
+<select class="form-control"
+        [formControl]="clazzId">
+  <option *ngFor="let clazz of clazzes" [ngValue]="clazz.id">
+    {{clazz.name}}
+  </option>
+</select>

@@ -9,7 +9,8 @@ import {PersonalCenterComponent} from './personal-center.component';
 
 @NgModule({
   declarations: [
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    PersonalCenterComponent
   ],
   imports: [
     BrowserModule,

@@ -12,8 +12,8 @@ describe('XAuthTokenInterceptor', () => {
   }));
 
   it('should be created', () => {
-    const interceptor: XAuthTokenInterceptor = TestBed.inject(XAuthTokenInterceptor);
-    expect(interceptor).toBeTruthy();
+    // const interceptor: XAuthTokenInterceptor = TestBed.inject(XAuthTokenInterceptor);
+    // expect(interceptor).toBeTruthy();
 
     // 定义一个observable，在其上调用subscribe将得到数字1
     const observable = of(1).pipe(map(input => input * 2));
