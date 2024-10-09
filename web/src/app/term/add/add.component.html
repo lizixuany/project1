@@ -1,6 +1,16 @@
 <form class="container-sm" (ngSubmit)="onSubmit()">
-<div class="mb-3 row">
-    <label>学校名称</label>
+  <div class="mb-3 row">
+    <label for="school_id" class="col-sm-2 col-form-label">学校名称</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="school_id" [(ngModel)]="term.school_id" name="school_id">
+        <option value="">选择学校</option>
+        <option *ngFor="let school of schools" [value]="school.school_id">{{ school.name }}</option>
+      </select>
+      <small class="text-danger"
+             *ngIf="term.school_id === ''">
+        学校不能为空
+      </small>
+    </div>
   </div>
   <div class="mb-3 row">
     <label for="term" class="col-sm-2 col-form-label">学期</label>

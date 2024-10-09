@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {FormGroup} from '@angular/forms';
-import {School} from '../../../entity/school';
 import {Router} from '@angular/router';
 
 @Component({
@@ -10,12 +8,9 @@ import {Router} from '@angular/router';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-  formGroup: FormGroup;
   school = {
     name: ''
   };
-  schools: any[] = [];
-  private url: 'school';
 
   constructor(private httpClient: HttpClient,
               private router: Router) {
