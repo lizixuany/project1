@@ -35,6 +35,6 @@ class LoginController extends Controller
     public function logout() {
         // 清除所有会话数据
         session(null);
-        return 0;
+        return json(['status' => 'success', 'message' => 'logout successfully']);
     }
 }

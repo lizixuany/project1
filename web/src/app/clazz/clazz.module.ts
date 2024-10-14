@@ -8,11 +8,13 @@ import {ClazzComponent} from './clazz.component';
 import {AddComponent} from './add/add.component';
 import {KlassSelectComponent} from './klass-select/klass-select.component';
 import {PageModule} from './page/page.module';
+import {EditComponent} from './edit/edit.component';
 
 @NgModule({
   declarations: [
     ClazzComponent,
     AddComponent,
+    EditComponent,
     KlassSelectComponent
   ],
   imports: [

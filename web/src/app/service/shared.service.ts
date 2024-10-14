@@ -6,6 +6,17 @@ import {User} from '../entity/user';
 })
 export class SharedService {
   data: User = new User();
+  private someValue: any;
+
+  getSomeValue() {
+    console.log(this.someValue);
+    return this.someValue;
+  }
+
+  setSomeValue(value: any) {
+    console.log(value);
+    this.someValue = value;
+  }
 
   getData() {
     console.log(this.data);

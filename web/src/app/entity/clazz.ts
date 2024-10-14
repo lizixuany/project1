@@ -1,17 +1,17 @@
 import {School} from './school';
 
 export class Clazz {
-  id: number;
-  name: string;
   // tslint:disable-next-line:variable-name
+  clazz_id: number;
+  name: string;
   school: School;
 
   constructor(data = {} as {
-    id?: number;
+    clazz_id?: number;
     name?: string;
     school?: School;
   }) {
-    this.id = data.id as number;
+    this.clazz_id = data.clazz_id as number;
     this.name = data.name as string;
     this.school = data.school as School;
   }

@@ -26,7 +26,7 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit(): void {
     // 获取所有教师
-    this.httpClient.get<Array<Clazz>>('/clazz/allOfCurrentTeacher')
+    this.httpClient.get<Array<Clazz>>('/api/School/index')
       .subscribe(
         clazzes => {
           this.clazzes = clazzes;

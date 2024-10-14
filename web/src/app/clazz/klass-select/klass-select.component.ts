@@ -2,6 +2,7 @@ import {Component, OnInit, EventEmitter, Output, Input, forwardRef} from '@angul
 import {School} from '../../entity/school';
 import {HttpClient} from '@angular/common/http';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {SharedService} from '../../service/shared.service';
 
 @Component({
   selector: 'app-klass-select',
@@ -18,20 +19,22 @@ import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/for
   ]
 })
 export class KlassSelectComponent implements OnInit, ControlValueAccessor {
-  // schools = new Array<School>();
+  schools = new Array<School>();
   schoolId = new FormControl();
-  private schools: Array<School>;
+  // private schools: Array<School>;
 
   @Input()
   set id(id: number) {
     // 使用接收到的id设置schoolId
     this.schoolId.setValue(id);
+    console.log(this.schoolId);
   }
 
   @Output()
   beChange = new EventEmitter<number>();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private sharedService: SharedService) {
   }
 
   /**
@@ -64,9 +67,13 @@ export class KlassSelectComponent implements OnInit, ControlValueAccessor {
     console.log('教师选择组件初始化');
     // 关注schoolId
     this.schoolId.valueChanges
-      .subscribe((data: number) => this.beChange.emit(data));
+      .subscribe((data: number) => {
+          this.beChange.emit(data);
+          this.sharedService.setSomeValue(data);
+        }
+      );
     // 获取所有学校
-    this.httpClient.get<Array<School>>('school')
+    this.httpClient.get<Array<School>>('api/school')
       .subscribe(
         schools => {
           this.schools = schools;
