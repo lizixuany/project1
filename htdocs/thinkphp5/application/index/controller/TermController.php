@@ -67,11 +67,11 @@ class TermController extends Controller
 
     public static function getTerm() {
         $request = Request::instance();
-        $term_id = IndexController::getParamId($request);
-        if (!$term_id) {
-            return json(['success' => true, 'message' => 'term_id不存在']);
+        $id = IndexController::getParamId($request);
+        if (!$id) {
+            return json(['success' => true, 'message' => 'id不存在']);
         }
-        $term = Term::get($term_id);
+        $term = Term::get($id);
         return $term;
     }
 }

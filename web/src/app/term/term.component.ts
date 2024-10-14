@@ -30,10 +30,10 @@ export class TermComponent implements OnInit {
     );
   }
 
-  onDelete(index: number, term_id: number): void {
+  onDelete(index: number, id: number): void {
     Confirm.show('请确认', '该操作不可逆', '确认', '取消',
       () => {
-        this.httpClient.delete(`/api/term/delete/${term_id}`)
+        this.httpClient.delete(`/api/term/delete/${id}`)
           .subscribe(() => {
               console.log('删除成功');
               this.terms.splice(index, 1);

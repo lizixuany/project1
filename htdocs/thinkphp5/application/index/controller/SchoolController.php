@@ -25,7 +25,7 @@ class SchoolController extends Controller
             $school = new School();
             $school->name = $data['name'];
             $school->save();
-            return json(['status' => 'success', 'id' => $school->school_id]);
+            return json(['status' => 'success', 'id' => $school->id]);
         } catch (Exception $e) {
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }
@@ -35,8 +35,8 @@ class SchoolController extends Controller
     public function edit()
     {
         try{
-            $school_id = Request::instance()->param('school_id'); // 从请求中获取id参数
-            $school = School::get($school_id);
+            $id = Request::instance()->param('id'); // 从请求中获取id参数
+            $school = School::get($id);
             if ($school) {
                 // 将学校信息返回给前端编辑表单
                 return json(['status' => 'success', 'data' => $school]);
@@ -53,9 +53,9 @@ class SchoolController extends Controller
     public function update()
     {
         try{
-            $school_id = Request::instance()->param('school_id'); // 从请求中获取id参数
+            $id = Request::instance()->param('id'); // 从请求中获取id参数
             $name = Request::instance()->param('name'); // 从请求中获取name参数
-            $school = School::get($school_id);
+            $school = School::get($id);
             if ($school) {
                 // 数据验证
                 if (!isset($name) || empty($name)) {
@@ -64,7 +64,7 @@ class SchoolController extends Controller
 
                 $school->name = $name;
                 $school->save();
-                return json(['status' => 'success', 'id' => $school->school_id]);
+                return json(['status' => 'success', 'id' => $school->id]);
             } else {
                 return json(['status' => 'error', 'message' => 'School not found']);
             }
@@ -97,11 +97,11 @@ class SchoolController extends Controller
 
     public static function getSchool() {
         $request = Request::instance();
-        $school_id = IndexController::getParamId($request);
-        if (!$school_id) {
-            return json(['success' => true, 'message' => 'school_id不存在']);
+        $id = IndexController::getParamId($request);
+        if (!$id) {
+            return json(['success' => true, 'message' => 'id不存在']);
         }
-        $school = School::get($school_id);
+        $school = School::get($id);
         return $school;
     }
 }
