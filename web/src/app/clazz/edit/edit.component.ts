@@ -82,9 +82,9 @@ export class EditComponent implements OnInit {
     const schooId = this.formGroup.get('school_id').value;
     const clazz = new Clazz({
 
-      clazz_id: clazzId,
+      id: clazzId,
       name,
-      school: new School({school_id: schooId})
+      school: new School({id: schooId})
     });
     console.log(clazz);
     this.httpClient.put<Clazz>(`/api/clazz/updata`, clazz)

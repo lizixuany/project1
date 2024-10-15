@@ -32,7 +32,7 @@ export class AddComponent implements OnInit {
   onSubmit(): void {
     const newClazz = new Clazz({
       name: this.clazz.name,
-      school: new School({school_id: this.clazz.school_id})
+      school: new School({id: this.clazz.school_id})
     });
     console.log(newClazz);
     this.httpClient.post(this.url, newClazz)

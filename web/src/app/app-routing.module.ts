@@ -10,16 +10,16 @@ import {SchoolRoutingModule} from './school/school-routing.module';
 
 const routes: Routes = [
   {
+    path: '',
+    component: WelcomeComponent
+  },
+  {
     path: 'school',
     loadChildren: () => import('./school/school.module').then(m => m.SchoolModule)
   },
   {
     path: 'term',
     loadChildren: () => import('./term/term.module').then(m => m.TermModule)
-  },
-  {
-    path: '',
-    component: WelcomeComponent
   },
   {
     path: 'clazz',
@@ -36,9 +36,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes),
-            SchoolRoutingModule
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
