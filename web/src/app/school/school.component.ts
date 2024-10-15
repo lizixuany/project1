@@ -33,10 +33,10 @@ export class SchoolComponent implements OnInit {
     );
   }
 
-  onDelete(index: number, school_id: number): void {
+  onDelete(index: number, id: number): void {
     Confirm.show('请确认', '该操作不可逆', '确认', '取消',
       () => {
-      this.httpClient.delete(`/api/school/delete/${school_id}`)
+      this.httpClient.delete(`/api/school/delete/${id}`)
         .subscribe(() => {
           console.log('删除成功');
           this.schools.splice(index, 1);
