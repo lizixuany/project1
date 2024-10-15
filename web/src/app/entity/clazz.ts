@@ -1,9 +1,9 @@
 import {School} from './school';
 
 export class Clazz {
+  // tslint:disable-next-line:variable-name
   id: number;
   name: string;
-  // tslint:disable-next-line:variable-name
   school: School;
 
   constructor(data = {} as {

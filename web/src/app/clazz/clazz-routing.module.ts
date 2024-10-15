@@ -3,7 +3,7 @@ import {Route, RouterModule} from '@angular/router';
 import {ClazzComponent} from './clazz.component';
 import {AddComponent} from './add/add.component';
 import {PageComponent} from './page/page.component';
-// import {EditComponent} from './edit/edit.component';
+import {EditComponent} from './edit/edit.component';
 
 const routes = [
   {
@@ -16,11 +16,10 @@ const routes = [
       },
       {
         path: 'page/:pageNum', component: PageComponent
+      }, {
+        path: 'edit/:id',
+        component: EditComponent
       }
-      // }, {
-      //   path: 'edit/:id',
-      //   component: EditComponent
-      // }
     ]
   }
 ] as Route[];
