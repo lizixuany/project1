@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let term of terms;index as i">
+      <tr *ngFor="let term of pageData.content;index as i">
         <td>{{ i+1 }}</td>
         <td>{{ term.school.name }}</td>
         <td>{{ term.term }}</td>
@@ -35,5 +35,7 @@
       </tr>
     </tbody>
   </table>
+  <router-outlet></router-outlet>
+  <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
   <router-outlet></router-outlet>
 </div>

@@ -2,9 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Page} from '../entity/page';
 import {Clazz} from '../entity/clazz';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {SchoolService} from '../service/school.service';
-import {ClazzService} from '../service/clazz.service';
-import {Confirm} from "notiflix";
+import {Confirm} from 'notiflix';
 
 @Component({
   selector: 'app-clazz',
@@ -18,8 +16,6 @@ export class ClazzComponent implements OnInit {
   // 每页默认为5条
   size = 5;
 
-  clazz: any[];
-
   // 初始化一个有0条数据的
   pageData = new Page<Clazz>({
     content: [],
@@ -28,9 +24,7 @@ export class ClazzComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private httpClient: HttpClient,
-              private schoolService: SchoolService,
-              private clazzService: ClazzService) {
+  constructor(private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {SchoolService} from '../../service/school.service';
-import {School} from '../../../entity/school';
+import {School} from '../../entity/school';
 import {FormGroup, FormControl} from '@angular/forms';
 
 @Component({
@@ -14,8 +14,8 @@ export class AddComponent implements OnInit {
   schools: School[] = [];
   term = {
     term: '',
-    start_time: '',
-    end_time: '',
+    start_time: Date,
+    end_time: Date,
     school_id: ''
   };
   formGroup: FormGroup;
@@ -26,8 +26,8 @@ export class AddComponent implements OnInit {
     this.formGroup = new FormGroup({
       term: new FormControl(''),
       start_time: new FormControl(''),
-      end_time: new FormControl(''),
-      school_id: new FormControl('')
+      end_time: new FormControl(Date),
+      school_id: new FormControl(Date)
     });
   }
 

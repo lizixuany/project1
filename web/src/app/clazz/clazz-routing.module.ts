@@ -16,7 +16,8 @@ const routes = [
       },
       {
         path: 'page/:pageNum', component: PageComponent
-      }, {
+      },
+      {
         path: 'edit/:id',
         component: EditComponent
       }
@@ -25,10 +26,7 @@ const routes = [
 ] as Route[];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ClazzRoutingModule {
-}
+export class ClazzRoutingModule { }
