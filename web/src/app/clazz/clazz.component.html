@@ -20,10 +20,10 @@
       <td>{{clazz.name}}</td>
       <td>{{clazz.school.name}}</td>
       <td>
-        <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{clazz.clazz_id}}">
+        <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{clazz.id}}">
           <i class="fas fa-pen"></i>编辑
         </a>
-        <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, clazz.clazz_id)">
+        <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, clazz.id)">
             <i class="far fa-trash-alt"></i>删除
           </span>
       </td>
