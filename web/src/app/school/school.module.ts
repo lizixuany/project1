@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {EditComponent} from './edit/edit.component';
+import {PageModule} from "../clazz/page/page.module";
 
 @NgModule({
   declarations: [
@@ -15,14 +16,15 @@ import {EditComponent} from './edit/edit.component';
     SchoolComponent,
     EditComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    SchoolRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        SchoolRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        PageModule
+    ],
   exports: [SchoolComponent]
 })
 export class SchoolModule {

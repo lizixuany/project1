@@ -7,7 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AddComponent} from './add/add.component';
-import {PageModule} from "../clazz/page/page.module";
+import {PageModule} from '../clazz/page/page.module';
 
 @NgModule({
   declarations: [TermComponent, AddComponent],
