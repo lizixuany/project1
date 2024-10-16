@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\Controller;
+use think\Db;   // 引用数据库操作类
 use app\common\model\School;
 use think\request;
 
@@ -9,8 +10,25 @@ class SchoolController extends Controller
     // 获取学校列表
     public function index()
     {
-        $schools = School::all();
-        return json($schools);
+        try {
+            $page = $this->request->get('page', 1);
+            $size = $this->request->get('size', 10);
+
+            $list = School::page($page, $size)->select();
+            $total = Db::name('school')->count();
+
+            $pageData = [
+            'content' => $list,
+            'number' => $page, // ThinkPHP的分页参数是从1开始的
+            'size' => $size,
+            'totalPages' => ceil($total / $size),
+            'numberOfElements' => $total,
+            ];
+
+            return json($pageData);
+        } catch (\Exception $e) {
+            return '系统错误' . $e->getMessage();
+        }
     }
 
     // 新增学校
