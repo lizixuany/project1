@@ -34,11 +34,11 @@ class TermController extends Controller
             // 创建学期对象并保存
             $term = new Term();
             $term->term = $data['term'];
-            $term->school_id = $data['school_id'];
+            $term->school_id = $data['id'];
             $term->start_time = $data['start_time'];
             $term->end_time = $data['end_time'];
             $term->save();
-            return json(['status' => 'success', 'id' => $term->school_id]);
+            return json(['status' => 'success', 'id' => $term->id]);
         } catch (Exception $e) {
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }
