@@ -4,6 +4,7 @@ import {Clazz} from '../entity/clazz';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {SchoolService} from '../service/school.service';
 import {ClazzService} from '../service/clazz.service';
+import {Confirm} from "notiflix";
 
 @Component({
   selector: 'app-clazz',
@@ -60,15 +61,15 @@ export class ClazzComponent implements OnInit {
       );
   }
 
-  onDelete(index: number, clazzId: number): void {
-    console.log('onDelete called', index, clazzId);
-    const result = confirm('该操作不可逆，请确认');
-    if (result) {
-      this.httpClient.delete<void>('/clazz/' + clazzId.toString())
-        .subscribe(() => {
-          console.log('删除成功');
-          this.pageData.content.splice(index, 1);
-        }, error => console.log('删除失败', error));
-    }
+  onDelete(index: number, id: number): void {
+    Confirm.show('请确认', '该操作不可逆', '确认', '取消',
+      () => {
+        this.httpClient.delete(`/api/clazz/delete/${id}`)
+          .subscribe(() => {
+              console.log('删除成功');
+              this.pageData.content.splice(index, 1);
+            },
+            error => console.log('删除失败', error));
+      });
   }
 }
