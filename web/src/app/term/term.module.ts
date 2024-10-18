@@ -8,9 +8,11 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AddComponent} from './add/add.component';
 import {PageModule} from '../clazz/page/page.module';
+import {EditComponent} from './edit/edit.component';
+import {KlassSelectComponent} from '../clazz/klass-select/klass-select.component';
 
 @NgModule({
-  declarations: [TermComponent, AddComponent],
+  declarations: [TermComponent, AddComponent, EditComponent, KlassSelectComponent],
     imports: [
         CommonModule,
         RouterModule,

@@ -1,0 +1,46 @@
+<form class="container-sm" (ngSubmit)="onSubmit(id, formGroup)" [formGroup]="formGroup">
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">学校名称</label>
+    <div class="col-sm-10">
+      <app-klass-select formControlName="schoolId"></app-klass-select>
+      <small class="text-danger" *ngIf="formGroup.get('schoolId')!.invalid">
+        必须选择学校
+      </small>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">学期名称</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" formControlName="term">
+      <small class="text-danger" *ngIf="formGroup.get('term')!.invalid">
+        学期名称不能为空
+      </small>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">开始时间</label>
+    <div class="col-sm-10">
+      <input type="date" class="form-control" formControlName="start_time">
+      <small class="text-danger" *ngIf="formGroup.get('start_time')!.invalid">
+        开始时间不能为空
+      </small>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">结束时间</label>
+    <div class="col-sm-10">
+      <input type="date" class="form-control" formControlName="end_time">
+      <small class="text-danger" *ngIf="formGroup.get('end_time')!.invalid">
+        结束时间不能为空
+      </small>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-sm-10 offset-2">
+      <button appLoading class="btn btn-primary" [disabled]="formGroup.invalid || formGroup.pending">
+        <i class="fa fa-save"></i>保存
+      </button>
+    </div>
+  </div>
+</form>
+
