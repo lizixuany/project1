@@ -3,7 +3,6 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {HttpClientModule} from '@angular/common/http';
 // import {randomNumber} from '@yunzhi/ng-mock-api';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {KlassSelectComponent} from '../klass-select/klass-select.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Component} from '@angular/core';
 // import {MockApiTestingModule} from '../../mock-api/mock-api-testing.module';
@@ -20,7 +19,7 @@ describe('clazz add with mockapi', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddComponent, KlassSelectComponent],
+      declarations: [AddComponent],
       imports: [HttpClientModule, FormsModule, ReactiveFormsModule,
         RouterTestingModule.withRoutes([
           {

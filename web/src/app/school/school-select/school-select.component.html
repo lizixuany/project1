@@ -1,4 +1,5 @@
 <select class="form-control" [formControl]="schoolId">
+  <option [ngValue]="null">所有学校</option>
   <option *ngFor="let school of schools" [ngValue]="school.id">
     {{school.name}}
   </option>
