@@ -11,8 +11,10 @@
     <th>序号</th>
     <th>姓名</th>
     <th>用户名</th>
-    <th>邮箱</th>
     <th>性别</th>
+    <th>班级</th>
+    <th>角色</th>
+    <th>状态</th>
     <th>操作</th>
   </tr>
   </thead>
@@ -20,6 +22,11 @@
   <tr *ngFor="let user of users; index as index">
     <td>{{index + 1}}</td>
     <td>{{user.name}}</td>
+    <td>{{user.username}}</td>
+    <td>{{user.sex}}</td>
+    <td>{{user.clazz_id}}</td>
+    <td>{{user.role}}</td>
+    <td>{{user.state}}</td>
     <td>
       <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{user.id}}">
         <i class="fas fa-pen"></i>编辑
