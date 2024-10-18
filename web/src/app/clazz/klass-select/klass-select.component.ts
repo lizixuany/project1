@@ -64,7 +64,7 @@ export class KlassSelectComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit(): void {
-    console.log('教师选择组件初始化');
+    console.log('学校选择组件初始化');
     // 关注schoolId
     this.schoolId.valueChanges
       .subscribe((data: number) => {
@@ -76,8 +76,9 @@ export class KlassSelectComponent implements OnInit, ControlValueAccessor {
     this.httpClient.get<Array<School>>('api/school')
       .subscribe(
         schools => {
-          this.schools = schools;
           console.log('教师选择组件接收到了数据');
+          this.schools = schools;
+          console.log(this.schools);
         });
   }
 }
