@@ -77,6 +77,7 @@ export class KlassSelectComponent implements OnInit, ControlValueAccessor {
       .subscribe(
         schools => {
           this.schools = schools;
+          console.log(this.schools);
           console.log('教师选择组件接收到了数据');
         });
   }

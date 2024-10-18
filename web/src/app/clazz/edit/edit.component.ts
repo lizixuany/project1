@@ -15,18 +15,12 @@ export class EditComponent implements OnInit {
    * 班级名称.
    */
   nameFormControl = new FormControl('', Validators.required);
-  // clazz: Clazz = new Clazz();
-  // clazz = {
-  //   clazz_id: null as unknown as number,
-  //   name: '',
-  //   school_id: null as unknown as number
-  // };
 
  clazz = {
-    clazz_id: 1,
+    id: 1,
     name: '',
     school: {
-      school_id: 1,
+      id: 1,
       name: ''
     }
   };
@@ -57,12 +51,14 @@ export class EditComponent implements OnInit {
    */
   loadById(id: number): void {
     console.log('loadById');
+    console.log(id);
     this.formGroup.get('id').setValue(id);
     console.log(this.formGroup.value);
     console.log(this.clazz.name);
-    this.httpClient.post<Clazz>('api/clazz/edit/', id)
+    this.httpClient.post<Clazz>(`api/clazz/edit/${id}`, id)
       .subscribe(clazz => {
         console.log('接收到了clazz', clazz);
+        this.clazz = clazz;
         this.nameFormControl.patchValue(clazz[0].name);
         this.formGroup.get('school_id').setValue(clazz[0].school_id);
       }, error => console.log(error));
@@ -75,13 +71,12 @@ export class EditComponent implements OnInit {
 
   onSubmit(): void {
     console.log('点击了提交按钮');
-    console.log(this.clazz[0].clazz_id);
+    console.log(this.clazz[0].id);
     console.log(this.formGroup.value);
     const clazzId = this.formGroup.get('id').value;
     const name = this.nameFormControl.value;
     const schooId = this.formGroup.get('school_id').value;
     const clazz = new Clazz({
-
       id: clazzId,
       name,
       school: new School({id: schooId})

@@ -9,6 +9,8 @@ import {AddComponent} from './add/add.component';
 import {KlassSelectComponent} from './klass-select/klass-select.component';
 import {PageModule} from './page/page.module';
 import {EditComponent} from './edit/edit.component';
+import {ClazzService} from '../service/clazz.service';
+import {ClazzSelectModule} from './clazz-select/clazz-select.module';
 
 @NgModule({
   declarations: [
@@ -17,16 +19,17 @@ import {EditComponent} from './edit/edit.component';
     EditComponent,
     KlassSelectComponent
   ],
-  imports: [
-    CommonModule,
-    ClazzRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    FormsModule,
-    RouterModule,
-    PageModule
-  ],
-  providers: [],
+    imports: [
+        CommonModule,
+        ClazzRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        FormsModule,
+        RouterModule,
+        PageModule,
+        ClazzSelectModule
+    ],
+  providers: [ClazzService],
   bootstrap: [ClazzComponent]
 })
 export class ClazzModule { }
