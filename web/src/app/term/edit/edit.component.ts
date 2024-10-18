@@ -3,6 +3,12 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TermService} from '../../service/term.service';
+import {School} from '../../entity/school';
+import {HttpClient} from '@angular/common/http';
+import {Term} from '../../entity/term';
+import {YzAsyncValidators} from '../../yz-async-validators';
+import {YzValidators} from '../../yz-validators';
+
 
 @Component({
   selector: 'app-edit',
@@ -13,14 +19,16 @@ export class EditComponent implements OnInit {
   formGroup: FormGroup;
   id: number | undefined;
 
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(private yzAsyncValidators: YzAsyncValidators,
+              private activatedRoute: ActivatedRoute,
               private termService: TermService,
               private router: Router) {
+    console.log(this.activatedRoute);
     this.formGroup = new FormGroup({
       term: new FormControl('', Validators.required),
-      schoolId: new FormControl('', Validators.required),
-      start_time: new FormControl('', Validators.required),
-      end_time: new FormControl('', Validators.required)
+      start_time: new FormControl(Date),
+      end_time: new FormControl(Date),
+      schoolId: new FormControl(null, Validators.required)
     });
   }
 
@@ -37,9 +45,9 @@ export class EditComponent implements OnInit {
    */
   onSubmit(id: number | undefined, formGroup: FormGroup): void {
     const formValue = formGroup.value as { term: string, start_time: Date, end_time: Date, schoolId: number };
-    Assert.isString(formValue.term, '类型必须为字符串');
-    Assert.isNumber(formValue.schoolId, '类型必须为number');
-    Assert.isNumber(id, 'id类型必须为number');
+    // Assert.isString(formValue.name, formValue.phone, formValue.email, '类型必须为字符串');
+    // Assert.isNumber(formValue.clazzId, '类型必须为number');
+    // Assert.isNumber(id, 'id类型必须为number');
     this.termService.update(id as number, {
       term: formValue.term,
       start_time: formValue.start_time,
