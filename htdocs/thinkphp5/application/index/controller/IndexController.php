@@ -13,7 +13,7 @@ class IndexController extends Controller{
     public function login() {
         // 解析 JSON 数据
         $parsedData = json_decode(Request::instance()->getContent(), true);
-          // 从解析后的数据中获取 username 和 password
+        // 从解析后的数据中获取 username 和 password
         $username = isset($parsedData['username']) ? $parsedData['username'] : null;
         $password = isset($parsedData['password']) ? $parsedData['password'] : null;
         $user = new User();

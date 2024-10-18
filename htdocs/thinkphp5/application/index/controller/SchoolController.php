@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\Controller;
+use think\Db;   // 引用数据库操作类
 use app\common\model\School;
 use think\request;
 
@@ -9,8 +10,25 @@ class SchoolController extends Controller
     // 获取学校列表
     public function index()
     {
-        $schools = School::all();
-        return json($schools);
+        try {
+            $page = $this->request->get('page', 1);
+            $size = $this->request->get('size', 10);
+
+            $list = School::page($page, $size)->select();
+            $total = Db::name('school')->count();
+
+            $pageData = [
+            'content' => $list,
+            'number' => $page, // ThinkPHP的分页参数是从1开始的
+            'size' => $size,
+            'totalPages' => ceil($total / $size),
+            'numberOfElements' => $total,
+            ];
+
+            return json($pageData);
+        } catch (\Exception $e) {
+            return '系统错误' . $e->getMessage();
+        }
     }
 
     // 新增学校
@@ -25,7 +43,7 @@ class SchoolController extends Controller
             $school = new School();
             $school->name = $data['name'];
             $school->save();
-            return json(['status' => 'success', 'id' => $school->school_id]);
+            return json(['status' => 'success', 'id' => $school->id]);
         } catch (Exception $e) {
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }
@@ -35,8 +53,8 @@ class SchoolController extends Controller
     public function edit()
     {
         try{
-            $school_id = Request::instance()->param('school_id'); // 从请求中获取id参数
-            $school = School::get($school_id);
+            $id = Request::instance()->param('id'); // 从请求中获取id参数
+            $school = School::get($id);
             if ($school) {
                 // 将学校信息返回给前端编辑表单
                 return json(['status' => 'success', 'data' => $school]);
@@ -53,9 +71,9 @@ class SchoolController extends Controller
     public function update()
     {
         try{
-            $school_id = Request::instance()->param('school_id'); // 从请求中获取id参数
+            $id = Request::instance()->param('id'); // 从请求中获取id参数
             $name = Request::instance()->param('name'); // 从请求中获取name参数
-            $school = School::get($school_id);
+            $school = School::get($id);
             if ($school) {
                 // 数据验证
                 if (!isset($name) || empty($name)) {
@@ -64,7 +82,7 @@ class SchoolController extends Controller
 
                 $school->name = $name;
                 $school->save();
-                return json(['status' => 'success', 'id' => $school->school_id]);
+                return json(['status' => 'success', 'id' => $school->id]);
             } else {
                 return json(['status' => 'error', 'message' => 'School not found']);
             }
@@ -97,11 +115,11 @@ class SchoolController extends Controller
 
     public static function getSchool() {
         $request = Request::instance();
-        $school_id = IndexController::getParamId($request);
-        if (!$school_id) {
-            return json(['success' => true, 'message' => 'school_id不存在']);
+        $id = IndexController::getParamId($request);
+        if (!$id) {
+            return json(['success' => true, 'message' => 'id不存在']);
         }
-        $school = School::get($school_id);
+        $school = School::get($id);
         return $school;
     }
 }

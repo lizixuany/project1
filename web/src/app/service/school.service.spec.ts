@@ -11,7 +11,7 @@ describe('SchoolService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [SchoolService]
-    })
+    });
   });
 
   it('should be created', () => {

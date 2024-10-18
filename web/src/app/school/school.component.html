@@ -15,19 +15,21 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let school of schools;index as i">
+      <tr *ngFor="let school of pageData.content;index as i">
         <td>{{ i+1 }}</td>
         <td>{{ school.name }}</td>
         <td>
-          <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{school.school_id}}">
+          <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{school.id}}">
             <i class="fas fa-pen"></i>编辑
           </a>
-          <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, school.school_id)">
+          <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, school.id)">
             <i class="far fa-trash-alt"></i>删除
           </span>
         </td>
       </tr>
     </tbody>
   </table>
+  <router-outlet></router-outlet>
+  <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
   <router-outlet></router-outlet>
 </div>
