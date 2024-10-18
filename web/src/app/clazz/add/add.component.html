@@ -13,7 +13,7 @@
   <div class="mb-3 row">
     <label class="col-sm-2 col-form-label">学校</label>
     <div class="col-sm-10">
-        <app-klass-select (beChange)="onSchoolChange($event)"></app-klass-select>
+        <app-school-select (beChange)="onSchoolChange($event)"></app-school-select>
       <small class="text-danger"
              *ngIf="clazz.school_id === null">
         必须指定一个学校

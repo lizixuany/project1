@@ -6,28 +6,28 @@ import {RouterModule} from '@angular/router';
 import {ClazzRoutingModule} from './clazz-routing.module';
 import {ClazzComponent} from './clazz.component';
 import {AddComponent} from './add/add.component';
-import {KlassSelectComponent} from './klass-select/klass-select.component';
 import {PageModule} from './page/page.module';
 import {EditComponent} from './edit/edit.component';
 import {ClazzService} from '../service/clazz.service';
 import {ClazzSelectModule} from './clazz-select/clazz-select.module';
+import {SchoolSelectModule} from '../school/school-select/school-select.module';
 
 @NgModule({
   declarations: [
     ClazzComponent,
     AddComponent,
-    EditComponent,
-    KlassSelectComponent
+    EditComponent
   ],
     imports: [
-        CommonModule,
-        ClazzRoutingModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        FormsModule,
-        RouterModule,
-        PageModule,
-        ClazzSelectModule
+      CommonModule,
+      ClazzRoutingModule,
+      ReactiveFormsModule,
+      HttpClientModule,
+      FormsModule,
+      RouterModule,
+      PageModule,
+      ClazzSelectModule,
+      SchoolSelectModule
     ],
   providers: [ClazzService],
   bootstrap: [ClazzComponent]
