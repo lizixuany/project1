@@ -2,6 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Page} from '../entity/page';
 import {Clazz} from '../entity/clazz';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {SchoolService} from '../service/school.service';
+import {ClazzService} from '../service/clazz.service';
+import {FormGroup, NgForm} from '@angular/forms';
+import {SharedService} from '../service/shared.service';
 import {Confirm} from 'notiflix';
 
 @Component({
@@ -24,8 +28,20 @@ export class ClazzComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private httpClient: HttpClient) {
+  searchParameters = {
+    school: null as unknown as number,
+    name: ''
+  };
+  school: any;
+
+  constructor(private httpClient: HttpClient,
+              private schoolService: SchoolService,
+              private clazzService: ClazzService,
+              private sharedService: SharedService) {
+
   }
+
+  form = new FormGroup({});
 
   ngOnInit(): void {
     console.log('clazz组件调用ngOnInit()');
@@ -41,14 +57,14 @@ export class ClazzComponent implements OnInit {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());
-    this.httpClient.get<Page<Clazz>>('/api/clazz', {params: httpParams})
+    this.httpClient.post<Page<Clazz>>('/api/clazz', this.searchParameters, {params: httpParams})
       .subscribe(pageData => {
-        // 在请求数据之后设置当前页
-        this.page = page;
-        console.log('clazz组件接收到返回数据，重新设置pageData');
-        this.pageData = pageData;
-        console.log(pageData);
-      },
+          // 在请求数据之后设置当前页
+          this.page = page;
+          console.log('clazz组件接收到返回数据，重新设置pageData');
+          this.pageData = pageData;
+          console.log(pageData);
+        },
         error => {
           console.error('请求数据失败', error);
         }
@@ -65,5 +81,36 @@ export class ClazzComponent implements OnInit {
             },
             error => console.log('删除失败', error));
       });
+  }
+
+  onSchoolSelected(schoolId: number) {
+    this.searchParameters.school = schoolId;
+  }
+
+
+  onSubmit(form: NgForm, page = 0) {
+    console.log('调用了search');
+    if (form.valid) {
+      const school = this.sharedService.getSomeValue();
+      this.searchParameters.school = school;
+      const name = this.searchParameters.name;
+      console.log(this.sharedService.getSomeValue());
+      console.log('提交的查询参数:', this.searchParameters);
+      const httpParams = new HttpParams().append('page', this.page.toString())
+        .append('size', this.size.toString());
+      this.httpClient.post<Page<Clazz>>('/api/clazz', this.searchParameters, {params: httpParams}).subscribe(
+        pageData => {
+          // 在请求数据之后设置当前页
+          this.page = page;
+          console.log('clazz组件接收到查询返回数据，重新设置pageData');
+          console.log(pageData);
+          this.pageData = pageData;
+          this.loadByPage(page);
+        },
+        error => {
+          console.error('请求数据失败', error);
+        }
+      );
+    }
   }
 }

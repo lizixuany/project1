@@ -18,6 +18,16 @@ export class SharedService {
     this.someValue = value;
   }
 
+  getSearch() {
+    console.log(this.someValue);
+    return this.someValue;
+  }
+
+  setSearch(value: any) {
+    console.log(value);
+    this.someValue = value;
+  }
+
   getData() {
     console.log(this.data);
     return this.data;

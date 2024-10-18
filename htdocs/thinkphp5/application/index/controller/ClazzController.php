@@ -13,9 +13,28 @@ class ClazzController extends Controller
         try {
             $page = $this->request->get('page', 1);
             $size = $this->request->get('size', 10);
-          
-            $list = Clazz::with('school')->page($page, $size)->select();
-            $total = Db::name('Clazz')->count();
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
+
+            // 定制查询信息
+            $condition = [];
+            
+            // 获取学校ID
+            $school_id = $data['school'];
+
+            if ($school_id !== null && $school_id !== '') {
+                $condition['school.id'] = $school_id;
+            }
+
+            // 获取班级名称
+            $name = $data['name'];
+
+            if ($name !== null && $name !== '') {
+                $condition['clazz.name'] = $name;
+            }
+           
+            $list = Clazz::with('school')->where($condition)->page($page, $size)->select();
+            $total = Clazz::with('school')->where($condition)->page($page, $size)->count();
           
             $pageData = [
               'content' => $list,
@@ -41,13 +60,13 @@ class ClazzController extends Controller
             if (!isset($data['name']) || empty($data['name'])){
                 return json(['status' => 'error', 'message' => 'name is required']);
             }
-            if (!isset($school['school_id']) || empty($school['school_id'])){
+            if (!isset($school['id']) || empty($school['id'])){
                 return json(['status' => 'error', 'message' => 'School is required']);
             }
             
             // 创建学期对象并保存
             $clazz = new Clazz();
-            $clazz->school_id = $school['school_id'];
+            $clazz->school_id = $school['id'];
             $clazz->name = $data['name'];
             
             $clazz->save();
@@ -62,8 +81,8 @@ class ClazzController extends Controller
         try{
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
-            
-            $list = Clazz::with('school')->where('clazz_id', $data)->select();
+        
+            $list = Clazz::with('school')->where('clazz.id', $data)->select();
             
             return json($list);
         } catch (Exception $e) {
@@ -77,10 +96,10 @@ class ClazzController extends Controller
             $data = json_decode($request, true);
             $school = $data['school'];
             var_dump($data['name']);
-            var_dump($data['clazz_id']);
-            var_dump($school['school_id']);
+            var_dump($data['id']);
+            var_dump($school['id']);
             
-            $id = $data['clazz_id'];
+            $id = $data['id'];
             
             // 获取传入的班级信息
             $clazz = Clazz::get($id);
@@ -92,13 +111,13 @@ class ClazzController extends Controller
             if (!isset($data['name']) || empty($data['name'])){
                 return json(['status' => 'error', 'message' => 'name is required']);
             }
-            if (!isset($school['school_id']) || empty($school['school_id'])){
+            if (!isset($school['id']) || empty($school['id'])){
                 return json(['status' => 'error', 'message' => 'School is required']);
             }
             
             // 创建学期对象并保存
             // $clazz = new Clazz();
-            $clazz->school_id = $school['school_id'];
+            $clazz->school_id = $school['id'];
             $clazz->name = $data['name'];
             
             $clazz->save();
