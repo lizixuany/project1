@@ -9,7 +9,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {EditComponent} from './edit/edit.component';
 import {PageModule} from '../clazz/page/page.module';
-import {SchoolSelectModule} from "./school-select/school-select.module";
+import {SchoolSelectModule} from './school-select/school-select.module';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {SchoolSelectModule} from "./school-select/school-select.module";
     ReactiveFormsModule,
     HttpClientModule,
     PageModule,
-    SchoolSelectModule
+    SchoolSelectModule,
+    MatDialogModule
   ],
   exports: [SchoolComponent]
 })
