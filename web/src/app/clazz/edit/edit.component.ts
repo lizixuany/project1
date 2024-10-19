@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {Clazz} from '../../entity/clazz';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {School} from '../../entity/school';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {SharedService} from '../../service/shared.service';
 
 @Component({
   selector: 'app-edit',
@@ -16,7 +18,7 @@ export class EditComponent implements OnInit {
    */
   nameFormControl = new FormControl('', Validators.required);
 
- clazz = {
+  clazz = {
     id: 1,
     name: '',
     school: {
@@ -36,8 +38,11 @@ export class EditComponent implements OnInit {
   });
 
   constructor(private activatedRoute: ActivatedRoute,
+              private sharedService: SharedService,
               private router: Router,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              public dialogRef: MatDialogRef<EditComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit(): void {
@@ -51,6 +56,7 @@ export class EditComponent implements OnInit {
    */
   loadById(id: number): void {
     console.log('loadById');
+    id = this.sharedService.getId();
     console.log(id);
     this.formGroup.get('id').setValue(id);
     console.log(this.formGroup.value);
@@ -82,10 +88,21 @@ export class EditComponent implements OnInit {
       school: new School({id: schooId})
     });
     console.log(clazz);
-    this.httpClient.put<Clazz>(`/api/clazz/updata`, clazz)
-      .subscribe(
-        () => this.router.navigate(['../../'], {relativeTo: this.activatedRoute}),
+    this.httpClient.put<Clazz>(`/api/clazz/update`, clazz)
+      .subscribe(() => {
+          // 更新成功后，导航回主列表页面
+          try {
+            this.dialogRef.close(clazz);
+            console.log('Navigation successful');
+          } catch (err) {
+            console.log('Navigation failed', err);
+          }
+        },
         error => console.log(error));
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
   get school_id() {

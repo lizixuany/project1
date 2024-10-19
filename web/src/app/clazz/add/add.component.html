@@ -1,5 +1,8 @@
-<pre>{{clazz | json}}</pre>
-<form class="container-sm" (ngSubmit)="onSubmit()">
+<div>
+  <h2>新增班级</h2>
+</div>
+<hr>
+<form class="container-sm" (ngSubmit)="onSubmit()" style="margin: 40px 0px 0px 0px">
   <div class="mb-3 row">
     <label for="name" class="col-sm-2 col-form-label">名称</label>
     <div class="col-sm-10">
@@ -20,11 +23,14 @@
       </small>
     </div>
   </div>
-  <div class="mb-3 row">
-    <div class="col-sm-10 offset-2">
+  <div class="mb-3 row" style="margin: 20px 0px 0px 0px">
+    <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
       <button class="btn btn-primary"
               [disabled]="clazz.name === '' || clazz.school_id === null">保存
       </button>
+    </div>
+    <div class="col-sm-3 offset-sm-1">
+      <button mat-button class="btn btn-secondary" (click)="onNoClick()">取消</button>
     </div>
   </div>
 </form>

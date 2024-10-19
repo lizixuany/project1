@@ -7,6 +7,17 @@ import {User} from '../entity/user';
 export class SharedService {
   data: User = new User();
   private someValue: any;
+  value: any;
+
+  getId() {
+    console.log(this.value);
+    return this.value;
+  }
+
+  setId(id: number) {
+    console.log(id);
+    this.value = id;
+  }
 
   getSomeValue() {
     console.log(this.someValue);
@@ -14,16 +25,6 @@ export class SharedService {
   }
 
   setSomeValue(value: any) {
-    console.log(value);
-    this.someValue = value;
-  }
-
-  getSearch() {
-    console.log(this.someValue);
-    return this.someValue;
-  }
-
-  setSearch(value: any) {
     console.log(value);
     this.someValue = value;
   }

@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {School} from '../../entity/school';
 import {Clazz} from '../../entity/clazz';
 import {Router} from '@angular/router';
 import {FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add',
@@ -20,11 +21,13 @@ export class AddComponent implements OnInit {
   schools = new Array<School>();
 
   constructor(private httpClient: HttpClient,
-              private router: Router) {
+              private router: Router,
+              public dialogRef: MatDialogRef<AddComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit(): void {
-    // 获取所有教师
+    // 获取所有学校
     this.httpClient.get<Array<School>>('api/school')
       .subscribe(schools => this.schools = schools);
   }
@@ -36,8 +39,12 @@ export class AddComponent implements OnInit {
     });
     console.log(newClazz);
     this.httpClient.post(this.url, newClazz)
-      .subscribe(clazz => this.router.navigateByUrl('/api/clazz/add'),
+      .subscribe(clazz => this.dialogRef.close(newClazz),
         error => console.log('保存失败', error));
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
   // tslint:disable-next-line:variable-name
