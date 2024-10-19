@@ -82,9 +82,16 @@ export class EditComponent implements OnInit {
       school: new School({id: schooId})
     });
     console.log(clazz);
-    this.httpClient.put<Clazz>(`/api/clazz/updata`, clazz)
-      .subscribe(
-        () => this.router.navigate(['../../'], {relativeTo: this.activatedRoute}),
+    this.httpClient.put<Clazz>(`/api/clazz/update`, clazz)
+      .subscribe(() => {
+          // 更新成功后，导航回主列表页面
+          try {
+            this.router.navigate(['/clazz'], {relativeTo: this.activatedRoute});
+            console.log('Navigation successful');
+          } catch (err) {
+            console.log('Navigation failed', err);
+          }
+        },
         error => console.log(error));
   }
 

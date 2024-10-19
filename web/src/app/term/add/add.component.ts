@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {SchoolService} from '../../service/school.service';
 import {School} from '../../entity/school';
 import {FormGroup, FormControl} from '@angular/forms';
+import {Clazz} from '../../entity/clazz';
+import {Term} from '../../entity/term';
 
 @Component({
   selector: 'app-add',
@@ -13,10 +15,10 @@ import {FormGroup, FormControl} from '@angular/forms';
 export class AddComponent implements OnInit {
   schools: School[] = [];
   term = {
-    term: '',
-    start_time: Date,
-    end_time: Date,
-    school_id: ''
+    name: '',
+    start_time: new Date(),
+    end_time: new Date(),
+    school_id: null as unknown as number
   };
   formGroup: FormGroup;
 
@@ -24,7 +26,7 @@ export class AddComponent implements OnInit {
               private router: Router,
               private schoolService: SchoolService) {
     this.formGroup = new FormGroup({
-      term: new FormControl(''),
+      name: new FormControl(''),
       start_time: new FormControl(''),
       end_time: new FormControl(Date),
       school_id: new FormControl(Date)
@@ -49,21 +51,21 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit() {
-    this.httpClient.post('api/term/add', this.term).subscribe({
-      next: (response) => {
-        console.log(response);
-        if (response['status'] === 'success') {
-          this.router.navigate(['/term']);
-        } else {
-          // 检查message字段是否存在于响应中
-          const errorMessage = response.hasOwnProperty('message') ? response['message'] : '未知错误';
-          console.error('保存失败', errorMessage);
-        }
-      },
-      error: (error) => {
-        console.error('保存失败', error);
-      }
+    const newTerm = new Term({
+      name: this.term.name,
+      start_time: this.term.start_time,
+      end_time: this.term.end_time,
+      school: new School({id: this.term.school_id})
     });
+    console.log(newTerm);
+    this.httpClient.post('/api/term/add', newTerm)
+      .subscribe(clazz => this.router.navigateByUrl('/clazz'),
+        error => console.log('保存失败', error));
   }
 
+  // tslint:disable-next-line:variable-name
+  onSchoolChange(school_id: number): void {
+    console.log('school_id', school_id);
+    this.term.school_id = school_id;
+  }
 }

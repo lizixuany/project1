@@ -4,7 +4,6 @@ import {SchoolComponent} from './school.component';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
 
-
 const routes = [
   {
     path: '',

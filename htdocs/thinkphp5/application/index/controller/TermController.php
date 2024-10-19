@@ -13,9 +13,28 @@ class TermController extends Controller
         try {
             $page = $this->request->get('page', 1);
             $size = $this->request->get('size', 10);
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
 
-            $list = Term::with('school')->page($page, $size)->select();
-            $total = Db::name('Term')->count();
+            // 定制查询信息
+            $condition = [];
+            
+            // 获取学校ID
+            $school_id = $data['school'];
+
+            if ($school_id !== null && $school_id !== '') {
+                $condition['school.id'] = $school_id;
+            }
+
+            // 获取学期名称
+            $name = $data['name'];
+
+            if ($name !== null && $name !== '') {
+                $condition['clazz.name'] = ['like', '%' . $name . '%'];
+            }
+
+            $list = Term::with('school')->where($condition)->page($page, $size)->select();
+            $total = Term::with('school')->where($condition)->page($page, $size)->count();
 
             $pageData = [
             'content' => $list,
@@ -36,11 +55,13 @@ class TermController extends Controller
         try{
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
+            $school = $data['school'];
+
             // 验证必要字段
-            if (!isset($data['term']) || empty($data['term'])){
+            if (!isset($data['name']) || empty($data['name'])){
                 return json(['status' => 'error', 'message' => 'Term is required']);
             }
-            if (!isset($data['school_id']) || empty($data['school_id'])){
+            if (!isset($school['id']) || empty($school['id'])){
                 return json(['status' => 'error', 'message' => 'School is required']);
             }
             if (!isset($data['start_time']) || empty($data['start_time'])){
@@ -51,8 +72,8 @@ class TermController extends Controller
             }
             // 创建学期对象并保存
             $term = new Term();
-            $term->term = $data['term'];
-            $term->school_id = $data['school_id'];
+            $term->name = $data['name'];
+            $term->school_id = $school['id'];
             $term->start_time = $data['start_time'];
             $term->end_time = $data['end_time'];
             $term->save();
@@ -99,14 +120,10 @@ class TermController extends Controller
         try{
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
-            var_dump($data);
+
             $list = Term::with('school')->where('term.id', $data)->select();
-            if ($list) {
-                // 将学期信息返回给前端编辑表单
-                return json(['status' => 'success', 'data' => $list]);
-            } else {
-                return json(['status' => 'error', 'message' => 'Term not found']);
-            }
+
+            return json($list);
         } catch (Exception $e) {
             // 异常处理
             return json(['status' => 'error', 'message' => $e->getMessage()]);
@@ -119,14 +136,20 @@ class TermController extends Controller
         try{
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
+            $school = $data['school'];
+
             $id = $data['id'];
+
             $term = Term::get($id);
+            if (is_null($term)) {
+                return $this->error('系统未找到ID为' . $id . '的记录');
+            }
 
            // 验证必要字段
-           if (!isset($data['term']) || empty($data['term'])){
+           if (!isset($data['name']) || empty($data['name'])){
                return json(['status' => 'error', 'message' => 'Term is required']);
            }
-           if (!isset($data['school_id']) || empty($data['school_id'])){
+           if (!isset($school['id']) || empty($school['id'])){
                return json(['status' => 'error', 'message' => 'School is required']);
            }
            if (!isset($data['start_time']) || empty($data['start_time'])){
@@ -137,12 +160,13 @@ class TermController extends Controller
            }
 
             // 创建学期对象并保存
-            $term = new Term();
-            $term->term = $data['term'];
-            $term->school_id = $data['school_id'];
+            // $term = new Term();
+            $term->name = $data['name'];
+            $term->school_id = $school['id'];
             $term->start_time = $data['start_time'];
             $term->end_time = $data['end_time'];
             $term->save();
+
             return json(['status' => 'success', 'id' => $term->school_id]);
 
         } catch (Exception $e) {

@@ -1,14 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Assert} from '@yunzhi/ng-mock-api';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TermService} from '../../service/term.service';
-import {School} from '../../entity/school';
 import {HttpClient} from '@angular/common/http';
+import {Clazz} from '../../entity/clazz';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {School} from '../../entity/school';
 import {Term} from '../../entity/term';
-import {YzAsyncValidators} from '../../yz-async-validators';
-import {YzValidators} from '../../yz-validators';
-
 
 @Component({
   selector: 'app-edit',
@@ -16,61 +12,102 @@ import {YzValidators} from '../../yz-validators';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent implements OnInit {
-  formGroup: FormGroup;
-  id: number | undefined;
+  /**
+   * 学期名称.
+   */
+  nameFormControl = new FormControl('', Validators.required);
 
-  constructor(private yzAsyncValidators: YzAsyncValidators,
-              private activatedRoute: ActivatedRoute,
-              private termService: TermService,
-              private router: Router) {
-    console.log(this.activatedRoute);
-    this.formGroup = new FormGroup({
-      term: new FormControl('', Validators.required),
-      start_time: new FormControl(Date),
-      end_time: new FormControl(Date),
-      schoolId: new FormControl(null, Validators.required)
-    });
+  term = {
+    id: 1,
+    name: '',
+    start_time: new Date(),
+    end_time: new Date(),
+    school: {
+      id: 1,
+      name: ''
+    }
+  };
+  value = '';
+  School = new Array<School>();
+  /**
+   * 表单组，用于存放多个formControl
+   */
+  formGroup = new FormGroup({
+    id: new FormControl(null, Validators.required),
+    name: this.nameFormControl,
+    start_time: new FormControl(null, Validators.required),
+    end_time: new FormControl(null, Validators.required),
+    school_id: new FormControl(null, Validators.required)
+  });
+
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private httpClient: HttpClient) {
   }
 
-  ngOnInit() {
-    this.id = +this.activatedRoute.snapshot.params.id;
-    Assert.isNumber(this.id, '接收到的id类型不正确');
-    this.loadData(this.id);
+  ngOnInit(): void {
+    const id = this.activatedRoute.snapshot.params.id;
+    this.loadById(+id);
   }
 
   /**
-   * 更新
-   * @param id id
-   * @param formGroup 表单组
+   * 由后台加载预编辑的班级.
+   * @param id 班级id.
    */
-  onSubmit(id: number | undefined, formGroup: FormGroup): void {
-    const formValue = formGroup.value as { term: string, start_time: Date, end_time: Date, schoolId: number };
-    // Assert.isString(formValue.name, formValue.phone, formValue.email, '类型必须为字符串');
-    // Assert.isNumber(formValue.clazzId, '类型必须为number');
-    // Assert.isNumber(id, 'id类型必须为number');
-    this.termService.update(id as number, {
-      term: formValue.term,
-      start_time: formValue.start_time,
-      end_time: formValue.end_time,
-      school: {id: formValue.schoolId}
-    }).subscribe(() => {
-      this.router.navigate(['../../'], {relativeTo: this.activatedRoute});
-    });
-  }
-
-  /**
-   * 根据ID加载学期信息
-   * @param id 学期ID
-   */
-  loadData(id: number): void {
-    this.termService.getById(id)
+  loadById(id: number): void {
+    console.log('loadById');
+    console.log(id);
+    this.formGroup.get('id').setValue(id);
+    console.log(this.formGroup.value);
+    console.log(this.term.name);
+    this.httpClient.post<Term>(`api/term/edit/${id}`, id)
       .subscribe(term => {
-        this.formGroup.setValue({
-          term: term.term,
-          start_time: term.start_time,
-          end_time: term.end_time,
-          schoolId: term.school.id
-        });
-      });
+        console.log('接收到了term', term);
+        this.term = term;
+        this.nameFormControl.patchValue(term[0].name);
+        this.formGroup.get('start_time').setValue(term[0].start_time);
+        this.formGroup.get('end_time').setValue(term[0].end_time);
+        this.formGroup.get('school_id').setValue(term[0].school_id);
+      }, error => console.log(error));
+  }
+
+  onSchoolChange($event: number): void {
+    console.log('接收到了选择的teacherId', $event);
+    this.formGroup.get('school_id').setValue($event);
+  }
+
+  onSubmit(): void {
+    console.log('点击了提交按钮');
+    console.log(this.term[0].id);
+    console.log(this.formGroup.value);
+    const termId = this.formGroup.get('id').value;
+    const name = this.nameFormControl.value;
+    const startTime = this.formGroup.get('start_time').value;
+    const endTime = this.formGroup.get('end_time').value;
+    const schooId = this.formGroup.get('school_id').value;
+    const term = new Term({
+      id: termId,
+      name,
+      start_time: startTime,
+      end_time: endTime,
+      school: new School({id: schooId})
+    });
+    console.log(term);
+    this.httpClient.put<Term>(`/api/term/update`, term)
+      .subscribe(() => {
+          // 更新成功后，导航回主列表页面
+          try {
+            this.router.navigate(['/term'], {relativeTo: this.activatedRoute});
+            console.log('Navigation successful');
+          } catch (err) {
+            console.log('Navigation failed', err);
+          }
+        },
+        error => console.log(error));
+  }
+
+  get school_id() {
+    console.log('school_id');
+    return this.formGroup.get('school_id');
   }
 }

@@ -1,7 +1,23 @@
 <div class="container-md main">
   <div class="row">
-    <div class="col-12 text-right">
-      <a class="btn btn-primary mr-2" routerLink="add"><i class="fas fa-plus"></i>新增</a>
+    <div class="col-md-8">
+      <form class="form-inline d-flex justify-content-between"
+            (ngSubmit)="onSubmit(searchForm)" #searchForm="ngForm">
+        <div class="form-group mb-2">
+          <label class="mr-2">学校名称：</label>
+          <!-- 默认提示选项 -->
+          <app-school-select formControlName="school_id"></app-school-select>
+        </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">学期名称：</label>
+          <input name="name" type="text" class="form-control" style="width: 190px" placeholder="学期名称..."
+                 [(ngModel)]="searchParameters.name">
+        </div>
+        <button class="btn btn-outline-success mb-2" type="submit">查询</button>
+      </form>
+    </div>
+    <div class="col-md-4 text-right">
+      <a class="btn btn-primary mb-2" routerLink="./add"><i class="fas fa-plus"></i>新增</a>
     </div>
   </div>
 
@@ -18,24 +34,23 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let term of pageData.content;index as i">
-        <td>{{ i+1 }}</td>
+      <tr *ngFor="let term of pageData.content;index as index">
+        <td>{{ index + 1 }}</td>
         <td>{{ term.school.name }}</td>
-        <td>{{ term.term }}</td>
+        <td>{{ term.name }}</td>
         <td>{{ term.start_time }}</td>
         <td>{{ term.end_time }}</td>
         <td>
           <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{term.id}}">
             <i class="fas fa-pen"></i>编辑
           </a>
-          <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, term.id)">
+          <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, term.id)">
               <i class="far fa-trash-alt"></i>删除
           </span>
         </td>
       </tr>
     </tbody>
   </table>
-  <router-outlet></router-outlet>
   <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
   <router-outlet></router-outlet>
 </div>

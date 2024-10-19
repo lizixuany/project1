@@ -1,1 +1,18 @@
-<p>edit works!</p>
+<form class="container-sm" (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">名称</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" [formControl]="nameFormControl">
+      <small class="text-danger" *ngIf="nameFormControl.invalid">
+        学校名称不能为空
+      </small>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-sm-10 offset-2">
+      <button class="btn btn-primary" [disabled]="formGroup.invalid">保存
+      </button>
+    </div>
+  </div>
+</form>
+

@@ -24,7 +24,7 @@ export class AddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // 获取所有教师
+    // 获取所有学校
     this.httpClient.get<Array<School>>('api/school')
       .subscribe(schools => this.schools = schools);
   }
@@ -36,7 +36,7 @@ export class AddComponent implements OnInit {
     });
     console.log(newClazz);
     this.httpClient.post(this.url, newClazz)
-      .subscribe(clazz => this.router.navigateByUrl('/api/clazz/add'),
+      .subscribe(clazz => this.router.navigateByUrl('/clazz'),
         error => console.log('保存失败', error));
   }
 
