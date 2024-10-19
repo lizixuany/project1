@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add',
@@ -13,7 +14,9 @@ export class AddComponent implements OnInit {
   };
 
   constructor(private httpClient: HttpClient,
-              private router: Router) {
+              private router: Router,
+              public dialogRef: MatDialogRef<AddComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit() {
@@ -24,7 +27,7 @@ export class AddComponent implements OnInit {
       next: (response) => {
         console.log(response);
         if (response['status'] === 'success') {
-          this.router.navigate(['/school']);
+          this.dialogRef.close(response);
         } else {
           // 检查message字段是否存在于响应中
           const errorMessage = response.hasOwnProperty('message') ? response['message'] : '未知错误';
@@ -35,5 +38,9 @@ export class AddComponent implements OnInit {
         console.error('保存失败', error);
       }
     });
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }

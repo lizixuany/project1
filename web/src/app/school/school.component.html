@@ -14,7 +14,7 @@
       </form>
     </div>
     <div class="col-md-4 text-right">
-      <a class="btn btn-primary mb-2" routerLink="./add"><i class="fas fa-plus"></i>新增</a>
+      <a class="btn btn-primary mb-2" (click)="openAddDialog()"><i class="fas fa-plus"></i>新增</a>
     </div>
   </div>
 
@@ -32,7 +32,7 @@
         <td>{{ i+1 }}</td>
         <td>{{ school.name }}</td>
         <td>
-          <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{school.id}}">
+          <a class="btn btn-outline-primary btn-sm"  (click)="openEditDialog(school.id)">
             <i class="fas fa-pen"></i>编辑
           </a>
           <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, school.id)">
@@ -42,6 +42,5 @@
       </tr>
     </tbody>
   </table>
-  <router-outlet></router-outlet>
   <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
 </div>
