@@ -7,6 +7,9 @@ import {ClazzService} from '../service/clazz.service';
 import {FormGroup, NgForm} from '@angular/forms';
 import {SharedService} from '../service/shared.service';
 import {Confirm} from 'notiflix';
+import {MatDialog} from '@angular/material/dialog';
+import {AddComponent} from './add/add.component';
+import {EditComponent} from './edit/edit.component';
 
 @Component({
   selector: 'app-clazz',
@@ -37,6 +40,7 @@ export class ClazzComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               private schoolService: SchoolService,
               private clazzService: ClazzService,
+              private dialog: MatDialog,
               private sharedService: SharedService) {
 
   }
@@ -87,6 +91,22 @@ export class ClazzComponent implements OnInit {
     this.searchParameters.school = schoolId;
   }
 
+  openAddDialog(): void {
+    this.dialog.open(AddComponent, {
+      width: '1000px',
+      height: '370px',
+    });
+  }
+
+  openEditDialog(id: number): void {
+    console.log('edit dialog');
+    console.log(id);
+    this.sharedService.setId(id);
+    this.dialog.open(EditComponent, {
+      width: '1000px',
+      height: '370px',
+    });
+  }
 
   onSubmit(form: NgForm, page = 0) {
     console.log('调用了search');

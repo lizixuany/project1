@@ -11,6 +11,7 @@ import {LoginComponent} from './login/login.component';
 import {PersonalCenterComponent} from './personal-center/personal-center.component';
 import {SexPipe} from './personal-center/sex.pipe';
 import {SchoolModule} from './school/school.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {SchoolModule} from './school/school.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    SchoolModule
+    SchoolModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [IndexComponent]
