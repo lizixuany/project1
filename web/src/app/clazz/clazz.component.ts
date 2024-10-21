@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Page} from '../entity/page';
 import {Clazz} from '../entity/clazz';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {SchoolService} from '../service/school.service';
-import {ClazzService} from '../service/clazz.service';
 import {FormGroup, NgForm} from '@angular/forms';
 import {SharedService} from '../service/shared.service';
 import {Confirm} from 'notiflix';
@@ -35,8 +33,6 @@ export class ClazzComponent implements OnInit {
   school: any;
 
   constructor(private httpClient: HttpClient,
-              private schoolService: SchoolService,
-              private clazzService: ClazzService,
               private sharedService: SharedService) {
 
   }

@@ -11,6 +11,7 @@ import {LoginComponent} from './login/login.component';
 import {PersonalCenterComponent} from './personal-center/personal-center.component';
 import {SexPipe} from './personal-center/sex.pipe';
 import {SchoolModule} from './school/school.module';
+import {PageModule} from './clazz/page/page.module';
 
 @NgModule({
   declarations: [
@@ -22,14 +23,15 @@ import {SchoolModule} from './school/school.module';
     PersonalCenterComponent,
     SexPipe
   ],
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    SchoolModule
-  ],
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        SchoolModule,
+        PageModule
+    ],
   providers: [],
   bootstrap: [IndexComponent]
 })

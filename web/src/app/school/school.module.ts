@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {EditComponent} from './edit/edit.component';
-import {PageModule} from "../clazz/page/page.module";
+import {PageModule} from '../clazz/page/page.module';
 
 @NgModule({
   declarations: [
