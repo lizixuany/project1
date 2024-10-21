@@ -13,9 +13,20 @@ class SchoolController extends Controller
         try {
             $page = $this->request->get('page', 1);
             $size = $this->request->get('size', 10);
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
+             
+            // 定制查询信息
+            $condition = [];
 
-            $list = School::page($page, $size)->select();
-            $total = Db::name('school')->count();
+            // 获取学校名称
+            $name = $data['name'];
+
+            if ($name !== null && $name !== '') {
+                $condition['name'] = ['like', '%' . $name . '%'];
+            }
+            $list = School::where($condition)->page($page, $size)->select();
+            $total = School::where($condition)->page($page, $size)->count();
 
             $pageData = [
             'content' => $list,
@@ -37,12 +48,18 @@ class SchoolController extends Controller
         try{
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
+
+            // 验证必要字段
             if (!isset($data['name']) || empty($data['name'])){
                 return json(['status' => 'error', 'message' => 'Name is required']);
             }
+
+            // 创建学校对象并保存
             $school = new School();
             $school->name = $data['name'];
+
             $school->save();
+
             return json(['status' => 'success', 'id' => $school->id]);
         } catch (Exception $e) {
             return json(['status' => 'error', 'message' => $e->getMessage()]);
@@ -53,14 +70,13 @@ class SchoolController extends Controller
     public function edit()
     {
         try{
-            $id = Request::instance()->param('id'); // 从请求中获取id参数
-            $school = School::get($id);
-            if ($school) {
-                // 将学校信息返回给前端编辑表单
-                return json(['status' => 'success', 'data' => $school]);
-            } else {
-                return json(['status' => 'error', 'message' => 'School not found']);
-            }
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
+        
+            $list = Db::name('school')->where('id', $data)->select();
+
+            return json($list);
+
         } catch (Exception $e) {
             // 异常处理
             return json(['status' => 'error', 'message' => $e->getMessage()]);
@@ -71,21 +87,33 @@ class SchoolController extends Controller
     public function update()
     {
         try{
-            $id = Request::instance()->param('id'); // 从请求中获取id参数
-            $name = Request::instance()->param('name'); // 从请求中获取name参数
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
+            
+            $id = $data['id'];
+            
+            // 获取传入的班级信息
             $school = School::get($id);
-            if ($school) {
-                // 数据验证
-                if (!isset($name) || empty($name)) {
-                    return json(['status' => 'error', 'message' => 'Name is required']);
-                }
-
-                $school->name = $name;
-                $school->save();
-                return json(['status' => 'success', 'id' => $school->id]);
-            } else {
-                return json(['status' => 'error', 'message' => 'School not found']);
+            if (is_null($school)) {
+                return $this->error('系统未找到ID为' . $id . '的记录');
             }
+
+            // 验证必要字段
+            if (!isset($data['name']) || empty($data['name'])){
+                return json(['status' => 'error', 'message' => 'name is required']);
+            }
+            if (!isset($school['id']) || empty($school['id'])){
+                return json(['status' => 'error', 'message' => 'School is required']);
+            }
+            
+            // 创建学期对象并保存
+            // $school = new School();
+            $school->id = $data['id'];
+            $school->name = $data['name'];
+            
+            $school->save();
+
+            return json(['status' => 'success', 'id' => $school->id]);
         } catch (Exception $e) {
             // 异常处理
             return json(['status' => 'error', 'message' => $e->getMessage()]);

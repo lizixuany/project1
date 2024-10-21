@@ -3,6 +3,11 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Confirm} from 'notiflix';
 import {Page} from '../entity/page';
 import {School} from '../entity/school';
+import {SharedService} from '../service/shared.service';
+import {FormGroup, NgForm} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {AddComponent} from './add/add.component';
+import {EditComponent} from './edit/edit.component';
 
 @Component({
   selector: 'app-school',
@@ -10,7 +15,7 @@ import {School} from '../entity/school';
   styleUrls: ['./school.component.css']
 })
 export class SchoolComponent implements OnInit {
-  school = {
+  searchParameters = {
     name: ''
   };
 
@@ -26,7 +31,11 @@ export class SchoolComponent implements OnInit {
     size: this.size,
     numberOfElements: 0
   });
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private sharedService: SharedService,
+              private dialog: MatDialog) { }
+
+  form = new FormGroup({});
 
   ngOnInit() {
     console.log('school组件调用ngOnInit()');
@@ -42,7 +51,7 @@ export class SchoolComponent implements OnInit {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());
-    this.httpClient.get<Page<School>>('/api/school', {params: httpParams})
+    this.httpClient.post<Page<School>>('/api/school', this.searchParameters, {params: httpParams})
       .subscribe(pageData => {
           // 在请求数据之后设置当前页
           this.page = page;
@@ -66,5 +75,44 @@ export class SchoolComponent implements OnInit {
         },
           error => console.log('删除失败', error));
     });
+  }
+
+  openAddDialog(): void {
+    this.dialog.open(AddComponent, {
+      width: '900px',
+      height: '300px',
+    });
+  }
+
+  openEditDialog(id: number): void {
+    console.log('edit dialog');
+    console.log(id);
+    this.sharedService.setId(id);
+    this.dialog.open(EditComponent, {
+      width: '900px',
+      height: '300px',
+    });
+  }
+
+  onSubmit(form: NgForm, page = 0) {
+    console.log('调用了search');
+    if (form.valid) {
+      console.log('提交的查询参数:', this.searchParameters);
+      const httpParams = new HttpParams().append('page', this.page.toString())
+        .append('size', this.size.toString());
+      this.httpClient.post<Page<School>>('/api/school', this.searchParameters, {params: httpParams}).subscribe(
+        pageData => {
+          // 在请求数据之后设置当前页
+          this.page = page;
+          console.log('clazz组件接收到查询返回数据，重新设置pageData');
+          console.log(pageData);
+          this.pageData = pageData;
+          this.loadByPage(page);
+        },
+        error => {
+          console.error('请求数据失败', error);
+        }
+      );
+    }
   }
 }

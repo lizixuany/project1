@@ -1,6 +1,10 @@
-<form class="container-sm" (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+<div>
+  <h2>编辑班级</h2>
+</div>
+<hr>
+<form class="container-sm" (ngSubmit)="onSubmit()" [formGroup]="formGroup" style="margin: 40px 0px 0px 0px">
   <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">名称</label>
+    <label class="col-sm-2 col-form-label">班级名称</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" [formControl]="nameFormControl">
       <small class="text-danger" *ngIf="nameFormControl.invalid">
@@ -9,15 +13,18 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">学校</label>
+    <label class="col-sm-2 col-form-label">学校名称</label>
     <div class="col-sm-10">
       <app-school-select formControlName="school_id"></app-school-select>
     </div>
   </div>
-  <div class="mb-3 row">
-    <div class="col-sm-10 offset-2">
+  <div class="mb-3 row" style="margin: 40px 0px 0px 0px">
+    <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
       <button class="btn btn-primary" [disabled]="formGroup.invalid">保存
       </button>
+    </div>
+    <div class="col-sm-3 offset-sm-1">
+      <button mat-button class="btn btn-secondary" (click)="onNoClick()">取消</button>
     </div>
   </div>
 </form>

@@ -1,7 +1,20 @@
 <div class="container-md main">
   <div class="row">
-    <div class="col-12 text-right">
-      <a class="btn btn-primary mr-2" routerLink="add"><i class="fas fa-plus"></i>新增</a>
+    <div class="col-md-8">
+      <form class="form-inline d-flex justify-content-between"
+            (ngSubmit)="onSubmit(searchForm)" #searchForm="ngForm">
+        <div class="form-group mb-2">
+          <label class="mr-2">学校名称：</label>
+          <input name="name" type="text" class="form-control" style="width: 190px" placeholder="学校名称..."
+                 [(ngModel)]="searchParameters.name">
+        </div>
+        <div class="form-group mb-2" style="margin: 8px 325px 0px 0px">
+          <button class="btn btn-outline-success mb-2" type="submit">查询</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4 text-right">
+      <a class="btn btn-primary mb-2" (click)="openAddDialog()"><i class="fas fa-plus"></i>新增</a>
     </div>
   </div>
 
@@ -19,7 +32,7 @@
         <td>{{ i+1 }}</td>
         <td>{{ school.name }}</td>
         <td>
-          <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{school.id}}">
+          <a class="btn btn-outline-primary btn-sm"  (click)="openEditDialog(school.id)">
             <i class="fas fa-pen"></i>编辑
           </a>
           <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, school.id)">
@@ -29,7 +42,5 @@
       </tr>
     </tbody>
   </table>
-  <router-outlet></router-outlet>
   <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
-  <router-outlet></router-outlet>
 </div>

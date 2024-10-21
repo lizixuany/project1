@@ -1,11 +1,12 @@
-<form class="container-sm" (ngSubmit)="onSubmit()">
+<div>
+  <h2>新增学校</h2>
+</div>
+<hr>
+<form class="container-sm" (ngSubmit)="onSubmit()" style="margin: 40px 0px 0px 0px">
   <div class="mb-3 row">
-    <label for="school_id" class="col-sm-2 col-form-label">学校名称</label>
+    <label class="col-sm-2 col-form-label">学校名称</label>
     <div class="col-sm-10">
-      <select class="form-control" id="school_id" [(ngModel)]="term.school_id" name="school_id">
-        <option value="">选择学校</option>
-        <option *ngFor="let school of schools" [value]="school.id">{{ school.name }}</option>
-      </select>
+      <app-school-select (beChange)="onSchoolChange($event)"></app-school-select>
       <small class="text-danger"
              *ngIf="term.school_id === ''">
         学校不能为空
@@ -15,9 +16,9 @@
   <div class="mb-3 row">
     <label for="term" class="col-sm-2 col-form-label">学期</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" [(ngModel)]="term.term" name="term" id="term">
+      <input type="text" class="form-control" [(ngModel)]="term.name" name="term" id="term">
       <small class="text-danger"
-             *ngIf="term.term === ''">
+             *ngIf="term.name === ''">
         学期不能为空
       </small>
     </div>
@@ -42,10 +43,13 @@
       </small>
     </div>
   </div>
-  <div class="mb-3 row">
-    <div class="col-sm-10 offset-2">
+  <div class="mb-3 row" style="margin: 30px 0px 0px 0px">
+    <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
       <button class="btn btn-primary">保存
       </button>
+    </div>
+    <div class="col-sm-3 offset-sm-1">
+      <button mat-button class="btn btn-secondary" (click)="onNoClick()">取消</button>
     </div>
   </div>
 </form>

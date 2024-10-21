@@ -12,6 +12,7 @@ import {PersonalCenterComponent} from './personal-center/personal-center.compone
 import {SexPipe} from './personal-center/sex.pipe';
 import {SchoolModule} from './school/school.module';
 import {PageModule} from './clazz/page/page.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,15 +24,15 @@ import {PageModule} from './clazz/page/page.module';
     PersonalCenterComponent,
     SexPipe
   ],
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        SchoolModule,
-        PageModule
-    ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    SchoolModule,
+    BrowserAnimationsModule
+  ],
   providers: [],
   bootstrap: [IndexComponent]
 })

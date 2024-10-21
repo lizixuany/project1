@@ -30,7 +30,7 @@ class ClazzController extends Controller
             $name = $data['name'];
 
             if ($name !== null && $name !== '') {
-                $condition['clazz.name'] = $name;
+                $condition['clazz.name'] = ['like', '%' . $name . '%'];
             }
            
             $list = Clazz::with('school')->where($condition)->page($page, $size)->select();
@@ -64,7 +64,7 @@ class ClazzController extends Controller
                 return json(['status' => 'error', 'message' => 'School is required']);
             }
             
-            // 创建学期对象并保存
+            // 创建班级对象并保存
             $clazz = new Clazz();
             $clazz->school_id = $school['id'];
             $clazz->name = $data['name'];
@@ -90,14 +90,11 @@ class ClazzController extends Controller
         }
     }
 
-    public function updata() {
+    public function update() {
         try{
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
             $school = $data['school'];
-            var_dump($data['name']);
-            var_dump($data['id']);
-            var_dump($school['id']);
             
             $id = $data['id'];
             
