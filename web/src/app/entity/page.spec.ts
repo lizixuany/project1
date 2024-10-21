@@ -21,6 +21,7 @@ describe('Page', () => {
       numberOfElements: 192,
       content: []
     });
+
     // expect(page.first).toBeTrue();
     // expect(page.last).toBeFalse();
     expect(page.totalPages).toBe(10);

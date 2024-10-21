@@ -1,0 +1,42 @@
+<script src="../entity/clazz.spec.ts"></script>
+<div class="container-md main">
+  <div class="row">
+    <div class="col-12 text-right">
+      <a class="btn btn-primary mr-2" routerLink="add"><i class="fas fa-plus"></i>新增</a>
+    </div>
+  </div>
+
+  <br>
+  <table class="table table-striped">
+    <thead>
+    <tr class="table-primary">
+      <th>序号</th>
+      <th>学校名称</th>
+      <th>班级名称</th>
+      <th>学期</th>
+      <th>课程名称</th>
+      <th>上课时间</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let course of pageData.content; index as i">
+      <td>{{ i+1 }}</td>
+      <td>1</td>
+      <td>{{ course.clazz.name }}</td>
+      <td>{{ course.term.term }}</td>
+      <td>{{ course.name }}</td>
+      <td>{{ course.week }}</td>
+      <td>
+        <a class="btn btn-outline-primary btn-sm" href="#">
+          <i class="fas fa-pen"></i>编辑
+        </a>
+        <span class="btn btn-sm btn-outline-danger" href="#">
+            <i class="far fa-trash-alt"></i>删除
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
+</div>
