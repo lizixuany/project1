@@ -29,7 +29,7 @@ body, html {
 }
 .top-bar .logout {
   margin-top: 60px;
-  margin-left: 1700px;
+  margin-left: 1500px;
   font-size: 33px;
   cursor: pointer;
   color: white;
@@ -37,7 +37,7 @@ body, html {
 /* 侧边导航栏样式 */
 .sidebar ul {
   list-style-type: none;
-  margin: 53px 10px 20px -16px;
+  margin: 58px 10px 20px -16px;
   padding: 0;
   width: 180px;
   background-color: #F5F5F5;
@@ -48,10 +48,14 @@ body, html {
   cursor: pointer;
 }
 
+.active {
+  background-color: #990099;
+  color: white;
+}
+
 .sidebar ul li a {
   font-size: 20px;
-  display:block;
-  color:#333;
+  color:black;
   padding:10px;
   text-align:center;
   border-radius: 5px;
