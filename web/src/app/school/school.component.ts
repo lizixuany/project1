@@ -5,7 +5,6 @@ import {Page} from '../entity/page';
 import {School} from '../entity/school';
 import {SharedService} from '../service/shared.service';
 import {FormGroup, NgForm} from '@angular/forms';
-import {Clazz} from '../entity/clazz';
 import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';

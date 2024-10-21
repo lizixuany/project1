@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {SchoolService} from '../../service/school.service';
@@ -6,6 +6,7 @@ import {School} from '../../entity/school';
 import {FormGroup, FormControl} from '@angular/forms';
 import {Clazz} from '../../entity/clazz';
 import {Term} from '../../entity/term';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add',
@@ -24,7 +25,9 @@ export class AddComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               private router: Router,
-              private schoolService: SchoolService) {
+              private schoolService: SchoolService,
+              public dialogRef: MatDialogRef<AddComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
     this.formGroup = new FormGroup({
       name: new FormControl(''),
       start_time: new FormControl(''),
@@ -59,8 +62,12 @@ export class AddComponent implements OnInit {
     });
     console.log(newTerm);
     this.httpClient.post('/api/term/add', newTerm)
-      .subscribe(clazz => this.router.navigateByUrl('/clazz'),
+      .subscribe(clazz => this.dialogRef.close(newTerm),
         error => console.log('保存失败', error));
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
   // tslint:disable-next-line:variable-name

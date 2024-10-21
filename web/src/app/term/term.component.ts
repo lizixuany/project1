@@ -4,8 +4,10 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Page} from '../entity/page';
 import {Term} from '../entity/term';
 import {FormGroup, NgForm} from '@angular/forms';
-import {Clazz} from '../entity/clazz';
 import {SharedService} from '../service/shared.service';
+import {AddComponent} from './add/add.component';
+import {EditComponent} from './edit/edit.component';
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-term',
@@ -36,7 +38,8 @@ export class TermComponent implements OnInit {
   form = new FormGroup({});
 
   constructor(private httpClient: HttpClient,
-              private sharedService: SharedService) { }
+              private sharedService: SharedService,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
     console.log('term组件调用ngOnInit()');
@@ -76,6 +79,23 @@ export class TermComponent implements OnInit {
           },
           error => console.log('删除失败', error));
       });
+  }
+
+  openAddDialog(): void {
+    this.dialog.open(AddComponent, {
+      width: '900px',
+      height: '455px',
+    });
+  }
+
+  openEditDialog(id: number): void {
+    console.log('edit dialog');
+    console.log(id);
+    this.sharedService.setId(id);
+    this.dialog.open(EditComponent, {
+      width: '900px',
+      height: '400px',
+    });
   }
 
   onSubmit(form: NgForm, page = 0) {
