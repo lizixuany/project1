@@ -2,7 +2,7 @@
   <h2>编辑学校</h2>
 </div>
 <hr>
-<form class="container-sm" (ngSubmit)="onSubmit()" [formGroup]="formGroup" style="margin: 40px 0px 0px 0px">
+<form class="container-sm" [formGroup]="formGroup" style="margin: 40px 0px 0px 0px">
   <div class="mb-3 row">
     <label class="col-sm-2 col-form-label">名称</label>
     <div class="col-sm-10">
@@ -14,7 +14,7 @@
   </div>
   <div class="mb-3 row" style="margin: 40px 0px 0px 0px">
     <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
-      <button class="btn btn-primary" [disabled]="formGroup.invalid">保存
+      <button class="btn btn-primary" (click)="onSubmit()" [disabled]="formGroup.invalid">保存
       </button>
     </div>
     <div class="col-sm-3 offset-sm-1">

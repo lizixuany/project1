@@ -24,19 +24,20 @@ export class UserService {
 
   /**
    * 获取学生
-   * @param id 学生ID
+   * @param id ID
    */
   getById(id: number): Observable<User> {
-    return this.httpClient.get<User>('/personal-center/change-password/' + id.toString());
+    return this.httpClient.post<User>('/change-password/getById', id);
   }
 
-  changePassword(oldPassword: string, newPassword: string): Observable<User> {
+  changePassword(id: number, oldPassword: string, newPassword: string): Observable<User> {
     // 发送请求到后端API以更新密码
     const body = {
+      id,
       oldPassword,
       newPassword
     };
-    return this.httpClient.post(this.apiUrl + '/change-password', body)
+    return this.httpClient.post(this.apiUrl + '/ChangePassword', body)
       .pipe(
         catchError(this.handleError) // 处理HTTP请求错误
       );

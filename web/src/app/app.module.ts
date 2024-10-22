@@ -8,11 +8,10 @@ import {WelcomeComponent} from './welcome.component';
 import {IndexComponent} from './index/index.component';
 import {NavComponent} from './nav/nav.component';
 import {LoginComponent} from './login/login.component';
-import {PersonalCenterComponent} from './personal-center/personal-center.component';
-import {SexPipe} from './personal-center/sex.pipe';
 import {SchoolModule} from './school/school.module';
 import {PageModule} from './clazz/page/page.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {PersonalCenterModule} from './personal-center/personal-center.module';
 
 @NgModule({
   declarations: [
@@ -20,9 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     WelcomeComponent,
     IndexComponent,
     NavComponent,
-    LoginComponent,
-    PersonalCenterComponent,
-    SexPipe
+    LoginComponent
   ],
   imports: [
     FormsModule,
@@ -31,9 +28,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     SchoolModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    PersonalCenterModule
   ],
   providers: [],
+  exports: [
+  ],
   bootstrap: [IndexComponent]
 })
 export class AppModule { }

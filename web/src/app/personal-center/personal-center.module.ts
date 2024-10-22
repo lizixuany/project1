@@ -6,11 +6,13 @@ import {RouterModule} from '@angular/router';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {PersonalCenterRoutingModule} from './personal-center-routing.module';
 import {PersonalCenterComponent} from './personal-center.component';
+import {SexPipe} from './sex.pipe';
 
 @NgModule({
   declarations: [
     ChangePasswordComponent,
-    PersonalCenterComponent
+    PersonalCenterComponent,
+    SexPipe
   ],
   imports: [
     BrowserModule,
@@ -20,6 +22,7 @@ import {PersonalCenterComponent} from './personal-center.component';
     FormsModule,
     RouterModule
   ],
+  exports: [SexPipe],
   providers: [],
   bootstrap: [PersonalCenterComponent]
 })
