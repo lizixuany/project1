@@ -36,8 +36,6 @@ export class ClazzComponent implements OnInit {
   school: any;
 
   constructor(private httpClient: HttpClient,
-              private schoolService: SchoolService,
-              private clazzService: ClazzService,
               private dialog: MatDialog,
               private sharedService: SharedService) {
 
@@ -83,10 +81,6 @@ export class ClazzComponent implements OnInit {
             },
             error => console.log('删除失败', error));
       });
-  }
-
-  onSchoolSelected(schoolId: number) {
-    this.searchParameters.school = schoolId;
   }
 
   openAddDialog(): void {

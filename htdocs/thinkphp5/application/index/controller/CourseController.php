@@ -30,4 +30,35 @@ class CourseController extends Controller
             return '系统错误' . $e->getMessage();
         }
     }
+
+    // 删除课表
+    public function delete()
+    {
+        try {
+            $course = CourseController::getCourse();
+            if (!$course) {
+                return json(['status' => 'error', 'message' => '班级不存在']);
+            }
+
+            // 删除课表
+            if ($course->delete()) {
+                return json(['status' => 'success', 'message' => '删除成功']);
+            } else {
+                return json(['status' => 'error', 'message' => '删除失败']);
+            }
+        } catch (Exception $e) {
+            // 异常处理
+            return json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public static function getCourse() {
+        $request = Request::instance();
+        $id = IndexController::getParamId($request);
+        if (!$id) {
+            return json(['success' => true, 'message' => 'id不存在']);
+        }
+        $course = Course::get($id);
+        return $course;
+    }
 }

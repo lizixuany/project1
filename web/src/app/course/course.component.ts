@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Page} from '../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Course} from '../entity/course';
+import {Confirm} from 'notiflix';
 
 @Component({
   selector: 'app-course',
@@ -49,6 +50,18 @@ export class CourseComponent implements OnInit {
           console.error('请求数据失败', error);
         }
       );
+  }
+
+  onDelete(index: number, id: number): void {
+    Confirm.show('请确认', '该操作不可逆', '确认', '取消',
+      () => {
+        this.httpClient.delete(`/api/course/delete/${id}`)
+          .subscribe(() => {
+              console.log('删除成功');
+              this.pageData.content.splice(index, 1);
+            },
+            error => console.log('删除失败', error));
+      });
   }
 
 }
