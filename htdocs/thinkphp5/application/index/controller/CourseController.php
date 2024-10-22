@@ -3,6 +3,8 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;   // 引用数据库操作类
 use app\common\model\Course;
+use app\common\model\Clazz;
+use app\common\model\Term;
 use think\request;
 
 class CourseController extends Controller
@@ -14,7 +16,7 @@ class CourseController extends Controller
             $page = $this->request->get('page', 1);
             $size = $this->request->get('size', 10);
 
-            $list = Course::with(['clazz', 'term'])->page($page, $size)->select();
+            $list = Course::with(['term', 'clazz', 'school'])->page($page, $size)->select();
             $total = Db::name('course')->count();
 
             $pageData = [

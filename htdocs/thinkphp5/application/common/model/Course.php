@@ -13,6 +13,12 @@ class Course extends Model
         return $this->belongsTo('Clazz');
     }
 
+    // 间接关联school表
+    public function school()
+    {
+        return $this->belongsTo('School');
+    }
+
     // 关联term表
     public function term()
     {

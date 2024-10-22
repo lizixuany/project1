@@ -22,7 +22,7 @@
     <tbody>
     <tr *ngFor="let course of pageData.content; index as i">
       <td>{{ i+1 }}</td>
-      <td>1</td>
+      <td>{{ course.school.name }}</td>
       <td>{{ course.clazz.name }}</td>
       <td>{{ course.term.name }}</td>
       <td>{{ course.name }}</td>
@@ -31,7 +31,7 @@
         <a class="btn btn-outline-primary btn-sm" href="#">
           <i class="fas fa-pen"></i>编辑
         </a>
-        <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, course.id)">
+        <span class="btn btn-sm btn-outline-danger" href="#">
             <i class="far fa-trash-alt"></i>删除
         </span>
       </td>
