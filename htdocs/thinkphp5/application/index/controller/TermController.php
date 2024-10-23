@@ -77,7 +77,7 @@ class TermController extends Controller
             $term->start_time = $data['start_time'];
             $term->end_time = $data['end_time'];
             $term->save();
-            return json(['status' => 'success', 'id' => $term->school_id]);
+            return json(['status' => 'success', 'id' => $term->id]);
         } catch (Exception $e) {
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }

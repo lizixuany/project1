@@ -71,7 +71,7 @@ class ClazzController extends Controller
             
             $clazz->save();
 
-            return json(['status' => 'success', 'id' => $clazz->school_id]);
+            return json(['status' => 'success', 'id' => $clazz->id]);
         } catch (Exception $e) {
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }
