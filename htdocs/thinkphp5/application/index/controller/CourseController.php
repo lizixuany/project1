@@ -17,7 +17,7 @@ class CourseController extends Controller
             $size = $this->request->get('size', 10);
 
             $list = Course::with(['term', 'clazz', 'school'])->page($page, $size)->select();
-            $total = Db::name('course')->count();
+            $total = Course::with(['term', 'clazz', 'school'])->page($page, $size)->count();
 
             $pageData = [
                 'content' => $list,
