@@ -11,6 +11,7 @@ import {PageModule} from '../clazz/page/page.module';
 import {EditComponent} from './edit/edit.component';
 import {SchoolSelectModule} from '../school/school-select/school-select.module';
 import {MatDialogModule} from '@angular/material/dialog';
+import {TermSelectModule} from './term-select/term-select.module';
 
 @NgModule({
   declarations: [TermComponent, AddComponent, EditComponent],
@@ -23,6 +24,7 @@ import {MatDialogModule} from '@angular/material/dialog';
       ReactiveFormsModule,
       PageModule,
       SchoolSelectModule,
+      TermSelectModule,
       MatDialogModule
     ]
 })
