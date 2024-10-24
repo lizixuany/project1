@@ -5,6 +5,8 @@ import {Course} from '../entity/course';
 import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
 import {Confirm} from 'notiflix';
+import {EditComponent} from './edit/edit.component';
+import {SharedService} from '../service/shared.service';
 
 @Component({
   selector: 'app-course',
@@ -25,7 +27,8 @@ export class CourseComponent implements OnInit {
     numberOfElements: 0
   });
   constructor(private httpClient: HttpClient,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private sharedService: SharedService) { }
 
   ngOnInit() {
     console.log('学期组件调用ngOnInit()');
@@ -71,6 +74,16 @@ export class CourseComponent implements OnInit {
     this.dialog.open(AddComponent, {
       width: '1000px',
       height: '370px',
+    });
+  }
+
+  openEditDialog(id: number): void {
+    console.log('edit dialog');
+    console.log(id);
+    this.sharedService.setId(id);
+    this.dialog.open(EditComponent, {
+      width: '900px',
+      height: '400px',
     });
   }
 

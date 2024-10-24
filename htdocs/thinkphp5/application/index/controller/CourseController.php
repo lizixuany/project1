@@ -64,6 +64,7 @@ class CourseController extends Controller
         return $course;
     }
 
+    // 删除课表
     public function add() {
         try{
             $request = Request::instance()->getContent();
@@ -100,6 +101,72 @@ class CourseController extends Controller
 
             return json(['status' => 'success', 'id' => $course->id]);
         } catch (Exception $e) {
+            return json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    // 编辑课表
+    public function edit()
+    {
+        try{
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
+
+            $list = Course::with(['term', 'clazz', 'school'])->where('course.id', $data)->select();
+
+            return json($list);
+        } catch (Exception $e) {
+            // 异常处理
+            return json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    // 更新课表信息
+    public function update()
+    {
+        try{
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
+            $school = $data['school'];
+            $term = $data['term'];
+            $clazz = $data['clazz'];
+
+            $id = $data['id'];
+
+            $course = Course::get($id);
+            if (is_null($course)) {
+                return $this->error('系统未找到ID为' . $id . '的记录');
+            }
+
+           // 验证必要字段
+           if (!isset($data['name']) || empty($data['name'])){
+               return json(['status' => 'error', 'message' => 'Course is required']);
+           }
+            if (!isset($data['week']) || empty($data['week'])){
+               return json(['status' => 'error', 'message' => 'Week is required']);
+            }
+           if (!isset($school['id']) || empty($school['id'])){
+               return json(['status' => 'error', 'message' => 'School is required']);
+           }
+           if (!isset($clazz['id']) || empty($clazz['id'])){
+               return json(['status' => 'error', 'message' => 'Clazz is required']);
+           }
+           if (!isset($term['id']) || empty($term['id'])){
+               return json(['status' => 'error', 'message' => 'Term is required']);
+           }
+
+            // 创建课表对象并保存
+            $course->name = $data['name'];
+            $course->week = $data['week'];
+            $course->school_id = $school['id'];
+            $course->clazz_id = $clazz['id'];
+            $course->term_id = $term['id'];
+            $course->save();
+
+            return json(['status' => 'success', 'id' => $course->id]);
+
+        } catch (Exception $e) {
+            // 异常处理
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
