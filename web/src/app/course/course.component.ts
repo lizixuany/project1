@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Page} from '../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Course} from '../entity/course';
+import {MatDialog} from '@angular/material/dialog';
+import {AddComponent} from './add/add.component';
 
 @Component({
   selector: 'app-course',
@@ -21,7 +23,8 @@ export class CourseComponent implements OnInit {
     size: this.size,
     numberOfElements: 0
   });
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
     console.log('学期组件调用ngOnInit()');
@@ -49,6 +52,13 @@ export class CourseComponent implements OnInit {
           console.error('请求数据失败', error);
         }
       );
+  }
+
+  openAddDialog(): void {
+    this.dialog.open(AddComponent, {
+      width: '1000px',
+      height: '370px',
+    });
   }
 
 }

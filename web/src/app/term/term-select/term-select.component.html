@@ -1,0 +1,6 @@
+<select class="form-control" [formControl]="termId">
+  <option [ngValue]="null">所有学期</option>
+  <option *ngFor="let term of terms" [ngValue]="term.id">
+    {{term.name}}
+  </option>
+</select>

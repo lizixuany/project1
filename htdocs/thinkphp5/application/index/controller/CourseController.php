@@ -63,4 +63,44 @@ class CourseController extends Controller
         $course = Course::get($id);
         return $course;
     }
+
+    public function add() {
+        try{
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
+            $school = $data['school'];
+            $clazz = $data['clazz'];
+            $term = $data['term'];
+
+            // 验证必要字段
+            if (!isset($data['name']) || empty($data['name'])){
+                return json(['status' => 'error', 'message' => 'name is required']);
+            }
+            if (!isset($data['week']) || empty($data['week'])){
+                return json(['status' => 'error', 'message' => 'week is required']);
+            }
+            if (!isset($school['id']) || empty($school['id'])){
+                return json(['status' => 'error', 'message' => 'School is required']);
+            }
+            if (!isset($term['id']) || empty($term['id'])){
+                return json(['status' => 'error', 'message' => 'Clazz is required']);
+            }if (!isset($clazz['id']) || empty($clazz['id'])){
+                 return json(['status' => 'error', 'message' => 'Term is required']);
+            }
+
+            // 创建课程对象并保存
+            $course = new Course();
+            $course->school_id = $school['id'];
+            $course->clazz_id = $clazz['id'];
+            $course->term_id = $term['id'];
+            $course->name = $data['name'];
+            $course->week = $data['week'];
+
+            $course->save();
+
+            return json(['status' => 'success', 'id' => $course->id]);
+        } catch (Exception $e) {
+            return json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
 }

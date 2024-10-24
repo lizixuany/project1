@@ -7,7 +7,7 @@ import {FormGroup, NgForm} from '@angular/forms';
 import {SharedService} from '../service/shared.service';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-term',

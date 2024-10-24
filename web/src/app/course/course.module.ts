@@ -9,6 +9,10 @@ import {RouterModule} from '@angular/router';
 import {EditComponent} from './edit/edit.component';
 import {AddComponent} from './add/add.component';
 import {CourseRoutingModule} from './course-routing.module';
+import {SchoolSelectModule} from '../school/school-select/school-select.module';
+import {ClazzSelectModule} from '../clazz/clazz-select/clazz-select.module';
+import {TermSelectModule} from '../term/term-select/term-select.module';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -24,8 +28,13 @@ import {CourseRoutingModule} from './course-routing.module';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    CourseRoutingModule
+    CourseRoutingModule,
+    SchoolSelectModule,
+    ClazzSelectModule,
+    TermSelectModule,
+    MatDialogModule
   ],
-  exports: [CourseComponent]
+  exports: [CourseComponent],
+  bootstrap: [CourseComponent]
 })
 export class CourseModule { }
