@@ -21,6 +21,10 @@ import {MatDialogModule} from '@angular/material/dialog';
     AddComponent,
     CourseComponent
   ],
+  entryComponents: [
+    EditComponent,
+    AddComponent
+  ],
   imports: [
     CommonModule,
     PageModule,
