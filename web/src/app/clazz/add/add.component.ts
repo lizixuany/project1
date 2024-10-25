@@ -12,7 +12,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-  private url = 'api/clazz/add';
   clazz = {
     name: '',
     school_id: null as unknown as number
@@ -38,7 +37,7 @@ export class AddComponent implements OnInit {
       school: new School({id: this.clazz.school_id})
     });
     console.log(newClazz);
-    this.httpClient.post(this.url, newClazz)
+    this.httpClient.post('api/clazz/add', newClazz)
       .subscribe(clazz => this.dialogRef.close(newClazz),
         error => console.log('保存失败', error));
   }

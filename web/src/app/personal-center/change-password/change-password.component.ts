@@ -21,7 +21,8 @@ export class ChangePasswordComponent {
 
   onSubmit() {
     const id = this.id.toString();
-    this.userService.changePassword(this.oldPassword, this.newPassword).subscribe(
+    console.log(id);
+    this.userService.changePassword(this.id, this.oldPassword, this.newPassword).subscribe(
       (response) => {
         // 处理成功响应
         console.log('Password changed successfully', response);
