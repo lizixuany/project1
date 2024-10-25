@@ -4,6 +4,7 @@ import {Clazz} from '../../entity/clazz';
 import {HttpClient} from '@angular/common/http';
 import {SharedService} from '../../service/shared.service';
 import {School} from '../../entity/school';
+import {ClazzService} from '../../service/clazz.service';
 
 @Component({
   selector: 'app-clazz-select',
@@ -19,13 +20,14 @@ import {School} from '../../entity/school';
   ]
 })
 export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
-  clazzes = new Array<Clazz>();
+  clazzs = new Array<Clazz>();
 
   clazzId = new FormControl();
 
   @Input()
   set id(id: number) {
-    // 使用接收到的id设置schoolId
+
+    // 使用接收到的id设置clazzId
     this.clazzId.setValue(id);
     console.log(this.clazzId);
   }
@@ -34,7 +36,8 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
   beChange = new EventEmitter<number>();
 
   constructor(private httpClient: HttpClient,
-              private sharedService: SharedService) {
+              private sharedService: SharedService,
+              private clazzService: ClazzService) {
   }
 
   ngOnInit(): void {
@@ -50,7 +53,9 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
     this.httpClient.get<{ content: Clazz[] }>('api/clazz/')
       .subscribe(
         (response) => {
-          this.clazzes = response.content;
+          this.clazzs = response.content;
+          console.log(this.clazzs);
+          this.clazzService.setClazzes(this.clazzs);
         });
   }
 

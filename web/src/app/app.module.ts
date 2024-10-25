@@ -12,6 +12,12 @@ import {SchoolModule} from './school/school.module';
 import {PageModule} from './clazz/page/page.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {PersonalCenterModule} from './personal-center/personal-center.module';
+import {AddComponent} from './add/add.component';
+import {EditComponent} from './edit/edit.component';
+import {SchoolSelectModule} from './school/school-select/school-select.module';
+import {ClazzSelectModule} from './clazz/clazz-select/clazz-select.module';
+import {PageModule} from './clazz/page/page.module';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -19,7 +25,13 @@ import {PersonalCenterModule} from './personal-center/personal-center.module';
     WelcomeComponent,
     IndexComponent,
     NavComponent,
-    LoginComponent
+    LoginComponent,
+    AddComponent,
+    EditComponent
+  ],
+  entryComponents: [
+    AddComponent, // 确保 AddComponent 在这里
+    EditComponent
   ],
   imports: [
     FormsModule,
@@ -29,7 +41,11 @@ import {PersonalCenterModule} from './personal-center/personal-center.module';
     HttpClientModule,
     SchoolModule,
     BrowserAnimationsModule,
-    PersonalCenterModule
+    PersonalCenterModule,
+    SchoolSelectModule,
+    ClazzSelectModule,
+    PageModule,
+    MatDialogModule
   ],
   providers: [],
   exports: [

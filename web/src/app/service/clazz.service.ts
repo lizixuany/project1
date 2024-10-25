@@ -4,11 +4,14 @@ import {Clazz} from '../entity/clazz';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Page} from '../entity/page';
 import {School} from '../entity/school';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClazzService {
+  private value: any;
+  private clazzs: Clazz[];
 
   constructor(private httpClient: HttpClient) {
   }
@@ -25,7 +28,13 @@ export class ClazzService {
     return this.httpClient.post<Clazz>('/clazz', clazz);
   }
 
-  searchClazz(name: string): Observable<Clazz> {
-    return this.httpClient.get<Clazz>(`/api/clazz/search?name=${name}`);
+  setClazzes(Clazzes: Clazz[]) {
+    this.value = Clazzes;
+    console.log(Clazzes);
+  }
+
+  getClazzes() {
+    console.log(this.value);
+    return this.value;
   }
 }

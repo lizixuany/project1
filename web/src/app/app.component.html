@@ -1,17 +1,61 @@
-<div class="container-md main">
-  <div class="row">
-  <div class="col-12 text-right">
-    <a class="btn btn-primary mr-2" routerLink="add"><i class="fas fa-plus"></i>新增</a>
+<div class="container-md main" xmlns="http://www.w3.org/1999/html">
+  <div>
+    <div class="col-md-12">
+      <form class="form-inline d-flex justify-content-between" style="width: 1300px"
+            (ngSubmit)="onSubmit(searchForm)" #searchForm="ngForm">
+        <div class="form-group mb-2">
+          <label class="mr-2">学校：</label>
+          <!-- 默认提示选项 -->
+          <app-school-select formControlName="school_id"></app-school-select>
+        </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">班级：</label>
+          <!-- 默认提示选项 -->
+          <app-clazz-select formControlName="clazz_id"></app-clazz-select>
+        </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">角色：</label>
+          <select class="form-control" name="role" type="text"
+                  [(ngModel)]="searchParameters.role">
+            <option value="">请选择</option>
+            <option value="1">超级管理员</option>
+            <option value="2">管理员</option>
+            <option value="3">普通用户</option>
+          </select>
+        </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">状态：</label>
+          <select class="form-control" name="state" type="text"
+                  [(ngModel)]="searchParameters.state">
+            <option value="">请选择</option>
+            <option value="1">已冻结</option>
+            <option value="2">已启用</option>
+          </select>
+        </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">用户名：</label>
+          <input name="username" type="text" class="form-control"  placeholder="用户名..."
+                 [(ngModel)]="searchParameters.username">
+        </div>
+        <div class="form-group mb-2">
+          <button class="btn btn-outline-success mb-2" type="submit">查询</button>
+        </div>
+      </form>
+    </div>
+    <br><br><br><br><br><br><br><br>
+  <div class="col" style="margin: -340px 0px 0px 1330px">
+    <button class="btn btn-primary mr-2" (click)="openAddDialog()"><i class="fas fa-plus"></i>新增</button>
   </div>
 </div>
 
-<table class="table table-striped mt-2">
+<table class="table table-striped mt-2" style="width: 1450px">
   <thead>
   <tr class="table-primary">
     <th>序号</th>
     <th>姓名</th>
     <th>用户名</th>
     <th>性别</th>
+    <th>学校</th>
     <th>班级</th>
     <th>角色</th>
     <th>状态</th>
@@ -19,27 +63,25 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let user of users; index as index">
+  <tr *ngFor="let user of pageData.content; index as index">
     <td>{{index + 1}}</td>
     <td>{{user.name}}</td>
     <td>{{user.username}}</td>
-    <td>{{user.sex}}</td>
-    <td>{{user.clazz_id}}</td>
+    <td>{{user.sex | sex}}</td>
+    <td>{{user.school.name}}</td>
+    <td>{{user.clazz.name}}</td>
     <td>{{user.role}}</td>
     <td>{{user.state}}</td>
     <td>
-      <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{user.id}}">
+      <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(user.id)">
         <i class="fas fa-pen"></i>编辑
       </a>
-<!--      <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, user.id)">-->
-<!--          <i class="far fa-trash-alt"></i>删除-->
-<!--        </span>-->
+      <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, user.id)">
+          <i class="far fa-trash-alt"></i>删除
+      </span>
     </td>
   </tr>
   </tbody>
 </table>
-<router-outlet></router-outlet>
-<ng-template #femaleBlock>
-  <td>女</td>
-</ng-template>
+  <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
 </div>

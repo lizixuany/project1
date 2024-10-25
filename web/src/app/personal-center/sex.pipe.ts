@@ -5,13 +5,13 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class SexPipe implements PipeTransform {
 
-  transform(value: boolean): string {
+  transform(value: number): string {
     if (value === undefined || value === null) {
       console.warn('接收到了空的值');
       return '-';
     }
 
-    if (value === true) {
+    if (value === 0) {
       return '男';
     } else {
       return '女';

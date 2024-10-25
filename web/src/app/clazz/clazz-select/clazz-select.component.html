@@ -1,6 +1,6 @@
 <select class="form-control" [formControl]="clazzId">
   <option [ngValue]="null">所有班级</option>
-  <option *ngFor="let clazz of clazzes" [ngValue]="clazz.id">
+  <option *ngFor="let clazz of clazzs" [ngValue]="clazz.id">
     {{clazz.name}}
   </option>
 </select>
