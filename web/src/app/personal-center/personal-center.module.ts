@@ -7,12 +7,17 @@ import {ChangePasswordComponent} from './change-password/change-password.compone
 import {PersonalCenterRoutingModule} from './personal-center-routing.module';
 import {PersonalCenterComponent} from './personal-center.component';
 import {SexPipe} from './sex.pipe';
+import {RolePipe} from '../role.pipe';
+import {StatePipe} from '../state.pipe';
+
 
 @NgModule({
   declarations: [
     ChangePasswordComponent,
     PersonalCenterComponent,
-    SexPipe
+    SexPipe,
+    RolePipe,
+    StatePipe
   ],
   imports: [
     BrowserModule,
@@ -22,7 +27,7 @@ import {SexPipe} from './sex.pipe';
     FormsModule,
     RouterModule
   ],
-  exports: [SexPipe],
+  exports: [SexPipe, RolePipe, StatePipe],
   providers: [],
   bootstrap: [PersonalCenterComponent]
 })

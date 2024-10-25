@@ -70,8 +70,8 @@
     <td>{{user.sex | sex}}</td>
     <td>{{user.school.name}}</td>
     <td>{{user.clazz.name}}</td>
-    <td>{{user.role}}</td>
-    <td>{{user.state}}</td>
+    <td>{{user.role | role}}</td>
+    <td>{{user.state | state}}</td>
     <td>
       <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(user.id)">
         <i class="fas fa-pen"></i>编辑
