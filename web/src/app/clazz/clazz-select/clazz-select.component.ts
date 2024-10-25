@@ -26,6 +26,7 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
 
   @Input()
   set id(id: number) {
+
     // 使用接收到的id设置clazzId
     this.clazzId.setValue(id);
     console.log(this.clazzId);
@@ -40,7 +41,6 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit(): void {
-    // 获取所有班级
     console.log('班级选择组件初始化');
     // 关注clazzId
     this.clazzId.valueChanges
