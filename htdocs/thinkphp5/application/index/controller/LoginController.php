@@ -19,7 +19,7 @@ class LoginController extends Controller
             $password = $data['password'];
             
             // 获取相应账号的数据
-            $user = User::where('username', $username)->find();
+            $user = User::with('clazz')->where('username', $username)->find();
 
             // 验证用户是否存在及密码是否正确
             if ($user && $password == $user->password) {

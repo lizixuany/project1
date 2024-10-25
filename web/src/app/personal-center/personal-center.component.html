@@ -28,7 +28,7 @@
       班级：
     </div>
     <div class="col-8">
-      {{me.clazz}}
+      {{me.clazz.name}}
     </div>
   </div>
   <div class="row">
@@ -36,7 +36,7 @@
       角色：
     </div>
     <div class="col-8">
-      {{me.role}}
+      {{me.role | role}}
     </div>
   </div>
   <div class="row">
@@ -44,7 +44,7 @@
       状态：
     </div>
     <div class="col-8">
-      {{me.state}}
+      {{me.state | state}}
     </div>
   </div>
   <div class="row">
