@@ -1,0 +1,7 @@
+input, select {
+  width: 100%;
+  height: calc(2em + 10px); /* 2em 的字体大小加上 10px 的边框 */
+  padding: 0.5em; /* 0.5em 的内边距 */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

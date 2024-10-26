@@ -170,4 +170,27 @@ class CourseController extends Controller
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
+    public function getClazzBySchoolId() {
+        $request = Request::instance();
+        $schoolId = $request->param('schoolId');
+
+        // 使用 school_id 获取班级列表
+        $clazzes = Clazz::where('school_id', $schoolId)->select();
+        return json($clazzes);
+    }
+
+    public function getTermsBySchoolId() {
+        $request = Request::instance();
+        $schoolId = $request->param('schoolId');
+
+        // 检查 school_id 是否存在
+        if (empty($schoolId)) {
+            return json(['error' => 'School_id is required'], 400);
+        }
+
+        // 使用 school_id 获取学期列表
+        $terms = Term::where('school_id', $schoolId)->select();
+        return json($terms);
+    }
 }
