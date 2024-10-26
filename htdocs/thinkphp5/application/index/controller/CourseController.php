@@ -15,9 +15,42 @@ class CourseController extends Controller
         try {
             $page = $this->request->get('page', 1);
             $size = $this->request->get('size', 10);
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
 
-            $list = Course::with(['term', 'clazz', 'school'])->page($page, $size)->select();
-            $total = Course::with(['term', 'clazz', 'school'])->page($page, $size)->count();
+            // 定制查询信息
+            $condition = [];
+
+            // 获取学校ID
+            $school_id = $data['school'];
+
+            if ($school_id !== null && $school_id !== '') {
+                $condition['school.id'] = $school_id;
+            }
+
+            // 获取班级ID
+            $clazz_id = $data['clazz'];
+
+            if ($clazz_id !== null && $clazz_id !== '') {
+                $condition['clazz.id'] = $clazz_id;
+            }
+
+            // 获取学期ID
+            $term_id = $data['term'];
+
+            if ($term_id !== null && $term_id !== '') {
+                $condition['term.id'] = $term_id;
+            }
+
+            // 获取课程名称
+            $name = $data['name'];
+
+            if ($name !== null && $name !== '') {
+                $condition['course.name'] = ['like', '%' . $name . '%'];
+            }
+
+            $list = Course::with(['term', 'clazz', 'school'])->where($condition)->page($page, $size)->select();
+            $total = Course::with(['term', 'clazz', 'school'])->where($condition)->page($page, $size)->count();
 
             $pageData = [
                 'content' => $list,
