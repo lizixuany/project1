@@ -5,7 +5,7 @@ import {Clazz} from '../../entity/clazz';
 import {HttpClient} from '@angular/common/http';
 import {Course} from '../../entity/course';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {SchoolService} from '../../service/school.service';
+import {CourseService} from '../../service/course.service';
 
 @Component({
   selector: 'app-add',
@@ -29,7 +29,7 @@ export class AddComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               public dialogRef: MatDialogRef<AddComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private schoolService: SchoolService) { }
+              private courseService: CourseService) { }
 
   ngOnInit() {
     // 获取所有学校
@@ -56,7 +56,7 @@ export class AddComponent implements OnInit {
   }
 
   getClazzBySchoolId(schoolId: number) {
-    this.httpClient.get<Array<Clazz>>(`api/course/getClazzBySchoolId?schoolId=${schoolId}`)
+    this.courseService.getClazzBySchoolId(schoolId)
       .subscribe(clazzes => {
         this.clazzes = clazzes;
       }, error => {
@@ -65,11 +65,11 @@ export class AddComponent implements OnInit {
   }
 
   getTermsBySchoolId(schoolId: number) {
-    this.httpClient.get<Term[]>(`api/course/getTermsBySchoolId?schoolId=${schoolId}`)
+    this.courseService.getTermsBySchoolId(schoolId)
       .subscribe(terms => {
         this.terms = terms;
       }, error => {
-        console.error('获取班级失败', error);
+        console.error('获取学期失败', error);
       });
   }
 
@@ -78,13 +78,5 @@ export class AddComponent implements OnInit {
     console.log(this.course.school_id);
     this.getClazzBySchoolId(this.course.school_id);
     this.getTermsBySchoolId(this.course.school_id);
-  }
-
-  onClazzChange(clazzId: number) {
-    this.course.clazz_id = clazzId;
-  }
-
-  onTermChange(termId: number) {
-    this.course.term_id = termId;
   }
 }
