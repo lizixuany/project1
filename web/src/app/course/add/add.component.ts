@@ -5,6 +5,7 @@ import {Clazz} from '../../entity/clazz';
 import {HttpClient} from '@angular/common/http';
 import {Course} from '../../entity/course';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {SchoolService} from '../../service/school.service';
 
 @Component({
   selector: 'app-add',
@@ -27,18 +28,13 @@ export class AddComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialogRef: MatDialogRef<AddComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private schoolService: SchoolService) { }
 
   ngOnInit() {
     // 获取所有学校
     this.httpClient.get<Array<School>>('api/school')
       .subscribe(schools => this.schools = schools);
-    // 获取所有班级
-    this.httpClient.get<Array<Clazz>>('api/clazz')
-      .subscribe(clazzes => this.clazzes = clazzes);
-    // 获取所有学期
-    this.httpClient.get<Array<Term>>('api/term')
-      .subscribe(terms => this.terms = terms);
   }
 
   onSubmit(): void {
@@ -59,20 +55,36 @@ export class AddComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // tslint:disable-next-line:variable-name
-  onSchoolChange(school_id: number): void {
-    console.log('school_id', school_id);
-    this.course.school_id = school_id;
-  }
-  // tslint:disable-next-line:variable-name
-  onClazzChange(clazz_id: number): void {
-    console.log('clazz_id', clazz_id);
-    this.course.clazz_id = clazz_id;
-  }
-  // tslint:disable-next-line:variable-name
-  onTermChange(term_id: number): void {
-    console.log('term_id', term_id);
-    this.course.term_id = term_id;
+  getClazzBySchoolId(schoolId: number) {
+    this.httpClient.get<Array<Clazz>>(`api/course/getClazzBySchoolId?schoolId=${schoolId}`)
+      .subscribe(clazzes => {
+        this.clazzes = clazzes;
+      }, error => {
+        console.error('获取班级失败', error);
+      });
   }
 
+  getTermsBySchoolId(schoolId: number) {
+    this.httpClient.get<Term[]>(`api/course/getTermsBySchoolId?schoolId=${schoolId}`)
+      .subscribe(terms => {
+        this.terms = terms;
+      }, error => {
+        console.error('获取班级失败', error);
+      });
+  }
+
+  onSchoolChange(schoolId: number) {
+    this.course.school_id = schoolId;
+    console.log(this.course.school_id);
+    this.getClazzBySchoolId(this.course.school_id);
+    this.getTermsBySchoolId(this.course.school_id);
+  }
+
+  onClazzChange(clazzId: number) {
+    this.course.clazz_id = clazzId;
+  }
+
+  onTermChange(termId: number) {
+    this.course.term_id = termId;
+  }
 }
