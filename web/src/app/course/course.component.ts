@@ -7,6 +7,8 @@ import {AddComponent} from './add/add.component';
 import {Confirm} from 'notiflix';
 import {EditComponent} from './edit/edit.component';
 import {SharedService} from '../service/shared.service';
+import {FormGroup, NgForm} from '@angular/forms';
+import {Clazz} from '../entity/clazz';
 
 @Component({
   selector: 'app-course',
@@ -19,6 +21,13 @@ export class CourseComponent implements OnInit {
   // 每页默认三条
   size = 3;
   // 初始化一个有0条数据的
+
+  searchParameters = {
+    school: null as unknown as number,
+    clazz: null as unknown as number,
+    term: null as unknown as number,
+    name: ''
+  };
 
   pageData = new Page<Course>({
     content: [],
@@ -44,7 +53,7 @@ export class CourseComponent implements OnInit {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());
-    this.httpClient.get<Page<Course>>('/api/course', {params: httpParams})
+    this.httpClient.post<Page<Course>>('/api/course', this.searchParameters, {params: httpParams})
       .subscribe(pageData => {
           // 在请求数据之后设置当前页
           this.page = page;
@@ -85,6 +94,34 @@ export class CourseComponent implements OnInit {
       width: '900px',
       height: '400px',
     });
+  }
+
+  onSubmit(form: NgForm, page = 0) {
+    console.log('调用了search');
+    if (form.valid) {
+      const school = form.value.school_id;
+      const clazz = form.value.clazz_id;
+      const term = form.value.term_id;
+      const name = form.value.name;
+      console.log('提交的查询参数:', { school, clazz, term, name });
+      const httpParams = new HttpParams()
+        .append('page', this.page.toString())
+        .append('size', this.size.toString());
+      this.httpClient.post<Page<Course>>('/api/course', this.searchParameters, { params: httpParams })
+        .subscribe(
+        pageData => {
+          // 在请求数据之后设置当前页
+          this.page = page;
+          console.log('course组件接收到查询返回数据，重新设置pageData');
+          console.log(pageData);
+          this.pageData = pageData;
+          this.loadByPage(page);
+        },
+        error => {
+          console.error('请求数据失败', error);
+        }
+      );
+    }
   }
 
 }

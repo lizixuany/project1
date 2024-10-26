@@ -6,7 +6,7 @@
         <div class="form-group mb-2">
           <label class="mr-2">学校名称：</label>
               <!-- 默认提示选项 -->
-              <app-school-select formControlName="school_id"></app-school-select>
+              <app-school-select name="school" id="school" [(ngModel)]="searchParameters.school"></app-school-select>
         </div>
         <div class="form-group mb-2">
             <label class="mr-2">班级名称：</label>

@@ -45,8 +45,6 @@ export class AppComponent implements OnInit {
   clazzs: Clazz[];
 
   constructor(private httpClient: HttpClient,
-              private schoolService: SchoolService,
-              private clazzService: ClazzService,
               private dialog: MatDialog,
               private sharedService: SharedService) {
 
