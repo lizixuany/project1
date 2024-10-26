@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {SharedService} from '../../service/shared.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {CourseService} from '../../service/course.service';
 
 @Component({
   selector: 'app-edit',
@@ -25,27 +26,14 @@ export class EditComponent implements OnInit {
     id: 1,
     name: '',
     week: 1,
-    school: {
-      id: 1,
-      name: ''
-    },
-    clazz: {
-      id: 1,
-      name: '',
-      school_id: 1
-    },
-    term: {
-      id: 1,
-      name: '',
-      school_id: 1,
-      start_time: new Date(),
-      end_time: new Date()
-    }
+    school_id: null as unknown as number,
+    clazz_id: null as unknown as number,
+    term_id: null as unknown as number
   };
   value = '';
-  School = new Array<School>();
-  Term = new Array<Term>();
-  Clazz = new Array<Clazz>();
+  schools = new Array<School>();
+  terms = new Array<Term>();
+  clazzes = new Array<Clazz>();
   /**
    * 表单组，用于存放多个formControl
    */
@@ -62,7 +50,8 @@ export class EditComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private sharedService: SharedService,
               public dialogRef: MatDialogRef<EditComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private courseService: CourseService) { }
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.params.id;
@@ -128,5 +117,30 @@ export class EditComponent implements OnInit {
   get school_id() {
     console.log('school_id');
     return this.formGroup.get('school_id');
+  }
+
+  getClazzBySchoolId(schoolId: number) {
+    this.courseService.getClazzBySchoolId(schoolId)
+      .subscribe(clazzes => {
+        this.clazzes = clazzes;
+      }, error => {
+        console.error('获取班级失败', error);
+      });
+  }
+
+  getTermsBySchoolId(schoolId: number) {
+    this.courseService.getTermsBySchoolId(schoolId)
+      .subscribe(terms => {
+        this.terms = terms;
+      }, error => {
+        console.error('获取学期失败', error);
+      });
+  }
+
+  onSchoolChange(schoolId: number) {
+    this.course.school_id = schoolId;
+    console.log(this.course.school_id);
+    this.getClazzBySchoolId(this.course.school_id);
+    this.getTermsBySchoolId(this.course.school_id);
   }
 }
