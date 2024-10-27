@@ -226,4 +226,13 @@ class UserController extends controller
         $user = User::get($id);
         return $user;
     }
+
+    public function getClazzBySchoolId() {
+        $request = Request::instance();
+        $schoolId = $request->param('schoolId');
+
+        // 使用 school_id 获取班级列表
+        $clazzes = Clazz::where('school_id', $schoolId)->select();
+        return json($clazzes);
+    }
 }

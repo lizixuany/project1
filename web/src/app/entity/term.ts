@@ -1,26 +1,27 @@
 import {School} from './school';
+import {Expose} from 'class-transformer';
 
 export class Term {
   id: number;
   name: string;
   school: School;
-  // tslint:disable-next-line:variable-name
-  start_time: Date;
-  // tslint:disable-next-line:variable-name
-  end_time: Date;
-
+  @Expose({name: 'start_time'})
+  startTime: Date;
+  @Expose({name: 'end_time'})
+  endTime: Date;
 
   constructor(data = {} as {
     id?: number;
     name?: string;
     school?: School;
-    start_time?: Date;
-    end_time?: Date;
+    startTime?: Date;
+    endTime?: Date;
   }) {
     this.id = data.id as number;
     this.name = data.name as string;
     this.school = data.school as School;
-    this.start_time = data.start_time as Date;
-    this.end_time = data.end_time as Date;
+    this.startTime = data.startTime as Date;
+    this.endTime = data.endTime as Date;
   }
+  // @ts-ignore
 }

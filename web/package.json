@@ -24,10 +24,12 @@
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@yunzhi/ng-mock-api": "0.0.3",
     "bootstrap": "^4.6.0",
+    "class-transformer": "^0.5.1",
     "hammerjs": "^2.0.8",
     "jquery": "^3.5.1",
     "notiflix": "^3.0.1",
     "popper.js": "^1.16.1",
+    "reflect-metadata": "^0.2.2",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
