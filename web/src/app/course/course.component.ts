@@ -8,7 +8,6 @@ import {Confirm} from 'notiflix';
 import {EditComponent} from './edit/edit.component';
 import {SharedService} from '../service/shared.service';
 import {FormGroup, NgForm} from '@angular/forms';
-import {Clazz} from '../entity/clazz';
 
 @Component({
   selector: 'app-course',

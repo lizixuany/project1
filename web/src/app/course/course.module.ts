@@ -13,13 +13,15 @@ import {SchoolSelectModule} from '../school/school-select/school-select.module';
 import {ClazzSelectModule} from '../clazz/clazz-select/clazz-select.module';
 import {TermSelectModule} from '../term/term-select/term-select.module';
 import {MatDialogModule} from '@angular/material/dialog';
+import {SoryPipe} from './sory.pipe';
 
 
 @NgModule({
   declarations: [
     EditComponent,
     AddComponent,
-    CourseComponent
+    CourseComponent,
+    SoryPipe
   ],
   entryComponents: [
     EditComponent,

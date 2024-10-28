@@ -54,19 +54,28 @@
     </div>
   </div>
   <div class="mb-3 row">
-    <label for="name" class="col-sm-2 col-form-label">上课时间</label>
+    <label class="col-sm-2 col-form-label">类别：</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" [(ngModel)]="course.week" name="week" id="week">
-      <small class="text-danger"
-             *ngIf="course.week === ''">
-        上课时间不能为空
-      </small>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" id="sory-bi"
+               name="sory"
+               [(ngModel)]="course.sory"
+               [value]="1">
+        <label class="form-check-label" for="sory-bi">必修</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" id="sory-option"
+               name="sory"
+               [(ngModel)]="course.sory"
+               [value]="0">
+        <label class="form-check-label" for="sory-option">女</label>
+      </div>
     </div>
   </div>
   <div class="mb-3 row" style="margin: 20px 0px 0px 0px">
     <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
       <button class="btn btn-primary" (click)="onSubmit()"
-              [disabled]="course.name === '' || course.week === '' || course.school_id === null || course.clazz_id === null || course.term_id === null">保存
+              [disabled]="course.name === '' || course.sory === null || course.school_id === null || course.clazz_id === null || course.term_id === null">保存
       </button>
     </div>
     <div class="col-sm-3 offset-sm-1">
