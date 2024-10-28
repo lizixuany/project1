@@ -38,8 +38,6 @@ export class ClazzComponent implements OnInit {
   school: any;
 
   constructor(private httpClient: HttpClient,
-              private schoolService: SchoolService,
-              private clazzService: ClazzService,
               private dialog: MatDialog,
               private sharedService: SharedService) {
 
@@ -100,7 +98,6 @@ export class ClazzComponent implements OnInit {
 
   openEditDialog(id: number): void {
     console.log('edit dialog');
-    console.log(id);
     this.sharedService.setId(id);
     this.dialog.open(EditComponent, {
       width: '1000px',

@@ -19,6 +19,7 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    console.log(this.token, 'token');
     if (this.token !== null) {
       console.log('设置token', this.token);
       request = request.clone({setHeaders: {'x-auth-token': this.token}});
@@ -29,6 +30,7 @@ export class XAuthTokenInterceptor implements HttpInterceptor {
       if (input instanceof HttpResponseBase) {
         const httpHeader = input.headers;
         const xAuthToken = httpHeader.get('x-auth-token');
+        console.log('token', xAuthToken);
         if (xAuthToken !== null) {
           this.setToken(xAuthToken);
         }

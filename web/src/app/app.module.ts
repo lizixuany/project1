@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {WelcomeComponent} from './welcome.component';
 import {IndexComponent} from './index/index.component';
 import {NavComponent} from './nav/nav.component';
@@ -17,6 +17,7 @@ import {SchoolSelectModule} from './school/school-select/school-select.module';
 import {ClazzSelectModule} from './clazz/clazz-select/clazz-select.module';
 import {PageModule} from './clazz/page/page.module';
 import {MatDialogModule} from '@angular/material/dialog';
+import {XAuthTokenInterceptor} from './x-auth-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import {MatDialogModule} from '@angular/material/dialog';
     PageModule,
     MatDialogModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: XAuthTokenInterceptor, multi: true}
+  ],
   exports: [
   ],
   bootstrap: [IndexComponent]

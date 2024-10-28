@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../entity/user';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {SharedService} from '../service/shared.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ChangePasswordComponent} from './change-password/change-password.component';
+import {stringify} from '@angular/compiler/src/util';
+import {UserService} from '../service/user.service';
+import {LoginService} from '../service/login.service';
 
 @Component({
   selector: 'app-personal-center',
@@ -16,16 +19,26 @@ export class PersonalCenterComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               private dialog: MatDialog,
-              private sharedService: SharedService) {
-    this.user = this.sharedService.getData();
+              private sharedService: SharedService,
+              private loginService: LoginService) {
+    this.me = this.sharedService.getData();
+    console.log(this.me.name);
+    console.log('getCurrentUser-constructor');
+    this.loginService.getCurrentUser().subscribe(user => {
+      this.me = user;
+    },
+      error => {
+        console.error('An error occurred:', error);
+        // 在这里处理错误，例如显示错误消息给用户
+      },
+      () => {
+        console.log('Completed');
+        // 在这里处理完成时的逻辑
+      }
+    );
   }
 
   ngOnInit(): void {
-    console.log(new Date().toTimeString(), '子组件进行了数据弹射', this.user);
-    console.log('请求当前登录用户成功');
-    this.me = this.user;
-    console.log(this.me);
-    console.log(this.user.name);
   }
 
   openDialog(): void {
