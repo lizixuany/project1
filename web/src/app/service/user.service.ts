@@ -31,6 +31,10 @@ export class UserService {
     return this.httpClient.post<User>('/change-password/getById', id);
   }
 
+  getData() {
+    return this.httpClient.get<User[]>('/api/user');
+  }
+
   changePassword(id: number, oldPassword: string, newPassword: string): Observable<User> {
     // 发送请求到后端API以更新密码
     const body = {
