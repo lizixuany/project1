@@ -25,7 +25,7 @@ export class EditComponent implements OnInit {
   course = {
     id: 1,
     name: '',
-    week: 1,
+    sory: 0,
     school_id: null as unknown as number,
     clazz_id: null as unknown as number,
     term_id: null as unknown as number
@@ -40,7 +40,7 @@ export class EditComponent implements OnInit {
   formGroup = new FormGroup({
     id: new FormControl(null, Validators.required),
     name: this.nameFormControl,
-    week: this.weekFormControl,
+    sory: new FormControl(null, Validators.required),
     school_id: new FormControl(null, Validators.required),
     term_id: new FormControl(null, Validators.required),
     clazz_id: new FormControl(null, Validators.required)
@@ -91,7 +91,6 @@ export class EditComponent implements OnInit {
     const course = new Course({
       id: courseId,
       name,
-      week,
       school: new School({id: schoolId}),
       clazz: new Clazz({id: clazzId}),
       term: new Term({id: termId})

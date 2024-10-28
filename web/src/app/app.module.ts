@@ -16,7 +16,6 @@ import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
 import {SchoolSelectModule} from './school/school-select/school-select.module';
 import {ClazzSelectModule} from './clazz/clazz-select/clazz-select.module';
-import {PageModule} from './clazz/page/page.module';
 import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({

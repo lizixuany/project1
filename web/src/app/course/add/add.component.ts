@@ -19,7 +19,7 @@ export class AddComponent implements OnInit {
     school_id: null as unknown as number,
     term_id: null as unknown as number,
     clazz_id: null as unknown as number,
-    week: ''
+    sory: 1,
   };
   value = '';
   schools = new Array<School>();
@@ -40,7 +40,7 @@ export class AddComponent implements OnInit {
   onSubmit(): void {
     const newCourse = new Course({
       name: this.course.name,
-      week: this.course.week,
+      sory: this.course.sory,
       school: new School({id: this.course.school_id}),
       clazz: new Clazz({id: this.course.clazz_id}),
       term: new Term({id: this.course.term_id})

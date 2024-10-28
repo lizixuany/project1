@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {User} from '../entity/user';
 import {catchError} from 'rxjs/operators';
-import {Clazz} from "../entity/clazz";
+import {Clazz} from '../entity/clazz';
 
 @Injectable({
   providedIn: 'root'
