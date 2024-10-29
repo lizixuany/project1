@@ -1,12 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {Clazz} from '../../entity/clazz';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {School} from '../../entity/school';
 import {Term} from '../../entity/term';
 import {SharedService} from '../../service/shared.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {SweetAlertService} from '../../service/sweet-alert.service';
 
 @Component({
   selector: 'app-edit',
@@ -43,7 +43,7 @@ export class EditComponent implements OnInit {
   });
 
   constructor(private activatedRoute: ActivatedRoute,
-              private router: Router,
+              private sweetAlertService: SweetAlertService,
               private httpClient: HttpClient,
               private sharedService: SharedService,
               public dialogRef: MatDialogRef<EditComponent>,
@@ -104,7 +104,7 @@ export class EditComponent implements OnInit {
           // 更新成功后，导航回主列表页面
           try {
             this.dialogRef.close(term);
-            console.log('Navigation successful');
+            this.sweetAlertService.showEditSuccess('编辑成功!', 'success');
           } catch (err) {
             console.log('Navigation failed', err);
           }

@@ -6,6 +6,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {School} from '../../entity/school';
 import {SharedService} from '../../service/shared.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {SweetAlertService} from '../../service/sweet-alert.service';
 
 @Component({
   selector: 'app-edit',
@@ -32,7 +33,7 @@ export class EditComponent implements OnInit {
   });
 
   constructor(private activatedRoute: ActivatedRoute,
-              private router: Router,
+              private sweetAlertService: SweetAlertService,
               private httpClient: HttpClient,
               private sharedService: SharedService,
               public dialogRef: MatDialogRef<EditComponent>,
@@ -75,8 +76,10 @@ export class EditComponent implements OnInit {
     });
     console.log(school);
     this.httpClient.put<School>(`/api/school/update`, school)
-      .subscribe(
-        () => this.dialogRef.close(school),
+      .subscribe(() => {
+        this.dialogRef.close(school);
+        this.sweetAlertService.showEditSuccess('编辑成功!', 'success');
+        },
         error => console.log(error));
   }
 

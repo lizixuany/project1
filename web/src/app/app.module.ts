@@ -18,6 +18,7 @@ import {SchoolSelectModule} from './school/school-select/school-select.module';
 import {ClazzSelectModule} from './clazz/clazz-select/clazz-select.module';
 import {MatDialogModule} from '@angular/material/dialog';
 import {XAuthTokenInterceptor} from './x-auth-token.interceptor';
+import {SweetAlertService} from './service/sweet-alert.service';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {XAuthTokenInterceptor} from './x-auth-token.interceptor';
     MatDialogModule
   ],
   providers: [
+    SweetAlertService,
     {provide: HTTP_INTERCEPTORS, useClass: XAuthTokenInterceptor, multi: true}
   ],
   exports: [
