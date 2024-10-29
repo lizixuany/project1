@@ -3,8 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {School} from '../../entity/school';
 import {Clazz} from '../../entity/clazz';
 import {Router} from '@angular/router';
-import {FormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {SweetAlertService} from '../../service/sweet-alert.service';
 
 @Component({
   selector: 'app-add',
@@ -20,7 +20,7 @@ export class AddComponent implements OnInit {
   schools = new Array<School>();
 
   constructor(private httpClient: HttpClient,
-              private router: Router,
+              private sweetAlertService: SweetAlertService,
               public dialogRef: MatDialogRef<AddComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -38,7 +38,10 @@ export class AddComponent implements OnInit {
     });
     console.log(newClazz);
     this.httpClient.post('api/clazz/add', newClazz)
-      .subscribe(clazz => this.dialogRef.close(newClazz),
+      .subscribe(clazz => {
+        this.dialogRef.close(newClazz);
+        this.sweetAlertService.showAddSuccess('新增成功!', 'success');
+        },
         error => console.log('保存失败', error));
   }
 

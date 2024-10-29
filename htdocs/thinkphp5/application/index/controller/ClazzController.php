@@ -147,7 +147,12 @@ class ClazzController extends Controller
     }
 
     public static function getClazz() {
-        $list = Clazz::with('school')->select();
-        return $list;
+        $request = Request::instance();
+        $id = IndexController::getParamId($request);
+        if (!$id) {
+            return json(['success' => true, 'message' => 'id不存在']);
+        }
+        $clazz = Clazz::get($id);
+        return $clazz;
     }
 }

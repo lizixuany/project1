@@ -8,6 +8,7 @@ import {FormGroup, NgForm} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
+import {SweetAlertService} from '../service/sweet-alert.service';
 
 @Component({
   selector: 'app-school',
@@ -33,7 +34,8 @@ export class SchoolComponent implements OnInit {
   });
   constructor(private httpClient: HttpClient,
               private sharedService: SharedService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private sweetAlertService: SweetAlertService) { }
 
   form = new FormGroup({});
 
@@ -71,6 +73,7 @@ export class SchoolComponent implements OnInit {
       this.httpClient.delete(`/api/school/delete/${id}`)
         .subscribe(() => {
           console.log('删除成功');
+          this.sweetAlertService.showDeleteSuccess('删除成功', 'success');
           this.pageData.content.splice(index, 1);
         },
           error => console.log('删除失败', error));

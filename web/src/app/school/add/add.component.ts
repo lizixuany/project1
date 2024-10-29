@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {SweetAlertService} from '../../service/sweet-alert.service';
 
 @Component({
   selector: 'app-add',
@@ -14,7 +15,7 @@ export class AddComponent implements OnInit {
   };
 
   constructor(private httpClient: HttpClient,
-              private router: Router,
+              private sweetAlertService: SweetAlertService,
               public dialogRef: MatDialogRef<AddComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -28,6 +29,7 @@ export class AddComponent implements OnInit {
         console.log(response);
         if (response['status'] === 'success') {
           this.dialogRef.close(response);
+          this.sweetAlertService.showAddSuccess('新增成功!', 'success');
         } else {
           // 检查message字段是否存在于响应中
           const errorMessage = response.hasOwnProperty('message') ? response['message'] : '未知错误';

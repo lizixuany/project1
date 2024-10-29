@@ -1,10 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {User} from '../entity/user';
-import {School} from '../entity/school';
 import {Clazz} from '../entity/clazz';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {SweetAlertService} from '../service/sweet-alert.service';
 
 @Component({
   selector: 'app-add',
@@ -28,7 +27,7 @@ export class AddComponent implements OnInit {
   clazzs = new Array<Clazz>();
 
   constructor(private httpClient: HttpClient,
-              private router: Router,
+              private sweetAlertService: SweetAlertService,
               public dialogRef: MatDialogRef<AddComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.httpClient.get<Array<Clazz>>('api/clazz')
@@ -44,6 +43,7 @@ export class AddComponent implements OnInit {
       .subscribe((result) => {
         console.log('接收到返回数据', result);
         this.dialogRef.close(result);
+        this.sweetAlertService.showAddSuccess('新增成功!', 'success');
       }, (error) => {
         console.log('请求失败', error);
       });

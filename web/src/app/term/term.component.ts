@@ -7,7 +7,8 @@ import {FormGroup, NgForm} from '@angular/forms';
 import {SharedService} from '../service/shared.service';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog} from '@angular/material/dialog';
+import {SweetAlertService} from '../service/sweet-alert.service';
 
 @Component({
   selector: 'app-term',
@@ -39,7 +40,8 @@ export class TermComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               private sharedService: SharedService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private sweetAlertService: SweetAlertService) { }
 
   ngOnInit() {
     console.log('term组件调用ngOnInit()');
@@ -75,6 +77,7 @@ export class TermComponent implements OnInit {
         this.httpClient.delete(`/api/term/delete/${id}`)
           .subscribe(() => {
               console.log('删除成功');
+              this.sweetAlertService.showDeleteSuccess('删除成功！', 'success');
               this.pageData.content.splice(index, 1);
           },
           error => console.log('删除失败', error));

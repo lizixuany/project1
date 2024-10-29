@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Page} from './entity/page';
 import {User} from './entity/user';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {SchoolService} from './service/school.service';
-import {ClazzService} from './service/clazz.service';
 import {FormGroup, NgForm} from '@angular/forms';
 import {SharedService} from './service/shared.service';
 import {Confirm} from 'notiflix';
@@ -11,8 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
 import {Clazz} from './entity/clazz';
-import {Observable} from 'rxjs';
-import {NgModule} from '@angular/core';
+import {SweetAlertService} from './service/sweet-alert.service';
 
 @Component({
   selector: 'app-root',
@@ -45,10 +42,9 @@ export class AppComponent implements OnInit {
   clazzs: Clazz[];
 
   constructor(private httpClient: HttpClient,
-              private schoolService: SchoolService,
-              private clazzService: ClazzService,
               private dialog: MatDialog,
-              private sharedService: SharedService) {
+              private sharedService: SharedService,
+              private sweetAlertService: SweetAlertService) {
 
   }
 
@@ -98,6 +94,7 @@ export class AppComponent implements OnInit {
         this.httpClient.delete(`/api/user/delete/${id}`)
           .subscribe(() => {
               console.log('删除成功');
+              this.sweetAlertService.showDeleteSuccess('删除成功!', 'success');
               this.pageData.content.splice(index, 1);
             },
             error => console.log('删除失败', error));
