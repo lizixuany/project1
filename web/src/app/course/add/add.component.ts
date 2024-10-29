@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {Course} from '../../entity/course';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {CourseService} from '../../service/course.service';
+import {SweetAlertService} from '../../service/sweet-alert.service';
 
 @Component({
   selector: 'app-add',
@@ -43,6 +44,7 @@ export class AddComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialogRef: MatDialogRef<AddComponent>,
+              private sweetAlertService: SweetAlertService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private courseService: CourseService) { }
 
@@ -66,7 +68,10 @@ export class AddComponent implements OnInit {
     console.log(newCourse.sory);
     console.log(newCourse);
     this.httpClient.post(this.url, newCourse)
-      .subscribe(clazz => this.dialogRef.close(newCourse),
+      .subscribe(clazz => {
+        this.dialogRef.close(newCourse);
+        this.sweetAlertService.showAddSuccess('新增成功！', 'success');
+        },
         error => console.log('保存失败', error));
   }
 

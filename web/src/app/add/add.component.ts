@@ -5,6 +5,7 @@ import {Clazz} from '../entity/clazz';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {UserService} from '../service/user.service';
+import {School} from '../entity/school';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class AddComponent implements OnInit {
     username: '',
     password: '',
     sex: 1,
-    role: 1,
+    role: 3,
     // tslint:disable-next-line:variable-name
     clazz_id: null as unknown as number,
     school_id: null as unknown as number,

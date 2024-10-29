@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../entity/user';
 import {SharedService} from '../service/shared.service';
 import { LoginService } from '../service/login.service';
+import {SweetAlertService} from '../service/sweet-alert.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               private ngZone: NgZone,
               private loginService: LoginService,
-              private sharedService: SharedService) {}
+              private sharedService: SharedService,
+              private sweetAlertService: SweetAlertService) {}
 
   ngOnInit(): void {
   }
@@ -52,6 +54,7 @@ export class LoginComponent implements OnInit {
           if (user) {
             this.sharedService.setData(user);
             this.beLogin.emit(user);
+            this.sweetAlertService.showLoginSuccess('登录成功!', 'success');
             // tslint:disable-next-line:no-shadowed-variable
             this.loginService.getCurrentUser().subscribe(user => {
               console.log('Current User:', user);
