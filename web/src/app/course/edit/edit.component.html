@@ -31,7 +31,7 @@
     <label class="col-sm-2 col-form-label">学期名称</label>
     <div class="col-sm-10">
       <select class="form-control" formControlName="term_id">
-        <option [ngValue]="null">所有班级</option>
+        <option [ngValue]="null">所有学期</option>
         <option *ngFor="let term of terms" [value]="term.id">
           {{term.name}}
         </option>
@@ -69,6 +69,28 @@
         <label class="form-check-label" for="sory-option">选修</label>
       </div>
     </div>
+  </div>
+  <div class="mb-3 row">
+    <mat-form-field>
+      <mat-label>选择周数</mat-label>
+      <mat-select formControlName="week" multiple>
+        <mat-option *ngFor="let week of weeks" [value]="week">{{ week }} 周</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>选择上课日</mat-label>
+      <mat-select formControlName="day" multiple>
+        <mat-option *ngFor="let day of days" [value]="day.value">{{ day.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>选择节数</mat-label>
+      <mat-select formControlName="period" multiple>
+        <mat-option *ngFor="let period of periods" [value]="period">第{{ period }} 大节</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div class="mb-3 row" style="margin: 40px 0px 0px 0px">
     <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">

@@ -81,16 +81,16 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>选择节数</mat-label>
-      <mat-select [(ngModel)]="course.period" name="course.period" multiple>
-        <mat-option *ngFor="let period of periods" [value]="period">第{{ period }} 大节</mat-option>
+      <mat-label>选择上课日</mat-label>
+      <mat-select [(ngModel)]="course.day" name="course.day" multiple>
+        <mat-option *ngFor="let day of days" [value]="day.value">{{ day.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>选择上课日</mat-label>
-      <mat-select [(ngModel)]="course.day" name="course.day" multiple>
-        <mat-option *ngFor="let day of days" [value]="day.value">{{ day.name }}</mat-option>
+      <mat-label>选择节数</mat-label>
+      <mat-select [(ngModel)]="course.period" name="course.period" multiple>
+        <mat-option *ngFor="let period of periods" [value]="period">第{{ period }} 大节</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
