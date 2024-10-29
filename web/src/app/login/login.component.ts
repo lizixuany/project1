@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
           if (user) {
             this.sharedService.setData(user);
             this.beLogin.emit(user);
-            this.sweetAlertService.showLoginSuccess('登录成功!', 'success');
+            this.sweetAlertService.showSuccess('登录成功!', 'success');
             // tslint:disable-next-line:no-shadowed-variable
             this.loginService.getCurrentUser().subscribe(user => {
               console.log('Current User:', user);

@@ -40,7 +40,7 @@ export class AddComponent implements OnInit {
     this.httpClient.post('api/clazz/add', newClazz)
       .subscribe(clazz => {
         this.dialogRef.close(newClazz);
-        this.sweetAlertService.showAddSuccess('新增成功!', 'success');
+        this.sweetAlertService.showSuccess('新增成功!', 'success');
         },
         error => console.log('保存失败', error));
   }

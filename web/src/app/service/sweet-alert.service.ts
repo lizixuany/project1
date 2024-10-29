@@ -16,27 +16,9 @@ export class SweetAlertService {
     });
   }
 
-  public showAddSuccess(title: string, icon: string): void {
+  public showSuccess(title: string,  icon: string): void {
     Swal.fire({
-      title: '新增成功!',
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500
-    });
-  }
-
-  public showEditSuccess(title: string, icon: string): void {
-    Swal.fire({
-      title: '编辑成功!',
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500
-    });
-  }
-
-  public showDeleteSuccess(title: string, icon: string): void {
-    Swal.fire({
-      title: '删除成功!',
+      title,
       icon: 'success',
       showConfirmButton: false,
       timer: 1500
@@ -60,15 +42,6 @@ export class SweetAlertService {
           icon: 'success'
         });
       }
-    });
-  }
-
-  public showLoginSuccess(title: string,  icon: string): void {
-    Swal.fire({
-      title,
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500
     });
   }
 
