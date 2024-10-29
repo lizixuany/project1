@@ -9,6 +9,7 @@ import {EditComponent} from './edit/edit.component';
 import {SharedService} from '../service/shared.service';
 import {FormGroup, NgForm} from '@angular/forms';
 import {CourseService} from '../service/course.service';
+import {SweetAlertService} from '../service/sweet-alert.service';
 
 @Component({
   selector: 'app-course',
@@ -38,6 +39,7 @@ export class CourseComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               private dialog: MatDialog,
               private sharedService: SharedService,
+              private sweetAlertService: SweetAlertService,
               private courseService: CourseService) { }
 
   ngOnInit() {
@@ -74,6 +76,7 @@ export class CourseComponent implements OnInit {
         this.httpClient.delete(`/api/course/delete/${id}`)
           .subscribe(() => {
               console.log('删除成功');
+              this.sweetAlertService.showDeleteSuccess('删除成功', 'success');
               this.pageData.content.splice(index, 1);
             },
             error => console.log('删除失败', error));

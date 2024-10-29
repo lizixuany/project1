@@ -32,6 +32,7 @@ export class EditComponent implements OnInit {
     school_id: null as unknown as number,
     clazz_id: null as unknown as number
   };
+  users = new User();
   value = '';
   schools = new Array<School>();
   clazzes = new Array<Clazz>();
@@ -78,6 +79,7 @@ export class EditComponent implements OnInit {
     this.httpClient.post<User>(`api/user/edit/${id}`, id)
       .subscribe(user => {
         console.log('接收到了user', user);
+        this.users = user;
         this.nameFormControl.patchValue(user[0].name);
         this.formGroup.get('username').setValue(user[0].username);
         this.formGroup.get('sex').setValue(user[0].sex);
@@ -90,9 +92,7 @@ export class EditComponent implements OnInit {
 
   onSubmit(): void {
     console.log('点击了提交按钮');
-    console.log(this.user[0].id);
-    console.log(this.formGroup.value);
-    const userId = this.formGroup.get('id').value;
+    const userId = this.users[0].id;
     const name = this.nameFormControl.value;
     const username = this.formGroup.get('username').value;
     const sex = this.formGroup.get('sex').value;

@@ -124,6 +124,7 @@ export class AppComponent implements OnInit {
 
   onSubmit(form: NgForm, page = 0) {
     console.log('调用了search');
+    console.log(this.searchParameters);
     if (form.valid) {
       const clazz = this.sharedService.getSomeValue();
       this.searchParameters.school = clazz;
@@ -132,7 +133,7 @@ export class AppComponent implements OnInit {
       console.log('提交的查询参数:', this.searchParameters);
       const httpParams = new HttpParams().append('page', this.page.toString())
         .append('size', this.size.toString());
-      this.httpClient.post<Page<User>>('/api/clazz', this.searchParameters, {params: httpParams}).subscribe(
+      this.httpClient.post<Page<User>>('/api/user', this.searchParameters, {params: httpParams}).subscribe(
         pageData => {
           // 在请求数据之后设置当前页
           this.page = page;

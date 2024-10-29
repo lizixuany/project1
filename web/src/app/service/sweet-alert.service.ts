@@ -63,6 +63,15 @@ export class SweetAlertService {
     });
   }
 
+  public showLoginSuccess(title: string,  icon: string): void {
+    Swal.fire({
+      title,
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+
   public showInfo(title: string, text: string, icon: string): void {
     Swal.fire({
       title: 'The Internet?',
