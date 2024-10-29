@@ -11,10 +11,10 @@ export class SoryPipe implements PipeTransform {
       return '-';
     }
 
-    if (value === 0) {
-      return '选修';
-    } else {
+    if (value === 1) {
       return '必修';
+    } else {
+      return '选修';
     }
   }
 }

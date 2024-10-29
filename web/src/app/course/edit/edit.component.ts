@@ -20,20 +20,33 @@ export class EditComponent implements OnInit {
    * 课表名称.
    */
   nameFormControl = new FormControl('', Validators.required);
-  weekFormControl = new FormControl(null, Validators.required);
 
   course = {
-    id: 1,
+    id: null as unknown as number,
     name: '',
-    sory: 0,
+    sory: null as unknown as number,
     school_id: null as unknown as number,
     clazz_id: null as unknown as number,
-    term_id: null as unknown as number
+    term_id: null as unknown as number,
+    week: [],
+    day: [],
+    period: [],
   };
   value = '';
-  schools = new Array<School>();
   terms = new Array<Term>();
   clazzes = new Array<Clazz>();
+  weeks: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
+  periods: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
+  days: {name: string, value: number}[] = [
+    {name: '周一', value: 1},
+    {name: '周二', value: 2},
+    {name: '周三', value: 3},
+    {name: '周四', value: 4},
+    {name: '周五', value: 5},
+    {name: '周六', value: 6},
+    {name: '周日', value: 7},
+  ];
+
   /**
    * 表单组，用于存放多个formControl
    */
@@ -43,7 +56,10 @@ export class EditComponent implements OnInit {
     sory: new FormControl(null, Validators.required),
     school_id: new FormControl(null, Validators.required),
     term_id: new FormControl(null, Validators.required),
-    clazz_id: new FormControl(null, Validators.required)
+    clazz_id: new FormControl(null, Validators.required),
+    week: new FormControl(null, Validators.required),
+    day: new FormControl(null, Validators.required),
+    period: new FormControl(null, Validators.required)
   });
 
   constructor(private httpClient: HttpClient,
@@ -72,10 +88,13 @@ export class EditComponent implements OnInit {
       .subscribe(course => {
         console.log('接收到了course', course);
         this.nameFormControl.patchValue(course[0].name);
-        this.weekFormControl.patchValue(course[0].week);
         this.formGroup.get('school_id').setValue(course[0].school_id);
         this.formGroup.get('term_id').setValue(course[0].term_id);
+        this.formGroup.get('sory').setValue(course[0].sory);
         this.formGroup.get('clazz_id').setValue(course[0].clazz_id);
+        this.formGroup.get('week').setValue(course[0].week);
+        this.formGroup.get('period').setValue(course[0].period);
+        this.formGroup.get('day').setValue(course[0].day);
       }, error => console.log(error));
   }
 
@@ -84,16 +103,23 @@ export class EditComponent implements OnInit {
     console.log(this.formGroup.value);
     const courseId = this.formGroup.get('id').value;
     const name = this.nameFormControl.value;
-    const week = this.weekFormControl.value;
     const clazzId = this.formGroup.get('clazz_id').value;
     const schoolId = this.formGroup.get('school_id').value;
+    const sory = this.formGroup.get('sory').value;
+    const week = this.formGroup.get('week').value;
+    const day = this.formGroup.get('day').value;
+    const period = this.formGroup.get('period').value;
     const termId = this.formGroup.get('term_id').value;
     const course = new Course({
       id: courseId,
       name,
       school: new School({id: schoolId}),
       clazz: new Clazz({id: clazzId}),
-      term: new Term({id: termId})
+      term: new Term({id: termId}),
+      week,
+      day,
+      period,
+      sory
     });
     console.log(course);
     this.httpClient.put<Course>(`/api/course/update`, course)

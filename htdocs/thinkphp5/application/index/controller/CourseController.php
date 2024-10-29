@@ -86,7 +86,7 @@ class CourseController extends Controller
     {
         $periodArray = json_decode($periods, true);
         return array_map(function($period) {
-            return "第" . $period . "节";
+            return "第" . $period . "大节";
         }, $periodArray);
     }
 
@@ -121,7 +121,7 @@ class CourseController extends Controller
         return $course;
     }
 
-    // 删除课表
+    // 新增呢个课表
     public function add() {
         try{
             $request = Request::instance()->getContent();
@@ -165,6 +165,7 @@ class CourseController extends Controller
             $course->clazz_id = $clazz['id'];
             $course->term_id = $term['id'];
             $course->name = $data['name'];
+            $course->sory = $data['sory'];
             $course->week = $data['week'];
             $course->day = $data['day'];
             $course->period = $data['period'];
@@ -185,6 +186,12 @@ class CourseController extends Controller
             $data = json_decode($request, true);
 
             $list = Course::with(['term', 'clazz', 'school'])->where('course.id', $data)->select();
+
+            foreach ($list as $course) {
+                $course['day'] = json_decode($course['day']); // 将数字转换为周几的字符串
+                $course['period'] = json_decode($course['period']); // 将数字转换为第几节课的字符串
+                $course['week'] = json_decode($course['week']); // 获取周数
+            }
 
             return json($list);
         } catch (Exception $e) {
@@ -226,6 +233,21 @@ class CourseController extends Controller
            if (!isset($term['id']) || empty($term['id'])){
                return json(['status' => 'error', 'message' => 'Term is required']);
            }
+           if (isset($data['week'])) {
+               $data['week'] = json_encode($data['week']);
+           } else {
+               $data['week'] = json_encode([]);
+           }
+           if (isset($data['day'])) {
+               $data['day'] = json_encode($data['day']);
+           } else {
+              $data['day'] = json_encode([]);
+           }
+           if (isset($data['period'])) {
+               $data['period'] = json_encode($data['period']);
+           } else {
+               $data['period'] = json_encode([]);
+           }
 
             // 创建课表对象并保存
             $course->name = $data['name'];
@@ -233,6 +255,10 @@ class CourseController extends Controller
             $course->school_id = $school['id'];
             $course->clazz_id = $clazz['id'];
             $course->term_id = $term['id'];
+            $course->sory = $data['sory'];
+            $course->week = $data['week'];
+            $course->day = $data['day'];
+            $course->period = $data['period'];
             $course->save();
 
             return json(['status' => 'success', 'id' => $course->id]);

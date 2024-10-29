@@ -20,9 +20,9 @@ export class AddComponent implements OnInit {
     term_id: null as unknown as number,
     clazz_id: null as unknown as number,
     sory: 1,
-    week: JSON,
-    day: JSON,
-    period: JSON,
+    week: [],
+    day: [],
+    period: [],
   };
   value = '';
   schools = new Array<School>();
@@ -63,6 +63,7 @@ export class AddComponent implements OnInit {
       clazz: new Clazz({id: this.course.clazz_id}),
       term: new Term({id: this.course.term_id})
     });
+    console.log(newCourse.sory);
     console.log(newCourse);
     this.httpClient.post(this.url, newCourse)
       .subscribe(clazz => this.dialogRef.close(newCourse),
