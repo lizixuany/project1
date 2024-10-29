@@ -6,9 +6,9 @@ export class Term {
   school: School;
   // tslint:disable-next-line:variable-name
   start_time: Date;
+  // @ts-ignore
   // tslint:disable-next-line:variable-name
   end_time: Date;
-
 
   constructor(data = {} as {
     id?: number;

@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import {Clazz} from '../entity/clazz';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SweetAlertService} from '../service/sweet-alert.service';
+import {UserService} from '../service/user.service';
+
 
 @Component({
   selector: 'app-add',
@@ -18,23 +20,26 @@ export class AddComponent implements OnInit {
     sex: 1,
     role: 1,
     // tslint:disable-next-line:variable-name
-    clazz_id: 1,
-    school_id: 1,
+    clazz_id: null as unknown as number,
+    school_id: null as unknown as number,
     state: 1,
     name: '',
   };
-
-  clazzs = new Array<Clazz>();
+  schools = new Array<School>();
+  clazzes = new Array<Clazz>();
 
   constructor(private httpClient: HttpClient,
               private sweetAlertService: SweetAlertService,
+              private router: Router,
+              private userService: UserService,
               public dialogRef: MatDialogRef<AddComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.httpClient.get<Array<Clazz>>('api/clazz')
-      .subscribe(clazzs => this.clazzs = clazzs);
   }
 
   ngOnInit(): void {
+    // 获取所有学校
+    this.httpClient.get<Array<School>>('api/school')
+      .subscribe(schools => this.schools = schools);
   }
 
   onSubmit(): void {
@@ -53,15 +58,18 @@ export class AddComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // tslint:disable-next-line:variable-name
-  onSchoolChange(school_id: number): void {
-    console.log('school_id', school_id);
-    this.user.school_id = school_id;
+  onSchoolChange(schoolId: number): void {
+    this.user.school_id = schoolId;
+    console.log(this.user.school_id);
+    this.getClazzBySchoolId(this.user.school_id);
   }
 
-  // tslint:disable-next-line:variable-name
-  onClazzChange(clazz_id: number): void {
-    console.log('clazz_id', clazz_id);
-    this.user.clazz_id = clazz_id;
+  getClazzBySchoolId(schoolId: number) {
+    this.userService.getClazzBySchoolId(schoolId)
+      .subscribe(clazzes => {
+        this.clazzes = clazzes;
+      }, error => {
+        console.error('获取班级失败', error);
+      });
   }
 }

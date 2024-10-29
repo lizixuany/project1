@@ -26,6 +26,10 @@ const routes: Routes = [
     loadChildren: () => import('./clazz/clazz.module').then(m => m.ClazzModule)
   },
   {
+    path: 'course',
+    loadChildren: () => import('./course/course.module').then(m => m.CourseModule)
+  },
+  {
     path: 'user',
     component: AppComponent
   },

@@ -11,17 +11,6 @@ export class TermService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getTerms(): Observable<any> {
-    return this.httpClient.get(this.baseUrl);
-  }
-
-  /**
-   * 获取学期
-   * @param id 学期ID
-   */
-  getById(id: number): Observable<Term> {
-    return this.httpClient.get<Term>('/api/term/edit/' + id.toString());
-  }
 
   /**
    * 更新学期

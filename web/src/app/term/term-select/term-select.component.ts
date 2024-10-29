@@ -1,31 +1,31 @@
 import {Component, EventEmitter, forwardRef, Input, OnInit, Output} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {School} from '../../entity/school';
+import {Term} from '../../entity/term';
 import {HttpClient} from '@angular/common/http';
 import {SharedService} from '../../service/shared.service';
 
 @Component({
-  selector: 'app-school-select',
-  templateUrl: './school-select.component.html',
-  styleUrls: ['./school-select.component.css'],
+  selector: 'app-term-select',
+  templateUrl: './term-select.component.html',
+  styleUrls: ['./term-select.component.css'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR, multi: true,
       useExisting: forwardRef(() => {
-        return SchoolSelectComponent;
+        return TermSelectComponent;
       })
     }
   ]
 })
-export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
-  schools = new Array<School>();
-  schoolId = new FormControl();
+export class TermSelectComponent implements OnInit, ControlValueAccessor {
+  terms = new Array<Term>();
+  termId = new FormControl();
 
   @Input()
   set id(id: number) {
-    // 使用接收到的id设置schoolId
-    this.schoolId.setValue(id);
-    console.log(this.schoolId);
+    // 使用接收到的id设置termId
+    this.termId.setValue(id);
+    console.log(this.termId);
   }
 
   @Output()
@@ -35,24 +35,24 @@ export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
               private sharedService: SharedService) { }
 
   ngOnInit() {
-    console.log('学校选择组件初始化');
-    // 关注schoolId
-    this.schoolId.valueChanges
+    console.log('学期选择组件初始化');
+    // 关注termId
+    this.termId.valueChanges
       .subscribe((data: number) => {
           this.beChange.emit(data);
           this.sharedService.setSomeValue(data);
         }
       );
     // 获取所有学校
-    this.httpClient.get<{ content: School[] }>('api/school/')
+    this.httpClient.get<{ content: Term[] }>('api/term/')
       .subscribe(
         (response) => {
-          this.schools = response.content;
+          this.terms = response.content;
         });
   }
 
   registerOnChange(fn: (data: number) => void): void {
-    this.schoolId.valueChanges
+    this.termId.valueChanges
       .subscribe(data => fn(data));
   }
 
@@ -61,6 +61,6 @@ export class SchoolSelectComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(obj: number): void {
-    this.schoolId.setValue(obj);
+    this.termId.setValue(obj);
   }
 }

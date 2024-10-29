@@ -9,6 +9,7 @@ import {SharedService} from '../service/shared.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {User} from '../entity/user';
 import {SweetAlertService} from '../service/sweet-alert.service';
+import {UserService} from '../service/user.service';
 
 @Component({
   selector: 'app-edit',
@@ -26,20 +27,14 @@ export class EditComponent implements OnInit {
     name: '',
     username: '',
     sex: 0,
-    school: {
-      id: 1,
-      name: ''
-    },
-    clazz: {
-      id: 1,
-      name: '',
-    },
     role: 0,
-    state: 0
+    state: 0,
+    school_id: null as unknown as number,
+    clazz_id: null as unknown as number
   };
   value = '';
-  School = new Array<School>();
-  Clazz = new Array<Clazz>();
+  schools = new Array<School>();
+  clazzes = new Array<Clazz>();
   /**
    * 表单组，用于存放多个formControl
    */
@@ -60,6 +55,7 @@ export class EditComponent implements OnInit {
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
               public dialogRef: MatDialogRef<EditComponent>,
+              private userService: UserService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
@@ -82,7 +78,6 @@ export class EditComponent implements OnInit {
     this.httpClient.post<User>(`api/user/edit/${id}`, id)
       .subscribe(user => {
         console.log('接收到了user', user);
-        this.user = user;
         this.nameFormControl.patchValue(user[0].name);
         this.formGroup.get('username').setValue(user[0].username);
         this.formGroup.get('sex').setValue(user[0].sex);
@@ -91,16 +86,6 @@ export class EditComponent implements OnInit {
         this.formGroup.get('role').setValue(user[0].role);
         this.formGroup.get('state').setValue(user[0].state);
       }, error => console.log(error));
-  }
-
-  onSchoolChange($event: number): void {
-    console.log('接收到了选择的schoolId', $event);
-    this.formGroup.get('school_id').setValue($event);
-  }
-
-  onClazzChange($event: number): void {
-    console.log('接收到了选择的clazzId', $event);
-    this.formGroup.get('clazz_id').setValue($event);
   }
 
   onSubmit(): void {
@@ -146,5 +131,20 @@ export class EditComponent implements OnInit {
   get school_id() {
     console.log('school_id');
     return this.formGroup.get('school_id');
+  }
+
+  getClazzBySchoolId(schoolId: number) {
+    this.userService.getClazzBySchoolId(schoolId)
+      .subscribe(clazzes => {
+        this.clazzes = clazzes;
+      }, error => {
+        console.error('获取班级失败', error);
+      });
+  }
+
+  onSchoolChange(schoolId: number) {
+    this.user.school_id = schoolId;
+    console.log(this.user.school_id);
+    this.getClazzBySchoolId(this.user.school_id);
   }
 }

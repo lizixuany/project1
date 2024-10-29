@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {User} from '../entity/user';
 import {catchError} from 'rxjs/operators';
+import {Clazz} from '../entity/clazz';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,9 @@ export class UserService {
     // 处理错误，例如显示错误消息
     console.error('An error occurred:', error);
     return Observable.throw(error.message || 'Server error');
+  }
+
+  getClazzBySchoolId(schoolId: number): Observable<Array<Clazz>> {
+    return this.httpClient.get<Array<Clazz>>(`api/user/getClazzBySchoolId?schoolId=${schoolId}`);
   }
 }

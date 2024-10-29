@@ -1,0 +1,75 @@
+<div class="container-md main">
+  <div class="row">
+    <div class="col-md-8">
+      <form  class="form-inline d-flex justify-content-between"
+            (ngSubmit)="onSubmit(searchForm)" #searchForm="ngForm">
+        <div class="form-group mb-2">
+          <label class="mr-2">学校：</label>
+          <!-- 默认提示选项 -->
+          <app-school-select name="school" id="school" [(ngModel)]="searchParameters.school"></app-school-select>
+        </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">班级：</label>
+          <!-- 默认提示选项 -->
+          <app-clazz-select name="clazz" id="clazz" [(ngModel)]="searchParameters.clazz"></app-clazz-select>
+        </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">学期：</label>
+          <!-- 默认提示选项 -->
+          <app-term-select name="term" id="term" [(ngModel)]="searchParameters.term"></app-term-select>
+        </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">课程：</label>
+          <input name="name" type="text" class="form-control" style="width: 100px" placeholder="课程名称..."
+                 [(ngModel)]="searchParameters.name">
+        </div>
+        <div class="form-group mb-2">
+          <button class="btn btn-outline-success mb-2" type="submit">查询</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4 text-right">
+      <a class="btn btn-primary mb-2" (click)="openAddDialog()"><i class="fas fa-plus"></i>新增</a>
+    </div>
+  </div>
+
+  <br>
+  <table class="table table-striped">
+    <thead>
+    <tr class="table-primary">
+      <th>序号</th>
+      <th>学校名称</th>
+      <th>班级名称</th>
+      <th>学期</th>
+      <th>课程名称</th>
+      <th>类别</th>
+      <th>上课周数</th>
+      <th>周几上课</th>
+      <th>第几节课</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let course of pageData.content; index as i">
+      <td>{{ i+1 }}</td>
+      <td>{{ course.school.name }}</td>
+      <td>{{ course.clazz.name }}</td>
+      <td>{{ course.term.name }}</td>
+      <td>{{ course.name }}</td>
+      <td>{{ course.sory | sory}}</td>
+      <td>{{ course.week }}</td>
+      <td>{{ course.day }}</td>
+      <td>{{ course.period }}</td>
+      <td>
+        <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(course.id)">
+          <i class="fas fa-pen"></i>编辑
+        </a>
+        <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, course.id)">
+            <i class="far fa-trash-alt"></i>删除
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
+</div>
