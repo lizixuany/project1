@@ -104,7 +104,7 @@ export class EditComponent implements OnInit {
           // 更新成功后，导航回主列表页面
           try {
             this.dialogRef.close(term);
-            this.sweetAlertService.showEditSuccess('编辑成功!', 'success');
+            this.sweetAlertService.showSuccess('编辑成功!', 'success');
           } catch (err) {
             console.log('Navigation failed', err);
           }

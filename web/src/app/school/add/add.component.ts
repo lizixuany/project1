@@ -29,7 +29,7 @@ export class AddComponent implements OnInit {
         console.log(response);
         if (response['status'] === 'success') {
           this.dialogRef.close(response);
-          this.sweetAlertService.showAddSuccess('新增成功!', 'success');
+          this.sweetAlertService.showSuccess('新增成功!', 'success');
         } else {
           // 检查message字段是否存在于响应中
           const errorMessage = response.hasOwnProperty('message') ? response['message'] : '未知错误';

@@ -94,7 +94,7 @@ export class AppComponent implements OnInit {
         this.httpClient.delete(`/api/user/delete/${id}`)
           .subscribe(() => {
               console.log('删除成功');
-              this.sweetAlertService.showDeleteSuccess('删除成功!', 'success');
+              this.sweetAlertService.showSuccess('删除成功!', 'success');
               this.pageData.content.splice(index, 1);
             },
             error => console.log('删除失败', error));

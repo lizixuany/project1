@@ -49,7 +49,7 @@ export class AddComponent implements OnInit {
       .subscribe((result) => {
         console.log('接收到返回数据', result);
         this.dialogRef.close(result);
-        this.sweetAlertService.showAddSuccess('新增成功!', 'success');
+        this.sweetAlertService.showSuccess('新增成功!', 'success');
       }, (error) => {
         console.log('请求失败', error);
       });
