@@ -20,11 +20,26 @@ export class AddComponent implements OnInit {
     term_id: null as unknown as number,
     clazz_id: null as unknown as number,
     sory: 1,
+    week: JSON,
+    day: JSON,
+    period: JSON,
   };
   value = '';
   schools = new Array<School>();
   terms = new Array<Term>();
   clazzes = new Array<Clazz>();
+
+  weeks: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
+  periods: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
+  days: {name: string, value: number}[] = [
+    {name: '周一', value: 1},
+    {name: '周二', value: 2},
+    {name: '周三', value: 3},
+    {name: '周四', value: 4},
+    {name: '周五', value: 5},
+    {name: '周六', value: 6},
+    {name: '周日', value: 7},
+  ];
 
   constructor(private httpClient: HttpClient,
               public dialogRef: MatDialogRef<AddComponent>,
@@ -41,6 +56,9 @@ export class AddComponent implements OnInit {
     const newCourse = new Course({
       name: this.course.name,
       sory: this.course.sory,
+      week: this.course.week,
+      day: this.course.day,
+      period: this.course.period,
       school: new School({id: this.course.school_id}),
       clazz: new Clazz({id: this.course.clazz_id}),
       term: new Term({id: this.course.term_id})
