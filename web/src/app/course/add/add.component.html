@@ -68,9 +68,31 @@
                name="sory"
                [(ngModel)]="course.sory"
                [value]="0">
-        <label class="form-check-label" for="sory-option">女</label>
+        <label class="form-check-label" for="sory-option">选修</label>
       </div>
     </div>
+  </div>
+  <div class="mb-3 row">
+    <mat-form-field>
+      <mat-label>选择周数</mat-label>
+      <mat-select [(ngModel)]="course.week" name="course.week" multiple>
+        <mat-option *ngFor="let week of weeks" [value]="week">{{ week }} 周</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>选择节数</mat-label>
+      <mat-select [(ngModel)]="course.period" name="course.period" multiple>
+        <mat-option *ngFor="let period of periods" [value]="period">第{{ period }} 大节</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>选择上课日</mat-label>
+      <mat-select [(ngModel)]="course.day" name="course.day" multiple>
+        <mat-option *ngFor="let day of days" [value]="day.value">{{ day.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div class="mb-3 row" style="margin: 20px 0px 0px 0px">
     <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">

@@ -8,6 +8,7 @@ import {Confirm} from 'notiflix';
 import {EditComponent} from './edit/edit.component';
 import {SharedService} from '../service/shared.service';
 import {FormGroup, NgForm} from '@angular/forms';
+import {CourseService} from '../service/course.service';
 
 @Component({
   selector: 'app-course',
@@ -36,7 +37,8 @@ export class CourseComponent implements OnInit {
   });
   constructor(private httpClient: HttpClient,
               private dialog: MatDialog,
-              private sharedService: SharedService) { }
+              private sharedService: SharedService,
+              private courseService: CourseService) { }
 
   ngOnInit() {
     console.log('学期组件调用ngOnInit()');

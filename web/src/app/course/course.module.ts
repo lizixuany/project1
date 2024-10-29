@@ -14,6 +14,8 @@ import {ClazzSelectModule} from '../clazz/clazz-select/clazz-select.module';
 import {TermSelectModule} from '../term/term-select/term-select.module';
 import {MatDialogModule} from '@angular/material/dialog';
 import {SoryPipe} from './sory.pipe';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import {SoryPipe} from './sory.pipe';
     SchoolSelectModule,
     ClazzSelectModule,
     TermSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatInputModule,
+    MatSelectModule
   ],
   exports: [CourseComponent],
   bootstrap: [CourseComponent]

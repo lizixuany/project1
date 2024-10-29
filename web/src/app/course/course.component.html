@@ -43,6 +43,9 @@
       <th>学期</th>
       <th>课程名称</th>
       <th>类别</th>
+      <th>上课周数</th>
+      <th>周几上课</th>
+      <th>第几节课</th>
       <th>操作</th>
     </tr>
     </thead>
@@ -54,6 +57,9 @@
       <td>{{ course.term.name }}</td>
       <td>{{ course.name }}</td>
       <td>{{ course.sory | sory}}</td>
+      <td>{{ course.week }}</td>
+      <td>{{ course.day }}</td>
+      <td>{{ course.period }}</td>
       <td>
         <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(course.id)">
           <i class="fas fa-pen"></i>编辑
