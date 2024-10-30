@@ -11,8 +11,8 @@ export class SweetAlertService {
   public showError(title: string, text: string, icon: string): void {
     Swal.fire({
       icon: 'error',
-      title: 'Oops...',
-      text: 'Something went wrong!',
+      title,
+      text,
     });
   }
 
@@ -20,6 +20,15 @@ export class SweetAlertService {
     Swal.fire({
       title,
       icon: 'success',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+
+   public showLogoutWarning(title: string,  icon: string): void {
+    Swal.fire({
+      title,
+      icon: 'warning',
       showConfirmButton: false,
       timer: 1500
     });
@@ -45,10 +54,10 @@ export class SweetAlertService {
     });
   }
 
-  public showInfo(title: string, text: string, icon: string): void {
+  public showInfo(): void {
     Swal.fire({
-      title: 'The Internet?',
-      text: 'That thing is still around?',
+      title: '用户已冻结',
+      text: '请联系管理员解决',
       icon: 'question'
     });
   }

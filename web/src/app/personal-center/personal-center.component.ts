@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {User} from '../entity/user';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {SharedService} from '../service/shared.service';
-import {MatDialog} from '@angular/material/dialog';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
+import { SharedService } from '../service/shared.service';
+import { LoginService } from '../service/login.service';
+import {SweetAlertService} from '../service/sweet-alert.service';
 import {ChangePasswordComponent} from './change-password/change-password.component';
-import {stringify} from '@angular/compiler/src/util';
-import {UserService} from '../service/user.service';
-import {LoginService} from '../service/login.service';
+import {User} from '../entity/user';
 
 @Component({
   selector: 'app-personal-center',
@@ -15,30 +15,51 @@ import {LoginService} from '../service/login.service';
 })
 export class PersonalCenterComponent implements OnInit {
   me = new User();
-  user: User = new User();
+  beLogout = new EventEmitter<void>();
 
-  constructor(private httpClient: HttpClient,
-              private dialog: MatDialog,
-              private sharedService: SharedService,
-              private loginService: LoginService) {
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+    private sharedService: SharedService,
+    private loginService: LoginService,
+    private sweetAlertService: SweetAlertService,
+    private httpClient: HttpClient
+  ) {
     this.me = this.sharedService.getData();
     console.log(this.me.name);
     console.log('getCurrentUser-constructor');
-    this.loginService.getCurrentUser().subscribe(user => {
-      this.me = user;
-    },
-      error => {
-        console.error('An error occurred:', error);
-        // 在这里处理错误，例如显示错误消息给用户
+
+    this.loginService.getCurrentUser().subscribe(
+      user => {
+        this.me = user;
+        this.sharedService.setData(user);
       },
-      () => {
-        console.log('Completed');
-        // 在这里处理完成时的逻辑
+      error => {
+        if (error.error.error === '无效的token') {
+          this.handleInvalidToken();
+        }
       }
     );
   }
 
   ngOnInit(): void {
+  }
+
+  private handleInvalidToken(): void {
+    this.sweetAlertService.showLogoutWarning('登录失效', '');
+    setTimeout(() => {
+      window.sessionStorage.removeItem('login');
+      this.httpClient.post('/api/Login/logout', {}).subscribe(
+        () => {
+          console.log('logout');
+          this.beLogout.emit();
+          window.location.href = 'http://127.0.0.1:8088';
+        },
+        error => {
+          console.error('注销失败', error);
+        }
+      );
+    }, 1500);
   }
 
   openDialog(): void {

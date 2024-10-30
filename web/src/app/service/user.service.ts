@@ -42,10 +42,7 @@ export class UserService {
       oldPassword,
       newPassword
     };
-    return this.httpClient.post(this.apiUrl + '/ChangePassword', body)
-      .pipe(
-        catchError(this.handleError) // 处理HTTP请求错误
-      );
+    return this.httpClient.post<any>(this.apiUrl + '/ChangePassword', body);
   }
 
   private handleError(error: any): Observable<any> {

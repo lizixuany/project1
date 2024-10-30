@@ -10,27 +10,25 @@ class ChangepasswordController extends Controller
     public function index() {
         $request = Request::instance()->getContent();
         $data = json_decode($request, true);
-        var_dump($data);
-        var_dump($data['newPassword']);
-        var_dump($data['oldPassword']);
-        die();
+        
+        // 获取相应账号的数据
+        $id = $data['id'];
+            
+        // 获取传入的班级信息
+        $user = User::get($id);
+        if (is_null($user)) {
+            return $this->error('系统未找到ID为' . $id . '的记录');
+        }
 
         // 验证旧密码
-        if (!$this->verifyOldPassword($oldPassword)) {
-            return json(['status' => 'error', 'message' => 'Old password is incorrect']);
+        if ($data['oldPassword'] !== $user['password']) {
+            return json(['error' => '旧密码不正确'], 401);
         }
 
-        // 验证新密码是否符合要求
-        if ($newPassword !== $confirmNewPassword) {
-            return json(['status' => 'error', 'message' => 'Passwords do not match']);
-        }
+        $user->password = $data['newPassword'];
+        $user->save();
 
-        // 更新密码
-        if ($this->updatePassword($newPassword)) {
-            return json(['status' => 'success', 'message' => 'Password changed successfully']);
-        } else {
-            return json(['status' => 'error', 'message' => 'Failed to change password']);
-        }
+        return json(['status' => 'success', 'message' => 'Password changed successfully']);  
     }
 
     public function getById() {
@@ -42,13 +40,4 @@ class ChangepasswordController extends Controller
         return json($user);
     }
 
-    // 验证旧密码
-    private function verifyOldPassword($oldPassword) {
-        // 这里应该有逻辑来验证旧密码是否正确
-    }
-
-    // 更新密码
-    private function updatePassword($newPassword) {
-        // 这里应该有逻辑来更新密码
-    }
 }
