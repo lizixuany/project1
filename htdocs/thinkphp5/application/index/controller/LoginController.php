@@ -23,14 +23,24 @@ class LoginController extends Controller
             // 获取相应账号的数据
             $user = User::with('clazz')->where('username', $username)->find();
 
-            // 验证用户是否存在及密码是否正确
-            if ($user && $password == $user->password) {
-                $token = md5(uniqid(mt_rand(), true));
-                $userObject = json_encode($user);
-                session($token, $userObject);
-                header('x-auth-token:' . $token);
-                return json($user);
+            // 验证用户是否存在
+            if ($user) {
+                // 验证用户状态
+                if ($user['state'] !== 2) {
+                    // 验证用户密码是否正确
+                    if ($password == $user->password) {
+                        $token = md5(uniqid(mt_rand(), true));
+                        $userObject = json_encode($user);
+                        session($token, $userObject);
+                        header('x-auth-token:' . $token);
+                        return json($user);
+                    } else {
+                        return json(['error' => '用户名或密码不正确'], 401);
+                    }
+                } 
+                return json(['error' => '用户已冻结'], 401);
             }
+            return json(['error' => '用户不存在'], 401);
         } catch (\Exception $e) {
             return '系统错误' . $e->getMessage();
         }
