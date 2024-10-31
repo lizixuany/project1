@@ -68,16 +68,21 @@ export class SchoolComponent implements OnInit {
   }
 
   onDelete(index: number, id: number): void {
-    Confirm.show('请确认', '该操作不可逆', '确认', '取消',
-      () => {
-      this.httpClient.delete(`/api/school/delete/${id}`)
-        .subscribe(() => {
-          console.log('删除成功');
-          this.sweetAlertService.showSuccess('删除成功', 'success');
-          this.pageData.content.splice(index, 1);
-        },
-          error => console.log('删除失败', error));
-    });
+    this.sweetAlertService.showWarning('', '', '')
+      .then(isConfirmed => {
+        if (isConfirmed) {
+          this.httpClient.delete(`/api/school/delete/${id}`)
+            .subscribe(() => {
+                console.log('删除成功');
+                this.sweetAlertService.showSuccess('删除成功', 'success');
+                this.pageData.content.splice(index, 1);
+              },
+              error => {
+                this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
+                console.log('删除失败', error);
+              });
+        }
+      });
   }
 
   openAddDialog(): void {

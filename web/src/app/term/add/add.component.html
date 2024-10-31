@@ -8,7 +8,7 @@
     <div class="col-sm-10">
       <app-school-select (beChange)="onSchoolChange($event)"></app-school-select>
       <small class="text-danger"
-             *ngIf="term.school_id === ''">
+             *ngIf="term.school_id === null">
         学校不能为空
       </small>
     </div>
@@ -28,7 +28,7 @@
     <div class="col-sm-10">
       <input type="date" class="form-control" [(ngModel)]="term.start_time" name="start_time" id="start_time">
       <small class="text-danger"
-             *ngIf="term.start_time === ''">
+             *ngIf="term.start_time === null">
         开始时间不能为空
       </small>
     </div>
@@ -38,14 +38,18 @@
     <div class="col-sm-10">
       <input type="date" class="form-control" [(ngModel)]="term.end_time" name="end_time" id="end_time">
       <small class="text-danger"
-             *ngIf="term.end_time === ''">
+             *ngIf="term.end_time === null">
         结束时间不能为空
       </small>
     </div>
   </div>
   <div class="mb-3 row" style="margin: 30px 0px 0px 0px">
     <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
-      <button class="btn btn-primary" (click)="onSubmit()">保存
+      <button class="btn btn-primary" (click)="onSubmit()"
+              [disabled]="!term.school_id ||
+                          !term.name ||
+                          term.end_time === null ||
+                          term.start_time === null">保存
       </button>
     </div>
     <div class="col-sm-3 offset-sm-1">
