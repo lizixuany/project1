@@ -130,11 +130,19 @@ export class EditComponent implements OnInit {
           try {
             this.dialogRef.close(course);
             this.sweetAlertService.showSuccess('编辑成功！', 'success');
+            window.location.href = 'http://127.0.0.1:8088/course';
           } catch (err) {
             console.log('Navigation failed', err);
           }
         },
-        error => console.log(error));
+        error => {
+          if (error.error.error === '课程已存在') {
+            this.sweetAlertService.showError('新增失败', '课程已存在', '');
+          } else {
+            this.sweetAlertService.showError('新增失败', '', '');
+          }
+          console.log(error);
+        });
   }
 
   onNoClick(): void {

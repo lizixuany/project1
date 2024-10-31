@@ -71,8 +71,16 @@ export class AddComponent implements OnInit {
       .subscribe(clazz => {
         this.dialogRef.close(newCourse);
         this.sweetAlertService.showSuccess('新增成功！', 'success');
+          window.location.href = 'http://127.0.0.1:8088/course';
         },
-        error => console.log('保存失败', error));
+        error => {
+          if (error.error.error === '课程已存在') {
+            this.sweetAlertService.showError('新增失败', '课程已存在', '');
+          } else {
+            this.sweetAlertService.showError('新增失败', '', '');
+          }
+          console.log('保存失败', error);
+        });
   }
 
   onNoClick(): void {

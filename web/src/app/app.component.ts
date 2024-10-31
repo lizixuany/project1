@@ -97,6 +97,7 @@ export class AppComponent implements OnInit {
                 console.log('删除成功');
                 this.sweetAlertService.showSuccess('删除成功', 'success');
                 this.pageData.content.splice(index, 1);
+                this.loadByPage();
               },
               error => {
                 this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
