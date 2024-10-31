@@ -57,6 +57,37 @@ class TermController extends Controller
             $data = json_decode($request, true);
             $school = $data['school'];
 
+            // 将日期转换成时间戳，方便验证
+            $startTime = strtotime($data['start_time']);  
+            $endTime = strtotime($data['end_time']);
+
+            // 获取相应账号的数据
+            $result = Term::where('name', $data['name'])->where('school_id', $school['id'])->find();
+            if ($result) {
+                return json(['error' => '同名学期已存在'], 401);
+            }
+
+            $start = Term::where('start_time', $data['start_time'])->where('school_id', $school['id'])->find();
+            if ($start) {
+                return json(['error' => '相同开始时间的学期已存在'], 401);
+            }
+
+            $end = Term::where('end_time', $data['end_time'])->where('school_id', $school['id'])->find();
+            if ($end) {
+                return json(['error' => '相同结束时间的学期已存在'], 401);
+            }
+
+            $terms = Term::where('school_id', $school['id'])->find();
+            // 检查是否查询到了数据  
+            if (!$terms->isEmpty()) {  
+                // 遍历查询结果集  
+                foreach ($terms as $term) { 
+                    if ($startTime <= strtotime($term->start_time) && $endTime <= strtotime($term->end_time)) {
+                        return json(['error' => '相似时间的学期已存在'], 401);
+                    }
+                }
+            } 
+
             // 验证必要字段
             if (!isset($data['name']) || empty($data['name'])){
                 return json(['status' => 'error', 'message' => 'Term is required']);
@@ -69,6 +100,9 @@ class TermController extends Controller
             }
             if (!isset($data['end_time']) || empty($data['end_time'])){
                 return json(['status' => 'error', 'message' => 'End_time is required']);
+            }
+            if ($startTime >= $endTime) {
+                return json(['error' => '学期时间设置异常'], 401);
             }
             // 创建学期对象并保存
             $term = new Term();
@@ -137,12 +171,42 @@ class TermController extends Controller
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
             $school = $data['school'];
+            // 将日期转换成时间戳，方便验证
+            $startTime = strtotime($data['start_time']);  
+            $endTime = strtotime($data['end_time']);
 
             $id = $data['id'];
 
             $term = Term::get($id);
             if (is_null($term)) {
                 return $this->error('系统未找到ID为' . $id . '的记录');
+            }
+
+            // 获取相应账号的数据
+            $result = Term::where('name', $data['name'])->where('school_id', $school['id'])->find();
+            if ($result) {
+                return json(['error' => '同名学期已存在'], 401);
+            }
+
+            $start = Term::where('start_time', $data['start_time'])->where('school_id', $school['id'])->find();
+            if ($start) {
+                return json(['error' => '相同开始时间的学期已存在'], 401);
+            }
+
+            $end = Term::where('end_time', $data['end_time'])->where('school_id', $school['id'])->find();
+            if ($end) {
+                return json(['error' => '相同结束时间的学期已存在'], 401);
+            }
+
+            $terms = Term::where('school_id', $school['id'])->find();
+            // 检查是否查询到了数据  
+            if (!$terms->isEmpty()) {  
+                // 遍历查询结果集  
+                foreach ($terms as $term) { 
+                    if ($startTime <= strtotime($term->start_time) && $endTime <= strtotime($term->end_time)) {
+                        return json(['error' => '相似时间的学期已存在'], 401);
+                    }
+                }
             }
 
            // 验证必要字段
@@ -157,6 +221,9 @@ class TermController extends Controller
            }
            if (!isset($data['end_time']) || empty($data['end_time'])){
                return json(['status' => 'error', 'message' => 'End_time is required']);
+           }
+           if ($startTime >= $endTime) {
+            return json(['error' => '学期时间设置异常'], 401);
            }
 
             // 创建学期对象并保存

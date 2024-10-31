@@ -37,7 +37,11 @@ export class AddComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('保存失败', error);
+        if (error.error.error === '学校已存在') {
+          this.sweetAlertService.showError('新增失败', '学校已存在', '');
+        } else {
+          this.sweetAlertService.showError('新增失败', '', '');
+        }
       }
     });
   }

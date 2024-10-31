@@ -7,12 +7,20 @@
     <label for="name" class="col-sm-2 col-form-label">姓名：</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" name="name" [(ngModel)]="user.name" id="name">
+      <small class="text-danger"
+             *ngIf="user.name === ''">
+        姓名不可为空
+      </small>
     </div>
   </div>
   <div class="mb-3 row">
     <label for="username" class="col-sm-2 col-form-label">用户名：</label>
     <div class="col-sm-10">
       <input type="text" class="form-control" name="username" [(ngModel)]="user.username" id="username">
+      <small class="text-danger"
+             *ngIf="user.name === ''">
+        用户名不可为空
+      </small>
     </div>
   </div>
   <div class="mb-3 row">
@@ -85,29 +93,13 @@
       </div>
     </div>
   </div>
-  <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">状态：</label>
-    <div class="col-sm-10">
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio"
-               name="state"
-               [(ngModel)]="user.state"
-               [value]="1">
-        <label class="form-check-label">已启用</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio"
-               name="state"
-               [(ngModel)]="user.state"
-               [value]="2">
-        <label class="form-check-label">已冻结</label>
-      </div>
-    </div>
-  </div>
   <div class="mb-3 row" style="margin: 20px 0px 0px 0px">
     <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
       <button class="btn btn-primary" (click)="onSubmit()"
-              [disabled]="user.name === '' || user.school_id === null">保存
+              [disabled]="user.name === '' ||
+              user.username === '' ||
+              user.school_id === null ||
+              user.clazz_id === null">保存
       </button>
     </div>
     <div class="col-sm-3 offset-sm-1">

@@ -17,8 +17,8 @@ export class AddComponent implements OnInit {
   schools: School[] = [];
   term = {
     name: '',
-    start_time: new Date(),
-    end_time: new Date(),
+    start_time: null,
+    end_time: null,
     school_id: null as unknown as number
   };
   formGroup: FormGroup;
@@ -66,7 +66,21 @@ export class AddComponent implements OnInit {
         this.dialogRef.close(newTerm);
         this.sweetAlertService.showSuccess('新增成功！', 'success');
         },
-        error => console.log('保存失败', error));
+        error => {
+          if (error.error.error === '同名学期已存在') {
+            this.sweetAlertService.showError('新增失败', '同名学期已存在', '');
+          } else if (error.error.error === '相同开始时间的学期已存在') {
+            this.sweetAlertService.showError('新增失败', '相同开始时间的学期已存在', '');
+          } else if (error.error.error === '相同结束时间的学期已存在') {
+              this.sweetAlertService.showError('新增失败', '相同结束时间的学期已存在', '');
+          } else if (error.error.error === '相似时间的学期已存在') {
+            this.sweetAlertService.showError('新增失败', '相似时间的学期已存在', '');
+          } else if (error.error.error === '学期时间设置异常') {
+            this.sweetAlertService.showError('新增失败', '学期时间设置异常', '');
+          } else {
+            this.sweetAlertService.showError('新增失败', '', '');
+          }
+        });
   }
 
   onNoClick(): void {

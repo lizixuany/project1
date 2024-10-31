@@ -42,7 +42,13 @@ export class AddComponent implements OnInit {
         this.dialogRef.close(newClazz);
         this.sweetAlertService.showSuccess('新增成功!', 'success');
         },
-        error => console.log('保存失败', error));
+        error => {
+        if (error.error.error === '班级已存在') {
+          this.sweetAlertService.showError('新增失败', '班级已存在', '');
+        } else {
+          this.sweetAlertService.showError('新增失败', '', '');
+        }
+        });
   }
 
   onNoClick(): void {
