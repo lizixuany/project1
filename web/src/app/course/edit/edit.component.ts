@@ -37,7 +37,6 @@ export class EditComponent implements OnInit {
   terms = new Array<Term>();
   clazzes = new Array<Clazz>();
   weeks: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
-  periods: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
   days: {name: string, value: number}[] = [
     {name: '周一', value: 1},
     {name: '周二', value: 2},
@@ -46,6 +45,13 @@ export class EditComponent implements OnInit {
     {name: '周五', value: 5},
     {name: '周六', value: 6},
     {name: '周日', value: 7},
+  ];
+  periods: {name: string, value: number}[] = [
+    {name: '第一大节', value: 1},
+    {name: '第二大节', value: 2},
+    {name: '第三大节', value: 3},
+    {name: '第四大节', value: 4},
+    {name: '第五大节', value: 5}
   ];
 
   /**

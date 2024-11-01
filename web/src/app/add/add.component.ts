@@ -7,7 +7,6 @@ import {SweetAlertService} from '../service/sweet-alert.service';
 import {UserService} from '../service/user.service';
 import {School} from '../entity/school';
 
-
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',

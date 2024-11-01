@@ -61,8 +61,6 @@ class CourseController extends Controller
             ];
 
             foreach ($list as $course) {
-                $course['day'] = $this->getDayOfWeek($course['day']); // 将数字转换为周几的字符串
-                $course['period'] = $this->getPeriod($course['period']); // 将数字转换为第几节课的字符串
                 $course['week'] = json_decode($course['week']); // 获取周数
             }
 
@@ -70,24 +68,6 @@ class CourseController extends Controller
         } catch (\Exception $e) {
             return '系统错误' . $e->getMessage();
         }
-    }
-
-    // 定义日和节的转换方法
-    protected function getDayOfWeek($days)
-    {
-        $daysOfWeek = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-        $daysArray = json_decode($days, true);
-        return array_map(function($day) use ($daysOfWeek) {
-            return $daysOfWeek[$day];
-        }, $daysArray);
-    }
-
-    protected function getPeriod($periods)
-    {
-        $periodArray = json_decode($periods, true);
-        return array_map(function($period) {
-            return "第" . $period . "大节";
-        }, $periodArray);
     }
 
     // 删除课表
@@ -129,6 +109,8 @@ class CourseController extends Controller
             $school = $data['school'];
             $clazz = $data['clazz'];
             $term = $data['term'];
+            $day = $data['day'];
+            $period = $data['period'];
 
             // 验证必要字段
             if (!isset($data['name']) || empty($data['name'])){
@@ -147,16 +129,6 @@ class CourseController extends Controller
                 $data['week'] = json_encode($data['week']);
             } else {
                 $data['week'] = json_encode([]);
-            }
-            if (isset($data['day'])) {
-                $data['day'] = json_encode($data['day']);
-            } else {
-               $data['day'] = json_encode([]);
-            }
-            if (isset($data['period'])) {
-                $data['period'] = json_encode($data['period']);
-            } else {
-                $data['period'] = json_encode([]);
             }
 
             // 创建课程对象并保存
@@ -188,8 +160,6 @@ class CourseController extends Controller
             $list = Course::with(['term', 'clazz', 'school'])->where('course.id', $data)->select();
 
             foreach ($list as $course) {
-                $course['day'] = json_decode($course['day']); // 将数字转换为周几的字符串
-                $course['period'] = json_decode($course['period']); // 将数字转换为第几节课的字符串
                 $course['week'] = json_decode($course['week']); // 获取周数
             }
 
@@ -209,6 +179,8 @@ class CourseController extends Controller
             $school = $data['school'];
             $term = $data['term'];
             $clazz = $data['clazz'];
+            $day = $data['day'];
+            $period = $data['period'];
 
             $id = $data['id'];
 
@@ -237,16 +209,6 @@ class CourseController extends Controller
                $data['week'] = json_encode($data['week']);
            } else {
                $data['week'] = json_encode([]);
-           }
-           if (isset($data['day'])) {
-               $data['day'] = json_encode($data['day']);
-           } else {
-              $data['day'] = json_encode([]);
-           }
-           if (isset($data['period'])) {
-               $data['period'] = json_encode($data['period']);
-           } else {
-               $data['period'] = json_encode([]);
            }
 
             // 创建课表对象并保存
