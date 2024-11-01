@@ -89,15 +89,20 @@ export class AppComponent implements OnInit {
   }
 
   onDelete(index: number, id: number): void {
-    Confirm.show('请确认', '该操作不可逆', '确认', '取消',
-      () => {
-        this.httpClient.delete(`/api/user/delete/${id}`)
-          .subscribe(() => {
-              console.log('删除成功');
-              this.sweetAlertService.showDeleteSuccess('删除成功!', 'success');
-              this.pageData.content.splice(index, 1);
-            },
-            error => console.log('删除失败', error));
+    this.sweetAlertService.showWarning('', '', '')
+      .then(isConfirmed => {
+        if (isConfirmed) {
+          this.httpClient.delete(`/api/user/delete/${id}`)
+            .subscribe(() => {
+                console.log('删除成功');
+                this.sweetAlertService.showSuccess('删除成功', 'success');
+                this.pageData.content.splice(index, 1);
+              },
+              error => {
+                this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
+                console.log('删除失败', error);
+              });
+        }
       });
   }
 
@@ -124,6 +129,7 @@ export class AppComponent implements OnInit {
 
   onSubmit(form: NgForm, page = 0) {
     console.log('调用了search');
+    console.log(this.searchParameters);
     if (form.valid) {
       const clazz = this.sharedService.getSomeValue();
       this.searchParameters.school = clazz;
@@ -132,7 +138,7 @@ export class AppComponent implements OnInit {
       console.log('提交的查询参数:', this.searchParameters);
       const httpParams = new HttpParams().append('page', this.page.toString())
         .append('size', this.size.toString());
-      this.httpClient.post<Page<User>>('/api/clazz', this.searchParameters, {params: httpParams}).subscribe(
+      this.httpClient.post<Page<User>>('/api/user', this.searchParameters, {params: httpParams}).subscribe(
         pageData => {
           // 在请求数据之后设置当前页
           this.page = page;

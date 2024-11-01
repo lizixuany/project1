@@ -11,62 +11,48 @@ export class SweetAlertService {
   public showError(title: string, text: string, icon: string): void {
     Swal.fire({
       icon: 'error',
-      title: 'Oops...',
-      text: 'Something went wrong!',
+      title,
+      text,
     });
   }
 
-  public showAddSuccess(title: string, icon: string): void {
+  public showSuccess(title: string,  icon: string): void {
     Swal.fire({
-      title: '新增成功!',
+      title,
       icon: 'success',
       showConfirmButton: false,
       timer: 1500
     });
   }
 
-  public showEditSuccess(title: string, icon: string): void {
+   public showLogoutWarning(title: string,  icon: string): void {
     Swal.fire({
-      title: '编辑成功!',
-      icon: 'success',
+      title,
+      icon: 'warning',
       showConfirmButton: false,
       timer: 1500
     });
   }
 
-  public showDeleteSuccess(title: string, icon: string): void {
-    Swal.fire({
-      title: '删除成功!',
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500
-    });
-  }
-
-  public showWarning(title: string, text: string, icon: string): void {
-    Swal.fire({
+  public showWarning(title: string, text: string, icon: string): Promise<boolean> {
+    return Swal.fire({
       title: '确定吗?',
-      text: '你确定要删除吗？',
+      text: '该操作可能会导致大量数据丢失，建议检查有关数据。',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: '是的，删除！'
+      confirmButtonText: '是的，删除！',
+      cancelButtonText: '取消'
     }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: '删除成功!',
-          text: 'Your file has been deleted.',
-          icon: 'success'
-        });
-      }
+      return result.isConfirmed;
     });
   }
 
-  public showInfo(title: string, text: string, icon: string): void {
+  public showInfo(): void {
     Swal.fire({
-      title: 'The Internet?',
-      text: 'That thing is still around?',
+      title: '用户已冻结',
+      text: '请联系管理员解决',
       icon: 'question'
     });
   }

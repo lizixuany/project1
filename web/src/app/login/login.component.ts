@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../entity/user';
 import {SharedService} from '../service/shared.service';
 import { LoginService } from '../service/login.service';
+import {SweetAlertService} from '../service/sweet-alert.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               private ngZone: NgZone,
               private loginService: LoginService,
-              private sharedService: SharedService) {}
+              private sharedService: SharedService,
+              private sweetAlertService: SweetAlertService) {}
 
   ngOnInit(): void {
   }
@@ -49,20 +51,25 @@ export class LoginComponent implements OnInit {
         loginData, {headers: httpHeaders})
       .subscribe(user => {
           console.log(user);
-          if (user) {
-            this.sharedService.setData(user);
-            this.beLogin.emit(user);
-            // tslint:disable-next-line:no-shadowed-variable
-            this.loginService.getCurrentUser().subscribe(user => {
-              console.log('Current User:', user);
-            });
-          } else {
-            this.showErrorDelay();
-          }
+          this.sharedService.setData(user);
+          this.beLogin.emit(user);
+          this.sweetAlertService.showSuccess('登录成功!', 'success');
+          // tslint:disable-next-line:no-shadowed-variable
+          this.loginService.getCurrentUser().subscribe(user => {
+            console.log('Current User:', user);
+          });
         },
         error => {
-          console.log('发生错误, 登录失败。', error);
-          this.showErrorDelay();
+        if (error.error.error === '用户已冻结') {
+          this.sweetAlertService.showInfo();
+        }
+        if (error.error.error === '用户不存在') {
+          this.sweetAlertService.showError('登录失败', '用户不存在', '');
+        }
+        if (error.error.error === '用户名或密码不正确') {
+          this.sweetAlertService.showError('登录失败', '用户名或密码不正确', '');
+        }
+        console.log('发生错误, 登录失败。', error.error);
         });
   }
 

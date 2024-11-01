@@ -29,7 +29,7 @@ export class AddComponent implements OnInit {
         console.log(response);
         if (response['status'] === 'success') {
           this.dialogRef.close(response);
-          this.sweetAlertService.showAddSuccess('新增成功!', 'success');
+          this.sweetAlertService.showSuccess('新增成功!', 'success');
         } else {
           // 检查message字段是否存在于响应中
           const errorMessage = response.hasOwnProperty('message') ? response['message'] : '未知错误';
@@ -37,7 +37,11 @@ export class AddComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('保存失败', error);
+        if (error.error.error === '学校已存在') {
+          this.sweetAlertService.showError('新增失败', '学校已存在', '');
+        } else {
+          this.sweetAlertService.showError('新增失败', '', '');
+        }
       }
     });
   }

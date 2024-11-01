@@ -54,6 +54,13 @@ class SchoolController extends Controller
                 return json(['status' => 'error', 'message' => 'Name is required']);
             }
 
+            // 获取相应账号的数据
+            $school = School::where('name', $data['name'])->find();
+
+            if ($school) {
+                return json(['error' => '学校已存在'], 401);
+            }
+
             // 创建学校对象并保存
             $school = new School();
             $school->name = $data['name'];
@@ -98,6 +105,12 @@ class SchoolController extends Controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
 
+            $result = School::where('name', $data['name'])->find();
+
+            if ($result) {
+                return json(['error' => '学校已存在'], 401);
+            }
+
             // 验证必要字段
             if (!isset($data['name']) || empty($data['name'])){
                 return json(['status' => 'error', 'message' => 'name is required']);
@@ -107,7 +120,6 @@ class SchoolController extends Controller
             }
             
             // 创建学期对象并保存
-            // $school = new School();
             $school->id = $data['id'];
             $school->name = $data['name'];
             

@@ -78,9 +78,16 @@ export class EditComponent implements OnInit {
     this.httpClient.put<School>(`/api/school/update`, school)
       .subscribe(() => {
         this.dialogRef.close(school);
-        this.sweetAlertService.showEditSuccess('编辑成功!', 'success');
+        this.sweetAlertService.showSuccess('编辑成功!', 'success');
         },
-        error => console.log(error));
+        error => {
+          if (error.error.error === '学校已存在') {
+            this.sweetAlertService.showError('编辑失败', '学校已存在', '');
+          } else {
+            this.sweetAlertService.showError('编辑失败', '', '');
+          }
+          console.log(error);
+        });
   }
 
   onNoClick(): void {

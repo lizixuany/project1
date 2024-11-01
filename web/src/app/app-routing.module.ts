@@ -1,18 +1,21 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-// import {AddComponent} from './add/add.component';
-// import {EditComponent} from './edit/edit.component';
 import {PersonalCenterComponent} from './personal-center/personal-center.component';
 import {WelcomeComponent} from './welcome.component';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {SchoolRoutingModule} from './school/school-routing.module';
 import {CourseScheduleComponent} from './course-schedule/course-schedule.component';
+import {IndexComponent} from './index/index.component';
 
 const routes: Routes = [
   {
     path: '',
     component: WelcomeComponent
+  },
+  {
+    path: 'login',
+    component: IndexComponent
   },
   {
     path: 'school',

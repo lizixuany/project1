@@ -104,12 +104,27 @@ export class EditComponent implements OnInit {
           // 更新成功后，导航回主列表页面
           try {
             this.dialogRef.close(term);
-            this.sweetAlertService.showEditSuccess('编辑成功!', 'success');
+            this.sweetAlertService.showSuccess('编辑成功!', 'success');
           } catch (err) {
             console.log('Navigation failed', err);
           }
         },
-        error => console.log(error));
+        error => {
+          if (error.error.error === '同名学期已存在') {
+            this.sweetAlertService.showError('新增失败', '同名学期已存在', '');
+          } else if (error.error.error === '相同开始时间的学期已存在') {
+            this.sweetAlertService.showError('新增失败', '相同开始时间的学期已存在', '');
+          } else if (error.error.error === '相同结束时间的学期已存在') {
+            this.sweetAlertService.showError('新增失败', '相同结束时间的学期已存在', '');
+          } else if (error.error.error === '相似时间的学期已存在') {
+            this.sweetAlertService.showError('新增失败', '相似时间的学期已存在', '');
+          } else if (error.error.error === '学期时间设置异常') {
+            this.sweetAlertService.showError('新增失败', '学期时间设置异常', '');
+          } else {
+            this.sweetAlertService.showError('新增失败', '', '');
+          }
+          console.log(error);
+        });
   }
 
   onNoClick(): void {

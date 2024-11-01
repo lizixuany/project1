@@ -63,6 +63,14 @@ class ClazzController extends Controller
             if (!isset($school['id']) || empty($school['id'])){
                 return json(['status' => 'error', 'message' => 'School is required']);
             }
+
+            // 获取相应账号的数据
+            $clazz = Clazz::where('name', $data['name'])->where('school_id', $school['id'])->find();
+
+            if ($clazz) {
+                return json(['error' => '班级已存在'], 401);
+            }
+
             
             // 创建班级对象并保存
             $clazz = new Clazz();
@@ -104,6 +112,12 @@ class ClazzController extends Controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
 
+            $result = Clazz::where('name', $data['name'])->where('school_id', $school['id'])->find();
+
+            if ($result) {
+                return json(['error' => '班级已存在'], 401);
+            }
+
             // 验证必要字段
             if (!isset($data['name']) || empty($data['name'])){
                 return json(['status' => 'error', 'message' => 'name is required']);
@@ -113,7 +127,6 @@ class ClazzController extends Controller
             }
             
             // 创建学期对象并保存
-            // $clazz = new Clazz();
             $clazz->school_id = $school['id'];
             $clazz->name = $data['name'];
             

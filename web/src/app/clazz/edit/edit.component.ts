@@ -72,7 +72,7 @@ export class EditComponent implements OnInit {
   }
 
   onSchoolChange($event: number): void {
-    console.log('接收到了选择的teacherId', $event);
+    console.log('接收到了选择的schoolId', $event);
     this.formGroup.get('school_id').setValue($event);
   }
 
@@ -91,15 +91,17 @@ export class EditComponent implements OnInit {
     console.log(clazz);
     this.httpClient.put<Clazz>(`/api/clazz/update`, clazz)
       .subscribe(() => {
-          // 更新成功后，导航回主列表页面
-          try {
+          // 更新成功后，关闭弹窗
             this.dialogRef.close(clazz);
-            this.sweetAlertService.showEditSuccess('编辑成功!', 'success');
-          } catch (err) {
-            console.log('Navigation failed', err);
-          }
+            this.sweetAlertService.showSuccess('编辑成功!', 'success');
         },
-        error => console.log(error));
+        error => {
+          if (error.error.error === '班级已存在') {
+            this.sweetAlertService.showError('编辑失败', '班级已存在', '');
+          } else {
+            this.sweetAlertService.showError('编辑失败', '', '');
+          }
+        });
   }
 
   onNoClick(): void {

@@ -84,6 +84,18 @@ class UserController extends controller
         try{
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
+
+            // 获取相应账号的数据
+            $result = User::where('name', $data['name'])->find();
+            if ($result['username'] === $data['username']) {
+                return json(['error' => '用户已存在'], 401);
+            }
+            if ($data['role'] === 1) {
+                $role = User::where('role', 1)->find();
+                if ($role) {
+                    return json(['error' => '超级管理员有且只有一位'], 401);
+                }
+            }
            
             // 验证必要字段
             if (!isset($data['name']) || empty($data['name'])){
@@ -116,7 +128,7 @@ class UserController extends controller
             $user->password = 'yunzhi';
             $user->sex = $data['sex'];
             $user->role = $data['role'];
-            $user->state = $data['state'];
+            $user->state = 1;
             $user->school_id = $data['school_id'];
             $user->clazz_id = $data['clazz_id'];
             $user->save();
@@ -153,6 +165,17 @@ class UserController extends controller
             $user = User::get($id);
             if (is_null($user)) {
                 return $this->error('系统未找到ID为' . $id . '的记录');
+            }
+            // 获取相应账号的数据
+            $result = User::where('name', $data['name'])->find();
+            if ($result['username'] === $data['username']) {
+                return json(['error' => '用户已存在'], 401);
+            }
+            if ($data['role'] === 1) {
+                $role = User::where('role', 1)->find();
+                if ($role) {
+                    return json(['error' => '超级管理员有且只有一位'], 401);
+                }
             }
 
             // 验证必要字段

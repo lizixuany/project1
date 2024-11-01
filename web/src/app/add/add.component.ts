@@ -18,7 +18,7 @@ export class AddComponent implements OnInit {
     username: '',
     password: '',
     sex: 1,
-    role: 1,
+    role: 3,
     // tslint:disable-next-line:variable-name
     clazz_id: null as unknown as number,
     school_id: null as unknown as number,
@@ -48,8 +48,15 @@ export class AddComponent implements OnInit {
       .subscribe((result) => {
         console.log('接收到返回数据', result);
         this.dialogRef.close(result);
-        this.sweetAlertService.showAddSuccess('新增成功!', 'success');
+        this.sweetAlertService.showSuccess('新增成功!', 'success');
       }, (error) => {
+        if (error.error.error === '用户已存在') {
+          this.sweetAlertService.showError('编辑失败', '用户已存在', '');
+        } else if (error.error.error === '超级管理员有且只有一位') {
+          this.sweetAlertService.showError('编辑失败', '超级管理员有且只有一位', '');
+        } else {
+          this.sweetAlertService.showError('编辑失败', '', '');
+        }
         console.log('请求失败', error);
       });
   }

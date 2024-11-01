@@ -32,6 +32,7 @@ export class EditComponent implements OnInit {
     school_id: null as unknown as number,
     clazz_id: null as unknown as number
   };
+  users = new User();
   value = '';
   schools = new Array<School>();
   clazzes = new Array<Clazz>();
@@ -78,6 +79,7 @@ export class EditComponent implements OnInit {
     this.httpClient.post<User>(`api/user/edit/${id}`, id)
       .subscribe(user => {
         console.log('接收到了user', user);
+        this.users = user;
         this.nameFormControl.patchValue(user[0].name);
         this.formGroup.get('username').setValue(user[0].username);
         this.formGroup.get('sex').setValue(user[0].sex);
@@ -90,9 +92,7 @@ export class EditComponent implements OnInit {
 
   onSubmit(): void {
     console.log('点击了提交按钮');
-    console.log(this.user[0].id);
-    console.log(this.formGroup.value);
-    const userId = this.formGroup.get('id').value;
+    const userId = this.users[0].id;
     const name = this.nameFormControl.value;
     const username = this.formGroup.get('username').value;
     const sex = this.formGroup.get('sex').value;
@@ -116,12 +116,21 @@ export class EditComponent implements OnInit {
           // 更新成功后，导航回主列表页面
           try {
             this.dialogRef.close(user);
-            this.sweetAlertService.showEditSuccess('编辑成功!', 'success');
+            this.sweetAlertService.showSuccess('编辑成功!', 'success');
           } catch (err) {
             console.log('Navigation failed', err);
           }
         },
-        error => console.log(error));
+        error => {
+          if (error.error.error === '用户已存在') {
+            this.sweetAlertService.showError('新增失败', '用户已存在', '');
+          } else if (error.error.error === '超级管理员有且只有一位') {
+            this.sweetAlertService.showError('新增失败', '超级管理员有且只有一位', '');
+          } else {
+            this.sweetAlertService.showError('新增失败', '', '');
+          }
+          console.log(error);
+        });
   }
 
   onNoClick(): void {
