@@ -7,7 +7,7 @@ import {AddComponent} from './add/add.component';
 import {Confirm} from 'notiflix';
 import {EditComponent} from './edit/edit.component';
 import {SharedService} from '../service/shared.service';
-import {FormGroup, NgForm} from '@angular/forms';
+import {NgForm} from '@angular/forms';
 import {CourseService} from '../service/course.service';
 
 @Component({
@@ -35,6 +35,24 @@ export class CourseComponent implements OnInit {
     size: this.size,
     numberOfElements: 0
   });
+
+  days = [
+    {name: '周一', value: 1},
+    {name: '周二', value: 2},
+    {name: '周三', value: 3},
+    {name: '周四', value: 4},
+    {name: '周五', value: 5},
+    {name: '周六', value: 6},
+    {name: '周日', value: 7},
+  ];
+  periods = [
+    {name: '第一大节', value: 1},
+    {name: '第二大节', value: 2},
+    {name: '第三大节', value: 3},
+    {name: '第四大节', value: 4},
+    {name: '第五大节', value: 5}
+  ];
+
   constructor(private httpClient: HttpClient,
               private dialog: MatDialog,
               private sharedService: SharedService,
@@ -48,6 +66,18 @@ export class CourseComponent implements OnInit {
 
   onPage(page: number): void {
     this.loadByPage(page);
+  }
+
+  // 方法来获取天的名称
+  getDayName(value: number): string {
+    const day = this.days.find(d => d.value === value);
+    return day ? day.name : '';
+  }
+
+  // 方法来获取时间段的名称
+  getPeriodName(value: number): string {
+    const period = this.periods.find(p => p.value === value);
+    return period ? period.name : '';
   }
 
   loadByPage(page = 0): void {

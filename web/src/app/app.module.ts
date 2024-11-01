@@ -19,6 +19,10 @@ import {ClazzSelectModule} from './clazz/clazz-select/clazz-select.module';
 import {MatDialogModule} from '@angular/material/dialog';
 import {XAuthTokenInterceptor} from './x-auth-token.interceptor';
 import {SweetAlertService} from './service/sweet-alert.service';
+import {CourseScheduleComponent} from './course-schedule/course-schedule.component';
+import {MatOptionModule} from "@angular/material/core";
+import {TermSelectModule} from "./term/term-select/term-select.module";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -28,7 +32,8 @@ import {SweetAlertService} from './service/sweet-alert.service';
     NavComponent,
     LoginComponent,
     AddComponent,
-    EditComponent
+    EditComponent,
+    CourseScheduleComponent
   ],
   entryComponents: [
     AddComponent, // 确保 AddComponent 在这里
@@ -46,7 +51,10 @@ import {SweetAlertService} from './service/sweet-alert.service';
     SchoolSelectModule,
     ClazzSelectModule,
     PageModule,
-    MatDialogModule
+    MatDialogModule,
+    MatOptionModule,
+    TermSelectModule,
+    MatSelectModule
   ],
   providers: [
     SweetAlertService,

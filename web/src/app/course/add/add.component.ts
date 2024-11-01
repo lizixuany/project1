@@ -21,8 +21,8 @@ export class AddComponent implements OnInit {
     clazz_id: null as unknown as number,
     sory: 1,
     week: [],
-    day: [],
-    period: [],
+    day: null as unknown as number,
+    period: null as unknown as number
   };
   value = '';
   schools = new Array<School>();
@@ -30,8 +30,7 @@ export class AddComponent implements OnInit {
   clazzes = new Array<Clazz>();
 
   weeks: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
-  periods: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
-  days: {name: string, value: number}[] = [
+  days = [
     {name: '周一', value: 1},
     {name: '周二', value: 2},
     {name: '周三', value: 3},
@@ -39,6 +38,13 @@ export class AddComponent implements OnInit {
     {name: '周五', value: 5},
     {name: '周六', value: 6},
     {name: '周日', value: 7},
+  ];
+  periods = [
+    {name: '第一大节', value: 1},
+    {name: '第二大节', value: 2},
+    {name: '第三大节', value: 3},
+    {name: '第四大节', value: 4},
+    {name: '第五大节', value: 5}
   ];
 
   constructor(private httpClient: HttpClient,

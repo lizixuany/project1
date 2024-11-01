@@ -7,6 +7,7 @@ import {WelcomeComponent} from './welcome.component';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {SchoolRoutingModule} from './school/school-routing.module';
+import {CourseScheduleComponent} from './course-schedule/course-schedule.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'personal-center',
     component: PersonalCenterComponent
+  },
+  {
+    path: 'course-schedule',
+    component: CourseScheduleComponent
   }
 ];
 
