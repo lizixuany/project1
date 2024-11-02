@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {Page} from '../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Course} from '../entity/course';
@@ -10,6 +10,8 @@ import {SharedService} from '../service/shared.service';
 import {NgForm} from '@angular/forms';
 import {CourseService} from '../service/course.service';
 import {SweetAlertService} from '../service/sweet-alert.service';
+import {User} from '../entity/user';
+import {LoginService} from '../service/login.service';
 
 @Component({
   selector: 'app-course',
@@ -37,6 +39,9 @@ export class CourseComponent implements OnInit {
     numberOfElements: 0
   });
 
+  me = new User();
+  beLogout = new EventEmitter<void>();
+
   days = [
     {name: '周一', value: 1},
     {name: '周二', value: 2},
@@ -58,7 +63,20 @@ export class CourseComponent implements OnInit {
               private dialog: MatDialog,
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
-              private courseService: CourseService) { }
+              private courseService: CourseService,
+              private loginService: LoginService) {
+    this.loginService.getCurrentUser().subscribe(
+      user => {
+        this.me = user;
+        this.sharedService.setData(user);
+      },
+      error => {
+        if (error.error.error === '无效的token') {
+          this.handleInvalidToken();
+        }
+      }
+    );
+  }
 
   ngOnInit() {
     console.log('学期组件调用ngOnInit()');
@@ -158,4 +176,20 @@ export class CourseComponent implements OnInit {
     }
   }
 
+  private handleInvalidToken(): void {
+    this.sweetAlertService.showLogoutWarning('登录失效', '');
+    setTimeout(() => {
+      window.sessionStorage.removeItem('login');
+      this.httpClient.post('/api/Login/logout', {}).subscribe(
+        () => {
+          console.log('logout');
+          this.beLogout.emit();
+          window.location.href = 'http://127.0.0.1:8088';
+        },
+        error => {
+          console.error('注销失败', error);
+        }
+      );
+    }, 1500);
+  }
 }

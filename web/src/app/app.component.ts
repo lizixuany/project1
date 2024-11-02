@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {Page} from './entity/page';
 import {User} from './entity/user';
 import {HttpClient, HttpParams} from '@angular/common/http';
@@ -10,6 +10,7 @@ import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
 import {Clazz} from './entity/clazz';
 import {SweetAlertService} from './service/sweet-alert.service';
+import {LoginService} from './service/login.service';
 
 @Component({
   selector: 'app-root',
@@ -41,11 +42,25 @@ export class AppComponent implements OnInit {
   school: any;
   clazzs: Clazz[];
 
+  me = new User();
+  beLogout = new EventEmitter<void>();
+
   constructor(private httpClient: HttpClient,
               private dialog: MatDialog,
               private sharedService: SharedService,
-              private sweetAlertService: SweetAlertService) {
-
+              private sweetAlertService: SweetAlertService,
+              private loginService: LoginService) {
+    this.loginService.getCurrentUser().subscribe(
+      user => {
+        this.me = user;
+        this.sharedService.setData(user);
+      },
+      error => {
+        if (error.error.error === '无效的token') {
+          this.handleInvalidToken();
+        }
+      }
+    );
   }
 
   form = new FormGroup({});
@@ -153,5 +168,22 @@ export class AppComponent implements OnInit {
         }
       );
     }
+  }
+
+  private handleInvalidToken(): void {
+    this.sweetAlertService.showLogoutWarning('登录失效', '');
+    setTimeout(() => {
+      window.sessionStorage.removeItem('login');
+      this.httpClient.post('/api/Login/logout', {}).subscribe(
+        () => {
+          console.log('logout');
+          this.beLogout.emit();
+          window.location.href = 'http://127.0.0.1:8088';
+        },
+        error => {
+          console.error('注销失败', error);
+        }
+      );
+    }, 1500);
   }
 }
