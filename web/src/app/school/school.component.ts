@@ -11,6 +11,7 @@ import {EditComponent} from './edit/edit.component';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {User} from '../entity/user';
 import {LoginService} from '../service/login.service';
+import {LocalCheckerService} from '../service/local-checker.service';
 
 @Component({
   selector: 'app-school',
@@ -42,7 +43,8 @@ export class SchoolComponent implements OnInit {
               private sharedService: SharedService,
               private dialog: MatDialog,
               private sweetAlertService: SweetAlertService,
-              private loginService: LoginService) {
+              private loginService: LoginService,
+              private localCheckerService: LocalCheckerService) {
     this.loginService.getCurrentUser().subscribe(
       user => {
         this.me = user;
@@ -59,6 +61,7 @@ export class SchoolComponent implements OnInit {
   form = new FormGroup({});
 
   ngOnInit() {
+    this.localCheckerService.startCheckingLocal();
     console.log('school组件调用ngOnInit()');
     // 使用默认值 page = 0 调用loadByPage()方法
     this.loadByPage();
