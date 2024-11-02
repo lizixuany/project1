@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {CourseScheduleService} from '../service/course-schedule.service';
+import {LoginService} from '../service/login.service';
+import {SharedService} from '../service/shared.service';
+import {User} from '../entity/user';
+import {SweetAlertService} from '../service/sweet-alert.service';
 
 @Component({
   selector: 'app-course-schedule',
@@ -35,8 +39,26 @@ export class CourseScheduleComponent implements OnInit {
     week: null as unknown as number
   };
 
+  me = new User();
+  beLogout = new EventEmitter<void>();
+
   constructor(private courseScheduleService: CourseScheduleService,
-              private httpClient: HttpClient) {}
+              private httpClient: HttpClient,
+              private loginService: LoginService,
+              private sharedService: SharedService,
+              private sweetAlertService: SweetAlertService) {
+    this.loginService.getCurrentUser().subscribe(
+      user => {
+        this.me = user;
+        this.sharedService.setData(user);
+      },
+      error => {
+        if (error.error.error === '无效的token') {
+          this.handleInvalidToken();
+        }
+      }
+    );
+  }
 
   ngOnInit() {
   }
@@ -82,5 +104,22 @@ export class CourseScheduleComponent implements OnInit {
         console.error('无效的课程表索引:', dayIndex, periodIndex);
       }
     });
+  }
+
+  private handleInvalidToken(): void {
+    this.sweetAlertService.showLogoutWarning('登录失效', '');
+    setTimeout(() => {
+      window.sessionStorage.removeItem('login');
+      this.httpClient.post('/api/Login/logout', {}).subscribe(
+        () => {
+          console.log('logout');
+          this.beLogout.emit();
+          window.location.href = 'http://127.0.0.1:8088';
+        },
+        error => {
+          console.error('注销失败', error);
+        }
+      );
+    }, 1500);
   }
 }
