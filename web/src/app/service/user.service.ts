@@ -23,18 +23,6 @@ export class UserService {
     this.key = Math.random();
   }
 
-  /**
-   * 获取学生
-   * @param id ID
-   */
-  getById(id: number): Observable<User> {
-    return this.httpClient.post<User>('/change-password/getById', id);
-  }
-
-  getData() {
-    return this.httpClient.get<User[]>('/api/user');
-  }
-
   changePassword(id: number, oldPassword: string, newPassword: string): Observable<User> {
     // 发送请求到后端API以更新密码
     const body = {
@@ -43,12 +31,6 @@ export class UserService {
       newPassword
     };
     return this.httpClient.post<any>(this.apiUrl + '/ChangePassword', body);
-  }
-
-  private handleError(error: any): Observable<any> {
-    // 处理错误，例如显示错误消息
-    console.error('An error occurred:', error);
-    return Observable.throw(error.message || 'Server error');
   }
 
   getClazzBySchoolId(schoolId: number): Observable<Array<Clazz>> {

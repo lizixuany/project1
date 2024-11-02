@@ -41,5 +41,6 @@ export class IndexComponent implements OnInit {
     console.log('接收到注销组件的数据弹射，开始注销');
     this.login = false;
     window.sessionStorage.removeItem('login');
+    window.sessionStorage.removeItem('role');
   }
 }

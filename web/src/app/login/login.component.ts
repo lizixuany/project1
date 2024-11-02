@@ -55,8 +55,8 @@ export class LoginComponent implements OnInit {
           this.beLogin.emit(user);
           this.sweetAlertService.showSuccess('登录成功!', 'success');
           // tslint:disable-next-line:no-shadowed-variable
-          this.loginService.getCurrentUser().subscribe(user => {
-            console.log('Current User:', user);
+          this.loginService.getRoles().subscribe(role => {
+            console.log('权限', role);
           });
         },
         error => {
