@@ -34,12 +34,14 @@ export class IndexComponent implements OnInit {
     console.log(new Date().toTimeString(), '子组件进行了数据弹射', user);
     this.login = true;
     // 将登录状态写入缓存
+    localStorage.setItem('login', 'true');
     window.sessionStorage.setItem('login', 'true');
   }
 
   onLogout(): void {
     console.log('接收到注销组件的数据弹射，开始注销');
     this.login = false;
+    localStorage.removeItem('login');
     window.sessionStorage.removeItem('login');
     window.sessionStorage.removeItem('role');
   }

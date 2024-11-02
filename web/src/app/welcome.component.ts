@@ -1,9 +1,10 @@
-import {Component, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {SharedService} from './service/shared.service';
 import {LoginService} from './service/login.service';
 import {SweetAlertService} from './service/sweet-alert.service';
 import {HttpClient} from '@angular/common/http';
 import {User} from './entity/user';
+import {LocalCheckerService} from './service/local-checker.service';
 
 // 使用注解来标明它是一个组件
 @Component({
@@ -11,7 +12,7 @@ import {User} from './entity/user';
   template: `<h1 class="text-center mt-5 pt-5">
     欢迎使用课表查询系统</h1>`
 })
-export class WelcomeComponent {
+export class WelcomeComponent implements OnInit {
   me = new User();
   beLogout = new EventEmitter<void>();
 
@@ -19,12 +20,9 @@ export class WelcomeComponent {
     private sharedService: SharedService,
     private loginService: LoginService,
     private sweetAlertService: SweetAlertService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private localCheckerService: LocalCheckerService
   ) {
-    this.me = this.sharedService.getData();
-    console.log(this.me.name);
-    console.log('getCurrentUser-constructor');
-
     this.loginService.getCurrentUser().subscribe(
       user => {
         this.me = user;
@@ -36,6 +34,10 @@ export class WelcomeComponent {
         }
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.localCheckerService.startCheckingLocal();
   }
 
   private handleInvalidToken(): void {
