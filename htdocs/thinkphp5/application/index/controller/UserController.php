@@ -86,8 +86,8 @@ class UserController extends controller
             $data = json_decode($request, true);
 
             // 获取相应账号的数据
-            $result = User::where('name', $data['name'])->find();
-            if ($result['username'] === $data['username']) {
+            $result = User::where('username', $data['username'])->find();
+            if ($result) {
                 return json(['error' => '用户已存在'], 401);
             }
             if ($data['role'] === 1) {
@@ -167,8 +167,8 @@ class UserController extends controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
             // 获取相应账号的数据
-            $result = User::where('name', $data['name'])->find();
-            if ($result['username'] === $data['username']) {
+            $result = User::where('username', $data['username'])->find();
+            if ($result) {
                 return json(['error' => '用户已存在'], 401);
             }
             if ($data['role'] === 1) {

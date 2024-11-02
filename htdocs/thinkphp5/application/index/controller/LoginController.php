@@ -64,6 +64,22 @@ class LoginController extends Controller
         }
     }
 
+    public function getRole(){
+        $token = request()->header('x-auth-token');
+        
+        $userObject = session($token);
+        if ($userObject) {
+            $user = json_decode($userObject, true);
+            
+            if ($user['role'] === 3) {
+                return 0;
+            }
+            return 1;
+        } else {
+            return json(['error' => '无效的token'], 401);
+        }
+    }
+
     private function validateToken($token){
         // 验证token的逻辑
         if (empty($token)) {
