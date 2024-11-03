@@ -9,8 +9,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
 import {SweetAlertService} from '../service/sweet-alert.service';
-import {LoginService} from "../service/login.service";
-import {User} from "../entity/user";
+import {LoginService} from '../service/login.service';
+import {User} from '../entity/user';
 
 @Component({
   selector: 'app-clazz',
@@ -62,6 +62,11 @@ export class ClazzComponent implements OnInit {
   form = new FormGroup({});
 
   ngOnInit(): void {
+    const sessionRole = window.sessionStorage.getItem('role');
+    if (sessionRole !== 'true') {
+      window.history.back();
+      this.sweetAlertService.showError('无权限', '', '');
+    }
     console.log('clazz组件调用ngOnInit()');
     // 使用默认值 page = 0 调用loadByPage()方法
     this.loadByPage();

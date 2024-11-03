@@ -61,6 +61,12 @@ export class SchoolComponent implements OnInit {
   form = new FormGroup({});
 
   ngOnInit() {
+    const sessionRole = window.sessionStorage.getItem('role');
+    if (sessionRole !== 'true') {
+      window.history.back();
+      this.sweetAlertService.showError('无权限', '', '');
+    }
+
     this.localCheckerService.startCheckingLocal();
     console.log('school组件调用ngOnInit()');
     // 使用默认值 page = 0 调用loadByPage()方法

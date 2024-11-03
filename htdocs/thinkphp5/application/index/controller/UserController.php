@@ -167,14 +167,24 @@ class UserController extends controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
             // 获取相应账号的数据
-            $result = User::where('username', $data['username'])->count();
-            if ($result > 1) {
-                return json(['error' => '用户已存在'], 401);
+            $results = User::where('username', $data['username'])->select();
+            if ($results) {
+                if ($results) {
+                    foreach ($results as $result) {
+                        if ($result->id !== $data['id']) {
+                            return json(['error' => '用户已存在'], 401);
+                        } 
+                    }
+                }
             }
             if ($data['role'] === 1) {
-                $role = User::where('role', 1)->count();
-                if ($role > 1) {
-                    return json(['error' => '超级管理员有且只有一位'], 401);
+                $roles = User::where('role', 1)->select();
+                if ($roles) {
+                    foreach ($roles as $role) {
+                        if ($role->id !== $data['id']) {
+                            return json(['error' => '超级管理员有且只有一位'], 401);
+                        } 
+                    }
                 }
             }
 
