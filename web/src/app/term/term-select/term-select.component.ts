@@ -43,7 +43,7 @@ export class TermSelectComponent implements OnInit, ControlValueAccessor {
           this.sharedService.setSomeValue(data);
         }
       );
-    // 获取所有学校
+    // 获取所有学期
     this.httpClient.get<{ content: Term[] }>('api/term/')
       .subscribe(
         (response) => {

@@ -205,9 +205,9 @@ class CourseController extends Controller
                             ->where('school_id', $school['id'])
                             ->where('clazz_id', $clazz['id'])
                             ->where('term_id', $term['id'])
-                            ->find();
+                            ->count();
 
-            if ($courses) {
+            if ($courses > 1) {
                 return json(['error' => '课程已存在'], 401);
             }
 
@@ -273,6 +273,20 @@ class CourseController extends Controller
 
         // 使用 school_id 获取学期列表
         $terms = Term::where('school_id', $schoolId)->select();
+        return json($terms);
+    }
+
+    public function getTerm() {
+        $request = Request::instance();
+        $termId = $request->param('termId');
+
+        // 检查 term_id 是否存在
+        if (empty($termId)) {
+            return json(['error' => 'term_id is required'], 400);
+        }
+
+        // 使用 term_id 获取学期
+        $terms = Term::where('id', $termId)->select();
         return json($terms);
     }
 }

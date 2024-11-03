@@ -112,9 +112,9 @@ class ClazzController extends Controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
 
-            $result = Clazz::where('name', $data['name'])->where('school_id', $school['id'])->find();
+            $result = Clazz::where('name', $data['name'])->where('school_id', $school['id'])->count();
 
-            if ($result) {
+            if ($result > 1) {
                 return json(['error' => '班级已存在'], 401);
             }
 
