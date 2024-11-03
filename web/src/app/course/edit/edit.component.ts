@@ -90,7 +90,6 @@ export class EditComponent implements OnInit {
     // tslint:disable-next-line:no-non-null-assertion
     this.termIdSubscription = this.formGroup.get('term_id')!.valueChanges.subscribe(value => {
       console.log('Term ID changed to:', value);
-      this.weeks = [];
       this.onTermChange(value);
     });
     const id = this.activatedRoute.snapshot.params.id;
@@ -113,7 +112,6 @@ export class EditComponent implements OnInit {
         this.nameFormControl.patchValue(course[0].name);
         this.formGroup.get('school_id').setValue(course[0].school_id);
         this.formGroup.get('term_id').setValue(course[0].term_id);
-        this.onTermChange(course[0].term_id);
         this.formGroup.get('sory').setValue(course[0].sory);
         this.formGroup.get('clazz_id').setValue(course[0].clazz_id);
         this.formGroup.get('week').setValue(course[0].week);
@@ -227,7 +225,6 @@ export class EditComponent implements OnInit {
 
     // 创建周数数组
     console.log(numberOfWeeks);
-    this.weeks = [];
     for (let i = 1; i <= numberOfWeeks; i++) {
       this.weeks.push(i);
       console.log(this.weeks);

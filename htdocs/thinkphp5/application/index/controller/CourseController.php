@@ -113,14 +113,22 @@ class CourseController extends Controller
             $period = $data['period'];
 
             // 获取相应账号的数据
-            $course = Course::where('name', $data['name'])
+            $courses = Course::where('name', $data['name'])
                             ->where('school_id', $school['id'])
                             ->where('clazz_id', $clazz['id'])
                             ->where('term_id', $term['id'])
-                            ->find();
+                            ->where('sory', $data['sory'])
+                            ->where('week', $data['week'])
+                            ->where('day', $data['day'])
+                            ->where('period', $data['period'])
+                            ->select();
 
-            if ($course) {
-                return json(['error' => '课程已存在'], 401);
+            if ($courses) {
+                foreach ($courses as $course) {
+                    if ($course->id !== $data['id']) {
+                        return json(['error' => '课程已存在'], 401);
+                    } 
+                }
             }
 
             // 验证必要字段
