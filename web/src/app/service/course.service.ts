@@ -17,4 +17,7 @@ export class CourseService {
   getTermsBySchoolId(schoolId: number): Observable<Array<Term>> {
     return this.httpClient.get<Array<Term>>(`api/course/getTermsBySchoolId?schoolId=${schoolId}`);
   }
+  getTerm(termId: number): Observable<Term> {
+    return this.httpClient.get<Term>(`api/course/getTerm?termId=${termId}`);
+  }
 }

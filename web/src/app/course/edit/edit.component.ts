@@ -10,6 +10,7 @@ import {SharedService} from '../../service/shared.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {CourseService} from '../../service/course.service';
 import {SweetAlertService} from '../../service/sweet-alert.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -36,7 +37,11 @@ export class EditComponent implements OnInit {
   value = '';
   terms = new Array<Term>();
   clazzes = new Array<Clazz>();
-  weeks: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
+
+  semesterStartDate: Date;
+  semesterEndDate: Date;
+
+  weeks: number[] = [];
   days: {name: string, value: number}[] = [
     {name: '周一', value: 1},
     {name: '周二', value: 2},
@@ -68,6 +73,10 @@ export class EditComponent implements OnInit {
     day: new FormControl(null, Validators.required),
     period: new FormControl(null, Validators.required)
   });
+  private termIdSubscription: Subscription;
+  // tslint:disable-next-line:variable-name
+  term_id: number;
+
 
   constructor(private httpClient: HttpClient,
               private activatedRoute: ActivatedRoute,
@@ -78,6 +87,12 @@ export class EditComponent implements OnInit {
               private courseService: CourseService) { }
 
   ngOnInit(): void {
+    // tslint:disable-next-line:no-non-null-assertion
+    this.termIdSubscription = this.formGroup.get('term_id')!.valueChanges.subscribe(value => {
+      console.log('Term ID changed to:', value);
+      this.weeks = [];
+      this.onTermChange(value);
+    });
     const id = this.activatedRoute.snapshot.params.id;
     this.loadById(+id);
   }
@@ -98,9 +113,11 @@ export class EditComponent implements OnInit {
         this.nameFormControl.patchValue(course[0].name);
         this.formGroup.get('school_id').setValue(course[0].school_id);
         this.formGroup.get('term_id').setValue(course[0].term_id);
+        this.onTermChange(course[0].term_id);
         this.formGroup.get('sory').setValue(course[0].sory);
         this.formGroup.get('clazz_id').setValue(course[0].clazz_id);
         this.formGroup.get('week').setValue(course[0].week);
+        console.log(course[0].week);
         this.formGroup.get('period').setValue(course[0].period);
         this.formGroup.get('day').setValue(course[0].day);
       }, error => console.log(error));
@@ -183,5 +200,37 @@ export class EditComponent implements OnInit {
     console.log(this.course.school_id);
     this.getClazzBySchoolId(this.course.school_id);
     this.getTermsBySchoolId(this.course.school_id);
+  }
+
+  onTermChange(termId: number) {
+    this.course.term_id = termId;
+    console.log(this.course.term_id);
+    this.courseService.getTerm(termId)
+      .subscribe(term => {
+        console.log(term);
+        console.log(term.start_time);
+        this.semesterEndDate = term[0].end_time;
+        this.semesterStartDate = term[0].start_time;
+        this.calculateWeeks();
+      }, error => {
+        console.error('获取学期失败', error);
+      });
+  }
+
+  calculateWeeks(): void {
+    const oneDay = 1000 * 60 * 60 * 24;
+    const startTime = new Date(this.semesterStartDate);
+    const endTime = new Date(this.semesterEndDate);
+    const diffInMilliseconds = endTime.getTime() - startTime.getTime();
+    const diffInDays = Math.ceil(diffInMilliseconds / oneDay); // 使用ceil确保包含最后一天
+    const numberOfWeeks = Math.ceil(diffInDays / 7);
+
+    // 创建周数数组
+    console.log(numberOfWeeks);
+    this.weeks = [];
+    for (let i = 1; i <= numberOfWeeks; i++) {
+      this.weeks.push(i);
+      console.log(this.weeks);
+    }
   }
 }

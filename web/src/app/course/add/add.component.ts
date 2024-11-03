@@ -28,9 +28,13 @@ export class AddComponent implements OnInit {
   value = '';
   schools = new Array<School>();
   terms = new Array<Term>();
+  term = new Term();
   clazzes = new Array<Clazz>();
 
-  weeks: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
+  semesterStartDate: Date;
+  semesterEndDate: Date;
+
+  weeks: number[] = [];
   days = [
     {name: '周一', value: 1},
     {name: '周二', value: 2},
@@ -77,7 +81,7 @@ export class AddComponent implements OnInit {
       .subscribe(clazz => {
         this.dialogRef.close(newCourse);
         this.sweetAlertService.showSuccess('新增成功！', 'success');
-          window.location.href = 'http://127.0.0.1:8088/course';
+        window.location.href = 'http://127.0.0.1:8088/course';
         },
         error => {
           if (error.error.error === '课程已存在') {
@@ -116,5 +120,35 @@ export class AddComponent implements OnInit {
     console.log(this.course.school_id);
     this.getClazzBySchoolId(this.course.school_id);
     this.getTermsBySchoolId(this.course.school_id);
+  }
+
+  onTermChange(termId: number) {
+    this.course.term_id = termId;
+    console.log(this.course.term_id);
+    this.courseService.getTerm(termId)
+      .subscribe(term => {
+        console.log(term);
+        console.log(term[0].start_time);
+        this.semesterEndDate = term[0].end_time;
+        this.semesterStartDate = term[0].start_time;
+        this.calculateWeeks();
+      }, error => {
+        console.error('获取学期失败', error);
+      });
+  }
+
+  calculateWeeks(): void {
+    const oneDay = 1000 * 60 * 60 * 24;
+    const startTime = new Date(this.semesterStartDate);
+    const endTime = new Date(this.semesterEndDate);
+    const diffInMilliseconds = endTime.getTime() - startTime.getTime();
+    const diffInDays = Math.ceil(diffInMilliseconds / oneDay); // 使用ceil确保包含最后一天
+    const numberOfWeeks = Math.ceil(diffInDays / 7);
+
+    // 创建周数数组
+    for (let i = 1; i <= numberOfWeeks; i++) {
+      this.weeks.push(i);
+    }
+    console.log(this.weeks);
   }
 }

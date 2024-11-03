@@ -183,28 +183,30 @@ class TermController extends Controller
             }
 
             // 获取相应账号的数据
-            $result = Term::where('name', $data['name'])->where('school_id', $school['id'])->find();
-            if ($result) {
+            $result = Term::where('name', $data['name'])->where('school_id', $school['id'])->count();
+            if ($result > 1) {
                 return json(['error' => '同名学期已存在'], 401);
             }
 
-            $start = Term::where('start_time', $data['start_time'])->where('school_id', $school['id'])->find();
-            if ($start) {
+            $start = Term::where('start_time', $data['start_time'])->where('school_id', $school['id'])->count();
+            if ($start > 1) {
                 return json(['error' => '相同开始时间的学期已存在'], 401);
             }
 
-            $end = Term::where('end_time', $data['end_time'])->where('school_id', $school['id'])->find();
-            if ($end) {
+            $end = Term::where('end_time', $data['end_time'])->where('school_id', $school['id'])->count();
+            if ($end > 1) {
                 return json(['error' => '相同结束时间的学期已存在'], 401);
             }
 
             $terms = Term::where('school_id', $school['id'])->find();
+            $i = 0;
             // 检查是否查询到了数据  
-            if (!$terms->isEmpty()) {  
+            if ($terms) {  
                 // 遍历查询结果集  
                 foreach ($terms as $term) { 
                     if ($startTime <= strtotime($term->start_time) && $endTime <= strtotime($term->end_time)) {
-                        return json(['error' => '相似时间的学期已存在'], 401);
+                        $i = $i + 1;
+                        if ($i >= 2) {return json(['error' => '相似时间的学期已存在'], 401);} 
                     }
                 }
             }

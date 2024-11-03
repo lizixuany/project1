@@ -105,9 +105,9 @@ class SchoolController extends Controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
 
-            $result = School::where('name', $data['name'])->find();
+            $result = School::where('name', $data['name'])->count();
 
-            if ($result) {
+            if ($result > 1) {
                 return json(['error' => '学校已存在'], 401);
             }
 
