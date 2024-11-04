@@ -65,9 +65,10 @@ export class AddComponent implements OnInit {
       .subscribe(clazz => {
         this.dialogRef.close(newTerm);
         this.sweetAlertService.showSuccess('新增成功！', 'success');
-          window.location.href = 'http://127.0.0.1:8088/term';
+        window.location.href = 'http://127.0.0.1:8088/term';
         },
         error => {
+          console.log(error.error.error);
           if (error.error.error === '同名学期已存在') {
             this.sweetAlertService.showError('新增失败', '同名学期已存在', '');
           } else if (error.error.error === '相同开始时间的学期已存在') {
@@ -78,6 +79,8 @@ export class AddComponent implements OnInit {
             this.sweetAlertService.showError('新增失败', '相似时间的学期已存在', '');
           } else if (error.error.error === '学期时间设置异常') {
             this.sweetAlertService.showError('新增失败', '学期时间设置异常', '');
+          } else if (error.error.error === '学期的周数不得少于16周') {
+            this.sweetAlertService.showError('新增失败', '学期的周数不得少于16周', '');
           } else {
             this.sweetAlertService.showError('新增失败', '', '');
           }
