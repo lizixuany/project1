@@ -10,15 +10,21 @@ import {SexPipe} from './sex.pipe';
 import {RolePipe} from '../role.pipe';
 import {StatePipe} from '../state.pipe';
 import {XAuthTokenInterceptor} from '../x-auth-token.interceptor';
+import {RoleChangeComponent} from './role-change/role-change.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
   declarations: [
     ChangePasswordComponent,
+    RoleChangeComponent,
     PersonalCenterComponent,
     SexPipe,
     RolePipe,
     StatePipe
+  ],
+  entryComponents: [
+    RoleChangeComponent // 添加到这里
   ],
   imports: [
     BrowserModule,
@@ -26,7 +32,8 @@ import {XAuthTokenInterceptor} from '../x-auth-token.interceptor';
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    MatDialogModule
   ],
   exports: [SexPipe, RolePipe, StatePipe],
   providers: [

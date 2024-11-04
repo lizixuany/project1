@@ -7,6 +7,7 @@ import { LoginService } from '../service/login.service';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {User} from '../entity/user';
+import {RoleChangeComponent} from './role-change/role-change.component';
 
 @Component({
   selector: 'app-personal-center',
@@ -62,10 +63,17 @@ export class PersonalCenterComponent implements OnInit {
     }, 1500);
   }
 
-  openDialog(): void {
+  openPasswordDialog(): void {
     this.dialog.open(ChangePasswordComponent, {
       width: '1000px',
       height: '400px',
+    });
+  }
+
+  openRoleDialog(): void {
+    this.dialog.open(RoleChangeComponent, {
+      width: '1000px',
+      height: '275px',
     });
   }
 }

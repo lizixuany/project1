@@ -1,12 +1,17 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import Swal from 'sweetalert2';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SweetAlertService {
 
-  constructor() { }
+  beLogout = new EventEmitter<void>();
+  login = false;
+
+  constructor(private httpClient: HttpClient) {
+  }
 
   public showError(title: string, text: string, icon: string): void {
     Swal.fire({
@@ -16,7 +21,7 @@ export class SweetAlertService {
     });
   }
 
-  public showSuccess(title: string,  icon: string): void {
+  public showSuccess(title: string, icon: string): void {
     Swal.fire({
       title,
       icon: 'success',
@@ -25,7 +30,7 @@ export class SweetAlertService {
     });
   }
 
-   public showLogoutWarning(title: string,  icon: string): void {
+  public showLogoutWarning(title: string, icon: string): void {
     Swal.fire({
       title,
       icon: 'warning',
@@ -54,6 +59,30 @@ export class SweetAlertService {
       title: '用户已冻结',
       text: '请联系管理员解决',
       icon: 'question'
+    });
+  }
+
+  public returnLogin(): void {
+    Swal.fire({
+      title: '即将返回登录界面...',
+      html: '',
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss !== Swal.DismissReason.cancel) {
+        console.log('I was closed by the timer');
+        // 在这里执行计时器结束后的操作，例如重定向到登录页面
+        this.beLogout.emit();
+        this.login = false;
+        localStorage.removeItem('login');
+        window.sessionStorage.removeItem('login');
+        window.sessionStorage.removeItem('role');
+        window.location.href = '/';
+      }
     });
   }
 }
