@@ -36,12 +36,16 @@
       <td>{{clazz.name}}</td>
       <td>{{clazz.school.name}}</td>
       <td>
-        <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(clazz.id)">
-          <i class="fas fa-pen"></i>编辑
-        </a>
+        <div class="btn-inline">
+          <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(clazz.id)">
+            <i class="fas fa-pen"></i>编辑
+          </a>
+        </div>
+        <div class="btn-inline" *ngIf="clazz.id !== me.clazz.id">
         <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, clazz.id)">
             <i class="far fa-trash-alt"></i>删除
-          </span>
+        </span>
+        </div>
       </td>
     </tr>
     </tbody>

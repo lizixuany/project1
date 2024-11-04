@@ -47,6 +47,11 @@ export class TermComponent implements OnInit {
               private dialog: MatDialog,
               private sweetAlertService: SweetAlertService,
               private loginService: LoginService) {
+    const sessionRole = window.sessionStorage.getItem('role');
+    if (sessionRole !== 'true') {
+      window.location.href = 'http://127.0.0.1:8088/';
+      this.sweetAlertService.showError('无权限', '', '');
+    }
     this.loginService.getCurrentUser().subscribe(
       user => {
         this.me = user;

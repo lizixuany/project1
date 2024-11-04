@@ -4,7 +4,6 @@ import {Clazz} from '../entity/clazz';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {FormGroup, NgForm} from '@angular/forms';
 import {SharedService} from '../service/shared.service';
-import {Confirm} from 'notiflix';
 import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
@@ -64,7 +63,7 @@ export class ClazzComponent implements OnInit {
   ngOnInit(): void {
     const sessionRole = window.sessionStorage.getItem('role');
     if (sessionRole !== 'true') {
-      window.history.back();
+      window.location.href = 'http://127.0.0.1:8088/';
       this.sweetAlertService.showError('无权限', '', '');
     }
     console.log('clazz组件调用ngOnInit()');
