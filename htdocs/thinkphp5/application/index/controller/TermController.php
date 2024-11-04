@@ -105,6 +105,24 @@ class TermController extends Controller
             if ($startTime >= $endTime) {
                 return json(['error' => '学期时间设置异常'], 401);
             }
+
+            // 验证周数不得少于16周
+           $startTime = strtotime($data['start_time']);
+           $endTime = strtotime($data['end_time']);
+
+           // 计算学期的总天数
+           $semesterTotalDays = $endTime - $startTime;
+           $totalDays = $semesterTotalDays / 86400;
+           
+           // 计算学期的总周数s
+           $totalWeeks = (int)ceil($totalDays / 7);
+
+           // 检查周数是否不少于16周
+           if ($totalWeeks < 16) {
+               return json(['error' => '学期的周数不得少于16周'], 401);
+           }
+
+
             // 创建学期对象并保存
             $term = new Term();
             $term->name = $data['name'];
@@ -245,6 +263,22 @@ class TermController extends Controller
            }
            if ($startTime >= $endTime) {
             return json(['error' => '学期时间设置异常'], 401);
+           }
+
+           // 验证周数不得少于16周
+           $startTime = strtotime($data['start_time']);
+           $endTime = strtotime($data['end_time']);
+
+           // 计算学期的总天数
+           $semesterTotalDays = $endTime - $startTime;
+           $totalDays = $semesterTotalDays / 86400;
+           
+           // 计算学期的总周数s
+           $totalWeeks = (int)ceil($totalDays / 7);
+
+           // 检查周数是否不少于16周
+           if ($totalWeeks < 16) {
+               return json(['error' => '学期的周数不得少于16周'], 401);
            }
 
             // 创建学期对象并保存
