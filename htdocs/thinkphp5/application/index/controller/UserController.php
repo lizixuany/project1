@@ -169,13 +169,11 @@ class UserController extends controller
             // 获取相应账号的数据
             $results = User::where('username', $data['username'])->select();
             if ($results) {
-                if ($results) {
                     foreach ($results as $result) {
                         if ($result->id !== $data['id']) {
                             return json(['error' => '用户已存在'], 401);
                         } 
                     }
-                }
             }
             if ($data['role'] === 1) {
                 $roles = User::where('role', 1)->select();

@@ -6,6 +6,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {UserService} from '../service/user.service';
 import {School} from '../entity/school';
+import {LoginService} from '../service/login.service';
+import {SharedService} from '../service/shared.service';
+import {User} from '../entity/user';
 
 @Component({
   selector: 'app-add',
@@ -27,13 +30,22 @@ export class AddComponent implements OnInit {
   };
   schools = new Array<School>();
   clazzes = new Array<Clazz>();
+  me = new User();
 
   constructor(private httpClient: HttpClient,
               private sweetAlertService: SweetAlertService,
               private router: Router,
+              private loginService: LoginService,
+              private sharedService: SharedService,
               private userService: UserService,
               public dialogRef: MatDialogRef<AddComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.loginService.getCurrentUser().subscribe(
+      user => {
+        this.me = user;
+        this.sharedService.setData(user);
+      }
+    );
   }
 
   ngOnInit(): void {

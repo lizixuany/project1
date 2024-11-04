@@ -41,12 +41,16 @@
         <td>{{ term.start_time }}</td>
         <td>{{ term.end_time }}</td>
         <td>
-          <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(term.id)">
-            <i class="fas fa-pen"></i>编辑
-          </a>
-          <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, term.id)">
-              <i class="far fa-trash-alt"></i>删除
-          </span>
+          <div class="btn-inline">
+            <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(term.id)">
+              <i class="fas fa-pen"></i>编辑
+            </a>
+          </div>
+          <div class="btn-inline">
+        <span class="btn btn-sm btn-outline-danger" (click)="onDelete(index, term.id)">
+            <i class="far fa-trash-alt"></i>删除
+        </span>
+          </div>
         </td>
       </tr>
     </tbody>

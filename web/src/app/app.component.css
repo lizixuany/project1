@@ -9,3 +9,12 @@
   margin: 130px 100px 0px 280px;
   font-size: 24px;
 }
+
+.btn-inline {
+  display: inline-block;
+  margin-right: 5px; /* 根据需要调整间距 */
+}
+
+.btn-inline:last-child {
+  margin-right: 0; /* 最后一个按钮不需要右边距 */
+}

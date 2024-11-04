@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
   clazzs: Clazz[];
 
   me = new User();
+  role = 0;
   beLogout = new EventEmitter<void>();
 
   constructor(private httpClient: HttpClient,
@@ -66,11 +67,13 @@ export class AppComponent implements OnInit {
   form = new FormGroup({});
 
   ngOnInit(): void {
+    // 导航栏隐藏，设置权限
     const sessionRole = window.sessionStorage.getItem('role');
     if (sessionRole !== 'true') {
-      window.history.back();
+      window.location.href = 'http://127.0.0.1:8088/';
       this.sweetAlertService.showError('无权限', '', '');
     }
+
     console.log('app组件调用ngOnInit()');
     this.getClazz();
     // 使用默认值 page = 0 调用loadByPage()方法

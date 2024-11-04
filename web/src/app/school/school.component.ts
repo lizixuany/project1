@@ -12,6 +12,7 @@ import {SweetAlertService} from '../service/sweet-alert.service';
 import {User} from '../entity/user';
 import {LoginService} from '../service/login.service';
 import {LocalCheckerService} from '../service/local-checker.service';
+import {Clazz} from "../entity/clazz";
 
 @Component({
   selector: 'app-school',
@@ -36,7 +37,9 @@ export class SchoolComponent implements OnInit {
     numberOfElements: 0
   });
 
-  me = new User();
+  me = {
+    school_id: 0
+  };
   beLogout = new EventEmitter<void>();
 
   constructor(private httpClient: HttpClient,
@@ -47,7 +50,9 @@ export class SchoolComponent implements OnInit {
               private localCheckerService: LocalCheckerService) {
     this.loginService.getCurrentUser().subscribe(
       user => {
-        this.me = user;
+        this.me.school_id = user.school_id;
+        console.log('user', user);
+        console.log(this.me);
         this.sharedService.setData(user);
       },
       error => {
@@ -63,7 +68,7 @@ export class SchoolComponent implements OnInit {
   ngOnInit() {
     const sessionRole = window.sessionStorage.getItem('role');
     if (sessionRole !== 'true') {
-      window.history.back();
+      window.location.href = 'http://127.0.0.1:8088/';
       this.sweetAlertService.showError('无权限', '', '');
     }
 

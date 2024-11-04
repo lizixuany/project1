@@ -10,6 +10,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {User} from '../entity/user';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {UserService} from '../service/user.service';
+import {LoginService} from '../service/login.service';
 
 @Component({
   selector: 'app-edit',
@@ -27,7 +28,7 @@ export class EditComponent implements OnInit {
     name: '',
     username: '',
     sex: 0,
-    role: 0,
+    role: 3,
     state: 0,
     school_id: null as unknown as number,
     clazz_id: null as unknown as number
@@ -36,6 +37,8 @@ export class EditComponent implements OnInit {
   value = '';
   schools = new Array<School>();
   clazzes = new Array<Clazz>();
+  me = new User();
+
   /**
    * 表单组，用于存放多个formControl
    */
@@ -49,15 +52,23 @@ export class EditComponent implements OnInit {
     role: new FormControl(null, Validators.required),
     state: new FormControl(null, Validators.required)
   });
+  private role: number;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
+              private loginService: LoginService,
               private httpClient: HttpClient,
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
               public dialogRef: MatDialogRef<EditComponent>,
               private userService: UserService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.loginService.getCurrentUser().subscribe(
+      user => {
+        this.me = user;
+        this.sharedService.setData(user);
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -98,7 +109,10 @@ export class EditComponent implements OnInit {
     const sex = this.formGroup.get('sex').value;
     const schoolId = this.formGroup.get('school_id').value;
     const clazzId = this.formGroup.get('clazz_id').value;
-    const role = this.formGroup.get('role').value;
+    this.role = this.formGroup.get('role').value;
+    if (this.role) {
+      this.role = 3;
+    }
     const state = this.formGroup.get('state').value;
     const user = new User({
       id: userId,
@@ -107,7 +121,7 @@ export class EditComponent implements OnInit {
       sex,
       school: new School({id: schoolId}),
       clazz: new Clazz({id: clazzId}),
-      role,
+      role: this.role,
       state
     });
     console.log(user);
