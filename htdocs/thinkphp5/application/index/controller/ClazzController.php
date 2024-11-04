@@ -5,6 +5,7 @@ use think\Controller;
 use think\Request;
 use app\common\model\Clazz;
 use app\common\model\School;
+use app\common\model\User;
 use think\Route;
 
 class ClazzController extends Controller
@@ -150,6 +151,13 @@ class ClazzController extends Controller
             if (!$clazz) {
                 return json(['status' => 'error', 'message' => '班级不存在']);
             }
+
+            $users = User::where('clazz_id', $clazz['id'])->select();
+            if ($users) {
+                return json(['error' => '该班级仍有用户未清空'], 401); 
+            }
+
+            
 
             // 删除班级
             if ($clazz->delete()) {

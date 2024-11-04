@@ -105,8 +105,12 @@ export class ClazzComponent implements OnInit {
                 this.loadByPage();
               },
               error => {
-                this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
-                console.log('删除失败', error);
+                if (error.error.error === '该班级仍有用户未清空') {
+                  this.sweetAlertService.showError('删除失败', '该班级仍有用户未清空', '');
+                } else {
+                  this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
+                  console.log('删除失败', error);
+                }
               });
         }
       });
