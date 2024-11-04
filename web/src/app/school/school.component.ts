@@ -112,8 +112,14 @@ export class SchoolComponent implements OnInit {
                 this.loadByPage();
               },
               error => {
-                this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
-                console.log('删除失败', error);
+                if (error.error.error === '该学校仍有班级未清空') {
+                  this.sweetAlertService.showError('删除失败', '该学校仍有班级未清空', '');
+                } else if (error.error.error === '该学期仍有班级未清空') {
+                  this.sweetAlertService.showError('删除失败', '该学期仍有班级未清空', '');
+                } else {
+                  this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
+                  console.log('删除失败', error);
+                }
               });
         }
       });

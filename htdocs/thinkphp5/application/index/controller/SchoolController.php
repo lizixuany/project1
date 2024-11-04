@@ -3,6 +3,8 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;   // 引用数据库操作类
 use app\common\model\School;
+use app\common\model\Term;
+use app\common\model\Clazz;
 use think\request;
 
 class SchoolController extends Controller
@@ -145,6 +147,16 @@ class SchoolController extends Controller
                 return json(['status' => 'error', 'message' => '学校不存在']);
             }
 
+            $clazzes = Clazz::where('school_id', $school['id'])->select();
+            if ($clazzes) {
+                return json(['error' => '该学校仍有班级未清空'], 401); 
+            }
+
+            $terms = Term::where('school_id', $school['id'])->select();
+            if ($termes) {
+                return json(['error' => '该学校仍有学期未清空'], 401); 
+            }
+
             // 删除学校
             if ($school->delete()) {
                 return json(['status' => 'success', 'message' => '删除成功']);
@@ -164,6 +176,7 @@ class SchoolController extends Controller
             return json(['success' => true, 'message' => 'id不存在']);
         }
         $school = School::get($id);
+
         return $school;
     }
 }

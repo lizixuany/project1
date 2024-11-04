@@ -37,7 +37,7 @@ export class SweetAlertService {
   public showWarning(title: string, text: string, icon: string): Promise<boolean> {
     return Swal.fire({
       title: '确定吗?',
-      text: '该操作可能会导致大量数据丢失，建议检查有关数据。',
+      text: '该操作可能会失败，建议检查有关数据是否清空。',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

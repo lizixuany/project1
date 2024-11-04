@@ -3,6 +3,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;   // 引用数据库操作类
 use app\common\model\Term;
+use app\common\model\Course;
 use think\request;
 
 class TermController extends Controller
@@ -79,7 +80,7 @@ class TermController extends Controller
 
             $terms = Term::where('school_id', $school['id'])->find();
             // 检查是否查询到了数据  
-            if (!$terms->isEmpty()) {  
+            if ($terms) {  
                 // 遍历查询结果集  
                 foreach ($terms as $term) { 
                     if ($startTime <= strtotime($term->start_time) && $endTime <= strtotime($term->end_time)) {
@@ -124,6 +125,11 @@ class TermController extends Controller
             $term = TermController::getTerm();
             if (!$term) {
                 return json(['status' => 'error', 'message' => '学期不存在']);
+            }
+
+            $courses = Course::where('term_id', $term['id'])->select();
+            if ($courses) {
+                return json(['error' => '该学期仍有课程未清空'], 401); 
             }
 
             // 删除学期

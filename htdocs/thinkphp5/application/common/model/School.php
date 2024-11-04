@@ -8,5 +8,17 @@ class School extends Model
     protected $table = 'school';
     // 定义主键
     protected $pk = 'id';
+
+    // 关联clazz表
+    public function clazz()
+    {
+        return $this->belongsTo('Clazz');
+    }
+
+    // 关联term表
+    public function term()
+    {
+        return $this->belongsTo('Term');
+    }
 }
 

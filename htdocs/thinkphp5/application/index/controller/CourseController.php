@@ -111,21 +111,21 @@ class CourseController extends Controller
             $term = $data['term'];
             $day = $data['day'];
             $period = $data['period'];
-
+           
             // 获取相应账号的数据
             $courses = Course::where('name', $data['name'])
                             ->where('school_id', $school['id'])
                             ->where('clazz_id', $clazz['id'])
                             ->where('term_id', $term['id'])
                             ->where('sory', $data['sory'])
-                            ->where('week', $data['week'])
+                            //->where('week', $data['week'])
                             ->where('day', $data['day'])
                             ->where('period', $data['period'])
                             ->select();
 
             if ($courses) {
                 foreach ($courses as $course) {
-                    if ($course->id !== $data['id']) {
+                    if ($course->id !== $data['id'] && $data['week'] === $course->week) {
                         return json(['error' => '课程已存在'], 401);
                     } 
                 }
