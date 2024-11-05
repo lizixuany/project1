@@ -12,6 +12,8 @@ import {CourseService} from '../service/course.service';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {User} from '../entity/user';
 import {LoginService} from '../service/login.service';
+import {Term} from '../entity/term';
+import {Clazz} from '../entity/clazz';
 
 @Component({
   selector: 'app-course',
@@ -41,6 +43,13 @@ export class CourseComponent implements OnInit {
 
   me = new User();
   beLogout = new EventEmitter<void>();
+
+  terms = new Array<Term>();
+  term = new Term();
+  clazzes = new Array<Clazz>();
+
+  semesterStartDate: Date;
+  semesterEndDate: Date;
 
   days = [
     {name: '周一', value: 1},
@@ -135,7 +144,7 @@ export class CourseComponent implements OnInit {
               });
         }
       });
-}
+  }
 
   openAddDialog(): void {
     this.dialog.open(AddComponent, {
@@ -197,5 +206,30 @@ export class CourseComponent implements OnInit {
         }
       );
     }, 1500);
+  }
+
+  getClazzBySchoolId(schoolId: number) {
+    this.courseService.getClazzBySchoolId(schoolId)
+      .subscribe(clazzes => {
+        this.clazzes = clazzes;
+      }, error => {
+        console.error('获取班级失败', error);
+      });
+  }
+
+  getTermsBySchoolId(schoolId: number) {
+    this.courseService.getTermsBySchoolId(schoolId)
+      .subscribe(terms => {
+        this.terms = terms;
+      }, error => {
+        console.error('获取学期失败', error);
+      });
+  }
+
+  onSchoolChange(schoolId: number) {
+    this.searchParameters.school = schoolId;
+    console.log(this.searchParameters.school);
+    this.getClazzBySchoolId(this.searchParameters.school);
+    this.getTermsBySchoolId(this.searchParameters.school);
   }
 }

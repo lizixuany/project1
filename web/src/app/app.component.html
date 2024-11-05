@@ -6,12 +6,17 @@
         <div class="form-group mb-2">
           <label class="mr-2">学校：</label>
           <!-- 默认提示选项 -->
-          <app-school-select name="school" id="school" [(ngModel)]="searchParameters.school"></app-school-select>
+          <app-school-select name="school" id="school" (beChange)="onSchoolChange($event)" [(ngModel)]="searchParameters.school"></app-school-select>
         </div>
         <div class="form-group mb-2">
           <label class="mr-2">班级：</label>
           <!-- 默认提示选项 -->
-          <app-clazz-select name="clazz" id="clazz" [(ngModel)]="searchParameters.clazz"></app-clazz-select>
+          <select class="form-control" [(ngModel)]="searchParameters.clazz" name="clazz_id" id="clazz_id">
+            <option [ngValue]="null">所有班级</option>
+            <option *ngFor="let clazz of clazzes" [value]="clazz.id">
+              {{clazz.name}}
+            </option>
+          </select>
         </div>
         <div class="form-group mb-2">
           <label class="mr-2">角色：</label>
