@@ -3,17 +3,13 @@ import {CommonModule} from '@angular/common';
 import {PageModule} from '../clazz/page/page.module';
 import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
-import {CourseComponent} from './course.component';
+import {LessonComponent} from './lesson.component';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {EditComponent} from './edit/edit.component';
 import {AddComponent} from './add/add.component';
-import {CourseRoutingModule} from './course-routing.module';
-import {SchoolSelectModule} from '../school/school-select/school-select.module';
-import {ClazzSelectModule} from '../clazz/clazz-select/clazz-select.module';
-import {TermSelectModule} from '../term/term-select/term-select.module';
+import {LessonRoutingModule} from './lesson-routing.module';
 import {MatDialogModule} from '@angular/material/dialog';
-import {SoryPipe} from './sory.pipe';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 
@@ -21,8 +17,7 @@ import {MatSelectModule} from '@angular/material/select';
   declarations: [
     EditComponent,
     AddComponent,
-    CourseComponent,
-    SoryPipe
+    LessonComponent
   ],
   entryComponents: [
     EditComponent,
@@ -35,15 +30,12 @@ import {MatSelectModule} from '@angular/material/select';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    CourseRoutingModule,
-    SchoolSelectModule,
-    ClazzSelectModule,
-    TermSelectModule,
+    LessonRoutingModule,
     MatDialogModule,
     MatInputModule,
     MatSelectModule
   ],
-  exports: [CourseComponent],
-  bootstrap: [CourseComponent]
+  exports: [LessonComponent],
+  bootstrap: [LessonComponent]
 })
-export class CourseModule { }
+export class LessonModule { }

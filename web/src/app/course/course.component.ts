@@ -4,7 +4,6 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Course} from '../entity/course';
 import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
-import {Confirm} from 'notiflix';
 import {EditComponent} from './edit/edit.component';
 import {SharedService} from '../service/shared.service';
 import {NgForm} from '@angular/forms';

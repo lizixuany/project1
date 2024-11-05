@@ -22,7 +22,7 @@ class Course extends Model
     // 关联term表
     public function term()
     {
-        return $this->belongsTo('Term');
+        return $this->belongsTo('Term', 'term_id', 'id');
     }
 }
 

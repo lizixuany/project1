@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Confirm} from 'notiflix';
 import {Page} from '../entity/page';
 import {School} from '../entity/school';
 import {SharedService} from '../service/shared.service';
@@ -9,10 +8,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
 import {SweetAlertService} from '../service/sweet-alert.service';
-import {User} from '../entity/user';
 import {LoginService} from '../service/login.service';
 import {LocalCheckerService} from '../service/local-checker.service';
-import {Clazz} from "../entity/clazz";
 
 @Component({
   selector: 'app-school',
