@@ -52,7 +52,10 @@
       操作：
     </div>
     <form class="col-8">
-      <button class="btn btn-primary" type="submit" (click)="openDialog()">修改密码</button>
+      <button class="btn btn-primary" type="submit" (click)="openPasswordDialog()">修改密码</button>
+    </form>
+    <form class="col-8" *ngIf="me.role === 1" style="margin: -38px 0px 0px 480px">
+      <button class="btn btn-primary" type="submit" (click)="openRoleDialog()">超管权限转交</button>
     </form>
   </div>
 </div>

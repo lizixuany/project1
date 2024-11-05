@@ -258,6 +258,43 @@ class UserController extends controller
         return $user;
     }
 
+    public static function getRoleUser() {
+        $list = User::with(['clazz', 'school'])
+                    ->where('role', 'in', [2, 3])
+                    ->select();
+        return json($list);
+    }
+
+    public function roleChange() {
+        try {
+            $request = Request::instance()->getContent();
+            $data = json_decode($request, true);
+
+            $userchanged = User::where('id', $data['userChangedId'])
+                                ->find();
+            if ($userchanged) {
+                $userchanged->role = 2;
+                $userchanged->save();
+            } else {
+                return json(['error' => '用户未找到'], 401);
+            }
+
+            $user = User::where('id', (int)$data['userId'])
+                        ->find();
+            if ($user) {
+                $user->role = 1;
+                $user->save();
+            } else {
+                return json(['error' => '用户未找到'], 401);
+            }
+
+        return json(['status' => 'success']);
+        } catch (Exception $e) {
+            // 异常处理
+            return json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
     public function getClazzBySchoolId() {
         $request = Request::instance();
         $schoolId = $request->param('schoolId');
