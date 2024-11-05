@@ -3,8 +3,6 @@ import {Routes, RouterModule} from '@angular/router';
 import {PersonalCenterComponent} from './personal-center/personal-center.component';
 import {WelcomeComponent} from './welcome.component';
 import {AppComponent} from './app.component';
-import {LoginComponent} from './login/login.component';
-import {SchoolRoutingModule} from './school/school-routing.module';
 import {CourseScheduleComponent} from './course-schedule/course-schedule.component';
 import {IndexComponent} from './index/index.component';
 
@@ -44,7 +42,11 @@ const routes: Routes = [
   {
     path: 'course-schedule',
     component: CourseScheduleComponent
-  }
+  },
+  {
+    path: 'lesson',
+    loadChildren: () => import('./lesson/lesson.module').then(m => m.LessonModule)
+  },
 ];
 
 @NgModule({

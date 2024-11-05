@@ -20,9 +20,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {XAuthTokenInterceptor} from './x-auth-token.interceptor';
 import {SweetAlertService} from './service/sweet-alert.service';
 import {CourseScheduleComponent} from './course-schedule/course-schedule.component';
-import {MatOptionModule} from "@angular/material/core";
-import {TermSelectModule} from "./term/term-select/term-select.module";
-import {MatSelectModule} from "@angular/material/select";
+import {MatOptionModule} from '@angular/material/core';
+import {TermSelectModule} from './term/term-select/term-select.module';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [

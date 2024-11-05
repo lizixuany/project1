@@ -1,0 +1,33 @@
+<div class="container-md main">
+  <table class="table table-striped">
+    <thead>
+    <tr class="table-primary">
+      <th>序号</th>
+      <th>用户名称</th>
+      <th>学期名称</th>
+      <th>课程名称</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let lesson of pageData.content; index as index">
+      <td>{{ index + 1 }}</td>
+      <td>{{ lesson.user.name }}</td>
+      <td>{{ lesson.course.term.name }}</td>
+      <td>{{ lesson.course.name }}</td>
+      <td>
+        <div class="btn-inline">
+          <a class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-pen"></i>编辑
+          </a>
+        </div>
+        <div class="btn-inline">
+          <span class="btn btn-sm btn-outline-danger">
+              <i class="far fa-trash-alt"></i>删除
+          </span>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
