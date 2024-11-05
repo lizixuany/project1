@@ -27,7 +27,7 @@
       </div>
       <div class="form-group mb-2">
         <label class="mr-2">周数：</label>
-        <select class="form-control" [(ngModel)]="searchParameters.week" name="week" id="week">
+        <select class="form-control" [(ngModel)]="searchParameters.week" (change)="getWeekDates(searchParameters.week)" name="week" id="week">
           <option [ngValue]="null">所有周数</option>
           <option *ngFor="let week of weeks" [value]="week">
             {{week}}
@@ -45,11 +45,13 @@
   </div>
   <div class="col-8">
     <div *ngIf="courseTable.length > 0">
-      <table>
+      <table style="width: 1500px;margin-left: -200px">
         <thead>
         <tr>
           <th>节次/星期</th>
-          <th *ngFor="let day of days">{{ day.name }}</th>
+          <th *ngFor="let day of days; let i = index" class="multi-line-th">
+            {{ day.name }} <br> {{ dates[i] }}
+          </th>
         </tr>
         </thead>
         <tbody>
