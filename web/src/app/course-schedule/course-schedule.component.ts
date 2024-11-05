@@ -24,6 +24,7 @@ export class CourseScheduleComponent implements OnInit {
   semesterEndDate: Date;
 
   weeks: number[] = [];
+  dates: Date[] = [];
   days = [
     {name: '周一', value: 1},
     {name: '周二', value: 2},
@@ -185,5 +186,21 @@ export class CourseScheduleComponent implements OnInit {
       this.weeks.push(i);
     }
     console.log(this.weeks);
+  }
+
+  getWeekDates(weekNumber: number): void {
+    const start = new Date(this.semesterStartDate);
+    start.setDate(start.getDate() + (weekNumber - 1) * 7);
+    const dates = []; // 创建一个空数组来存储格式化后的日期
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(start);
+      // 格式化日期为YYYY-MM-DD
+      const formattedDate = date.getFullYear() + '-' +
+        ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+        ('0' + date.getDate()).slice(-2);
+      dates.push(formattedDate); // 将格式化后的日期添加到数组中
+      start.setDate(start.getDate() + 1); // 增加一天
+    }
+    this.dates = dates; // 返回包含格式化日期的数组
   }
 }
