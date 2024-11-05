@@ -6,6 +6,9 @@ import {LoginService} from '../service/login.service';
 import {SharedService} from '../service/shared.service';
 import {User} from '../entity/user';
 import {SweetAlertService} from '../service/sweet-alert.service';
+import {CourseService} from '../service/course.service';
+import {Clazz} from '../entity/clazz';
+import {Term} from '../entity/term';
 
 @Component({
   selector: 'app-course-schedule',
@@ -14,8 +17,13 @@ import {SweetAlertService} from '../service/sweet-alert.service';
 })
 export class CourseScheduleComponent implements OnInit {
   courseTable: any[][] = []; // 确保已经初始化
+  clazzes = new Array<Clazz>();
+  terms = new Array<Term>();
+  term = new Term();
+  semesterStartDate: Date;
+  semesterEndDate: Date;
 
-  weeks: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
+  weeks: number[] = [];
   days = [
     {name: '周一', value: 1},
     {name: '周二', value: 2},
@@ -46,7 +54,8 @@ export class CourseScheduleComponent implements OnInit {
               private httpClient: HttpClient,
               private loginService: LoginService,
               private sharedService: SharedService,
-              private sweetAlertService: SweetAlertService) {
+              private sweetAlertService: SweetAlertService,
+              private courseService: CourseService) {
     this.loginService.getCurrentUser().subscribe(
       user => {
         this.me = user;
@@ -121,5 +130,60 @@ export class CourseScheduleComponent implements OnInit {
         }
       );
     }, 1500);
+  }
+
+  getClazzBySchoolId(schoolId: number) {
+    this.courseService.getClazzBySchoolId(schoolId)
+      .subscribe(clazzes => {
+        this.clazzes = clazzes;
+      }, error => {
+        console.error('获取班级失败', error);
+      });
+  }
+
+  getTermsBySchoolId(schoolId: number) {
+    this.courseService.getTermsBySchoolId(schoolId)
+      .subscribe(terms => {
+        this.terms = terms;
+      }, error => {
+        console.error('获取学期失败', error);
+      });
+  }
+
+  onSchoolChange(schoolId: number) {
+    this.searchParameters.school = schoolId;
+    console.log(this.searchParameters.school);
+    this.getClazzBySchoolId(this.searchParameters.school);
+    this.getTermsBySchoolId(this.searchParameters.school);
+  }
+
+  onTermChange(termId: number) {
+    this.searchParameters.term = termId;
+    console.log(this.searchParameters.term);
+    this.courseService.getTerm(termId)
+      .subscribe(term => {
+        console.log(term);
+        console.log(term[0].start_time);
+        this.semesterEndDate = term[0].end_time;
+        this.semesterStartDate = term[0].start_time;
+        this.calculateWeeks();
+      }, error => {
+        console.error('获取学期失败', error);
+      });
+  }
+
+  calculateWeeks(): void {
+    const oneDay = 1000 * 60 * 60 * 24;
+    const startTime = new Date(this.semesterStartDate);
+    const endTime = new Date(this.semesterEndDate);
+    const diffInMilliseconds = endTime.getTime() - startTime.getTime();
+    const diffInDays = Math.ceil(diffInMilliseconds / oneDay); // 使用ceil确保包含最后一天
+    const numberOfWeeks = Math.ceil(diffInDays / 7);
+
+    // 创建周数数组
+    for (let i = 1; i <= numberOfWeeks; i++) {
+      this.weeks.push(i);
+    }
+    console.log(this.weeks);
   }
 }

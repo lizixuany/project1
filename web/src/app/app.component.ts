@@ -11,6 +11,7 @@ import {EditComponent} from './edit/edit.component';
 import {Clazz} from './entity/clazz';
 import {SweetAlertService} from './service/sweet-alert.service';
 import {LoginService} from './service/login.service';
+import {CourseService} from './service/course.service';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit {
   };
   school: any;
   clazzs: Clazz[];
+  clazzes = new Array<Clazz>();
 
   me = new User();
   role = 0;
@@ -50,7 +52,8 @@ export class AppComponent implements OnInit {
               private dialog: MatDialog,
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
-              private loginService: LoginService) {
+              private loginService: LoginService,
+              private courseService: CourseService) {
     this.loginService.getCurrentUser().subscribe(
       user => {
         this.me = user;
@@ -193,5 +196,20 @@ export class AppComponent implements OnInit {
         }
       );
     }, 1500);
+  }
+
+  getClazzBySchoolId(schoolId: number) {
+    this.courseService.getClazzBySchoolId(schoolId)
+      .subscribe(clazzes => {
+        this.clazzes = clazzes;
+      }, error => {
+        console.error('获取班级失败', error);
+      });
+  }
+
+  onSchoolChange(schoolId: number) {
+    this.searchParameters.school = schoolId;
+    console.log(this.searchParameters.school);
+    this.getClazzBySchoolId(this.searchParameters.school);
   }
 }
