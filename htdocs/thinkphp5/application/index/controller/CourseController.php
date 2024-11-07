@@ -297,4 +297,47 @@ class CourseController extends Controller
         $terms = Term::where('id', $termId)->select();
         return json($terms);
     }
+
+    public function getCoursesByTermId() {
+        $request = Request::instance();
+        $termId = $request->param('termId');
+
+        // 检查 term_id 是否存在
+        if (empty($termId)) {
+            return json(['error' => 'term_id is required'], 400);
+        }
+
+        // 使用 term_id 获取学期
+        $courses = Course::where('term_id', $termId)->select();
+        return json($courses);
+    }
+
+    public function getCoursesByTermIdWithClazzId() {
+        $request = Request::instance();
+        $termId = $request->param('termId');
+        $clazzId = $request->param('clazzId');
+
+        if (empty($termId)) {
+            return json(['error' => 'term_id is required'], 400);
+        }
+
+        if (empty($clazzId)) {
+            return json(['error' => 'clazz_id is required'], 400);
+        }
+
+        $courses = Course::where('term_id', $termId)->where('clazz_id', $clazzId)->where('sory', 1)->select();
+        return json($courses);
+    }
+
+    public function getCoursesByTermIdWithoutClazzId() {
+        $request = Request::instance();
+        $termId = $request->param('termId');
+
+        if (empty($termId)) {
+            return json(['error' => 'term_id is required'], 400);
+        }
+
+        $courses = Course::where('term_id', $termId)->where('sory', 0)->select();
+        return json($courses);
+    }
 }

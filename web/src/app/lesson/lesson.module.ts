@@ -6,21 +6,21 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {LessonComponent} from './lesson.component';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-import {EditComponent} from './edit/edit.component';
 import {AddComponent} from './add/add.component';
 import {LessonRoutingModule} from './lesson-routing.module';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import {SchoolSelectModule} from '../school/school-select/school-select.module';
+import {TermSelectModule} from '../term/term-select/term-select.module';
+import {CourseModule} from '../course/course.module';
 
 @NgModule({
   declarations: [
-    EditComponent,
     AddComponent,
     LessonComponent
   ],
   entryComponents: [
-    EditComponent,
     AddComponent
   ],
   imports: [
@@ -33,7 +33,10 @@ import {MatSelectModule} from '@angular/material/select';
     LessonRoutingModule,
     MatDialogModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    SchoolSelectModule,
+    TermSelectModule,
+    CourseModule
   ],
   exports: [LessonComponent],
   bootstrap: [LessonComponent]

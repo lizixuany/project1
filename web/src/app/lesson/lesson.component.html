@@ -1,33 +1,73 @@
 <div class="container-md main">
-  <table class="table table-striped">
-    <thead>
-    <tr class="table-primary">
-      <th>序号</th>
-      <th>用户名称</th>
-      <th>学期名称</th>
-      <th>课程名称</th>
-      <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let lesson of pageData.content; index as index">
-      <td>{{ index + 1 }}</td>
-      <td>{{ lesson.user.name }}</td>
-      <td>{{ lesson.course.term.name }}</td>
-      <td>{{ lesson.course.name }}</td>
-      <td>
-        <div class="btn-inline">
-          <a class="btn btn-outline-primary btn-sm">
-            <i class="fas fa-pen"></i>编辑
-          </a>
+  <div class="row">
+    <div class="col-md-8">
+      <form class="form-inline d-flex justify-content-between" style="width: 850px"
+            (ngSubmit)="onSubmit(searchForm)" #searchForm="ngForm">
+        <div class="form-group mb-2">
+          <label class="mr-2">学期：</label>
+          <!-- 默认提示选项 -->
+          <app-term-select name="term" id="term" [(ngModel)]="searchParameters.term"></app-term-select>
+      </div>
+        <div class="form-group mb-2">
+          <label class="mr-2">状态：</label>
+          <select class="form-control" name="sory" type="text"
+                  [(ngModel)]="searchParameters.sory">
+            <option value="">请选择</option>
+            <option value="1">必修</option>
+            <option value="0">选修</option>
+          </select>
         </div>
-        <div class="btn-inline">
-          <span class="btn btn-sm btn-outline-danger">
-              <i class="far fa-trash-alt"></i>删除
-          </span>
+        <div class="form-group mb-2">
+          <label class="mr-2">课程：</label>
+          <input name="name" type="text" class="form-control" placeholder="课程名称..."
+                 [(ngModel)]="searchParameters.course">
         </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+        <div class="form-group mb-2">
+          <button class="btn btn-outline-success mb-2" type="submit">查询</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4 text-right">
+      <a class="btn btn-primary mb-2" (click)="openAddDialog()"><i class="fas fa-plus"></i>新增</a>
+    </div>
+  </div>
+    <table class="table table-striped">
+      <thead>
+      <tr class="table-primary">
+        <th>序号</th>
+        <th>学期名称</th>
+        <th>课程名称</th>
+        <th>类别</th>
+        <th>上课周数</th>
+        <th>周几上课</th>
+        <th>第几节课</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody *ngFor="let lesson of pageData.content | slice:0:1; index as index">
+      <tr *ngFor="let key of Object.keys(lesson)">
+        <td>{{ index + 1 }}</td>
+        <td>
+          <div *ngFor="let term of terms">
+            <div *ngIf="term.id === lesson[key].term_id">
+              {{ term.name }}
+            </div>
+          </div>
+        </td>
+        <td>{{ lesson[key].name}}</td>
+        <td>{{ lesson[key].sory | sory}}</td>
+        <td>{{ lesson[key].week }}</td>
+        <td>{{ getDayName(lesson[key].day) }}</td>
+        <td>{{ getPeriodName(lesson[key].period) }}</td>
+        <td>
+          <div class="btn-inline" *ngIf="lesson[key].sory !== 1">
+            <span class="btn btn-sm btn-outline-danger" (click)="onDelete(lesson.id, index)">
+                <i class="far fa-trash-alt"></i>删除
+            </span>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
