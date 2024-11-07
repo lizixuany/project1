@@ -25,4 +25,3 @@ class Course extends Model
         return $this->belongsTo(Term::class, 'term_id', 'id');
     }
 }
-

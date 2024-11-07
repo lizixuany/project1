@@ -23,6 +23,7 @@ import {CourseScheduleComponent} from './course-schedule/course-schedule.compone
 import {MatOptionModule} from '@angular/material/core';
 import {TermSelectModule} from './term/term-select/term-select.module';
 import {MatSelectModule} from '@angular/material/select';
+import {TripComponent} from './trip/trip.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {MatSelectModule} from '@angular/material/select';
     LoginComponent,
     AddComponent,
     EditComponent,
-    CourseScheduleComponent
+    CourseScheduleComponent,
+    TripComponent
   ],
   entryComponents: [
     AddComponent, // 确保 AddComponent 在这里

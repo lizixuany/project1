@@ -13,6 +13,7 @@ class Term extends Model
         return $this->belongsTo('School');
     }
 
+    // 关联course表
     public function courses()
     {
         return $this->hasMany('Course', 'term_id', 'id');

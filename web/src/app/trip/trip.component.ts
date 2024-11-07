@@ -1,25 +1,26 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import {User} from '../entity/user';
 import {CourseScheduleService} from '../service/course-schedule.service';
+import {HttpClient} from '@angular/common/http';
 import {LoginService} from '../service/login.service';
 import {SharedService} from '../service/shared.service';
-import {User} from '../entity/user';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {CourseService} from '../service/course.service';
+import {TripService} from '../service/trip.service';
+import {NgForm} from '@angular/forms';
 import {Clazz} from '../entity/clazz';
 import {Term} from '../entity/term';
 
 @Component({
-  selector: 'app-course-schedule',
-  templateUrl: './course-schedule.component.html',
-  styleUrls: ['./course-schedule.component.css']
+  selector: 'app-trip',
+  templateUrl: './trip.component.html',
+  styleUrls: ['./trip.component.css']
 })
-export class CourseScheduleComponent implements OnInit {
-  courseTable: any[][] = []; // 确保已经初始化
+export class TripComponent implements OnInit {
+  userTable: any[][] = []; // 确保已经初始化
   clazzes = new Array<Clazz>();
   terms = new Array<Term>();
-  term = new Term();
+
   semesterStartDate: Date;
   semesterEndDate: Date;
 
@@ -47,7 +48,6 @@ export class CourseScheduleComponent implements OnInit {
     term: null as unknown as number,
     week: null as unknown as number
   };
-
   me = new User();
   beLogout = new EventEmitter<void>();
 
@@ -56,7 +56,8 @@ export class CourseScheduleComponent implements OnInit {
               private loginService: LoginService,
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
-              private courseService: CourseService) {
+              private courseService: CourseService,
+              private tripService: TripService) {
     this.loginService.getCurrentUser().subscribe(
       user => {
         this.me = user;
@@ -79,7 +80,7 @@ export class CourseScheduleComponent implements OnInit {
     console.log(this.searchParameters.clazz);
     console.log(this.searchParameters.term);
     console.log(this.searchParameters.week);
-    this.courseScheduleService.getCourseTable(
+    this.tripService.getUserTable(
       this.searchParameters.school,
       this.searchParameters.clazz,
       this.searchParameters.term,
@@ -88,7 +89,7 @@ export class CourseScheduleComponent implements OnInit {
       (response) => {
         console.log(response); // 查看完整的响应数据
         if (response.status === 'success') {
-          this.processCourseData(response.data);
+          this.processUserData(response.data);
         } else {
           console.error('Error:', response.message);
         }
@@ -99,39 +100,30 @@ export class CourseScheduleComponent implements OnInit {
     );
   }
 
-  processCourseData(courses: any[]) {
-    // 初始化课表，最多7天，每天5个大节
-    this.courseTable = Array.from({ length: 7 }, () => new Array(5).fill(''));
+  processUserData(lessons: any[]) {
+    // 初始化表单，一周7天，每天5个大节
+    this.userTable = Array.from({ length: 7 }, () => new Array(5).fill(''));
 
-    courses.forEach((course) => {
-      const dayIndex = course.day - 1; // 转换为整数并减1，因为数组索引从0开始
-      const periodIndex = course.period - 1; // 转换为整数并减1
+    lessons.forEach((lesson) => {
+      const dayIndex = lesson.day - 1; // 转换为整数并减1，因为数组索引从0开始
+      const periodIndex = lesson.period - 1; // 转换为整数并减1
 
       // 检查索引是否在有效范围内
       if (dayIndex >= 0 && dayIndex < 7 && periodIndex >= 0 && periodIndex < 5) {
-        // 直接将课程名称赋值到对应的位置
-        this.courseTable[dayIndex][periodIndex] = course.name;
+        // 初始化一个临时字符串来累积用户名称
+        let userNames = '';
+
+        // 循环遍历users数组，并将所有用户的名字累积到userNames字符串中
+        lesson.users.forEach((user, index) => {
+          userNames += (index > 0 ? ', ' : '') + user.name; // 添加用户名称，多个用户之间用逗号分隔
+        });
+
+        // 将累积的用户名称字符串赋值到对应的位置
+        this.userTable[dayIndex][periodIndex] = userNames;
       } else {
         console.error('无效的课程表索引:', dayIndex, periodIndex);
       }
     });
-  }
-
-  private handleInvalidToken(): void {
-    this.sweetAlertService.showLogoutWarning('登录失效', '');
-    setTimeout(() => {
-      window.sessionStorage.removeItem('login');
-      this.httpClient.post('/api/Login/logout', {}).subscribe(
-        () => {
-          console.log('logout');
-          this.beLogout.emit();
-          window.location.href = 'http://127.0.0.1:8088';
-        },
-        error => {
-          console.error('注销失败', error);
-        }
-      );
-    }, 1500);
   }
 
   getClazzBySchoolId(schoolId: number) {
@@ -174,6 +166,23 @@ export class CourseScheduleComponent implements OnInit {
       });
   }
 
+  private handleInvalidToken(): void {
+    this.sweetAlertService.showLogoutWarning('登录失效', '');
+    setTimeout(() => {
+      window.sessionStorage.removeItem('login');
+      this.httpClient.post('/api/Login/logout', {}).subscribe(
+        () => {
+          console.log('logout');
+          this.beLogout.emit();
+          window.location.href = 'http://127.0.0.1:8088';
+        },
+        error => {
+          console.error('注销失败', error);
+        }
+      );
+    }, 1500);
+  }
+
   calculateWeeks(): void {
     const oneDay = 1000 * 60 * 60 * 24;
     const startTime = new Date(this.semesterStartDate);
@@ -204,4 +213,5 @@ export class CourseScheduleComponent implements OnInit {
     }
     this.dates = dates; // 返回包含格式化日期的数组
   }
+
 }
