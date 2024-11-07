@@ -195,7 +195,7 @@ export class CourseComponent implements OnInit {
         () => {
           console.log('logout');
           this.beLogout.emit();
-          window.location.href = 'http://127.0.0.1:8088';
+          window.location.href = 'http://127.0.0.1:8088/';
         },
         error => {
           console.error('注销失败', error);

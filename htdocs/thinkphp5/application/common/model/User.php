@@ -22,4 +22,10 @@ class User extends Model
         $schools = Clazz::with('school')->select();
         return $schools;
     }
+
+    // 用户与课程多对多关联
+    public function course()
+    {
+        return $this->belongsToMany(Course::class, 'lesson', 'course_id', 'user_id');
+    }
 }

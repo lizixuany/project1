@@ -1,1 +1,47 @@
-<p>add works!</p>
+<div>
+  <h2>新增我的选修课程</h2>
+</div>
+<hr>
+<form class="container-sm" style="margin: 40px 0px 0px 0px">
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">学期</label>
+    <div class="col-sm-10">
+      <select class="form-control" [(ngModel)]="lesson.term_id" (change)="onTermChange(lesson.term_id)" name="lesson.term_id" id="lesson.term_id">
+        <option [ngValue]="null">所有学期</option>
+        <option *ngFor="let term of terms" [value]="term.id">
+          {{term.name}}
+        </option>
+      </select>
+      <small class="text-danger"
+             *ngIf="lesson.term_id === null">
+        必须指定一个学期
+      </small>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">课程名称</label>
+    <div class="col-sm-10">
+      <select class="form-control" [(ngModel)]="lesson.course_id" name="lesson.course_id" id="lesson.course_id">
+        <option [ngValue]="null">请选择课程</option>
+        <option *ngFor="let course of courses" [value]="course.id">
+          {{course.name}}
+        </option>
+      </select>
+      <small class="text-danger"
+             *ngIf="lesson.course_id === null">
+        必须指定一个课程
+      </small>
+    </div>
+  </div>
+  <div class="mb-3 row" style="margin: 20px 0px 0px 0px">
+    <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
+      <button class="btn btn-primary" (click)="onSubmit()"
+              [disabled]="lesson.term_id === null || lesson.course_id === null">保存
+      </button>
+    </div>
+    <div class="col-sm-3 offset-sm-1">
+      <button mat-button class="btn btn-secondary" (click)="onNoClick()">取消</button>
+    </div>
+  </div>
+</form>
+

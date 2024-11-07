@@ -16,6 +16,6 @@ class Term extends Model
     // 关联course表
     public function courses()
     {
-        return $this->hasMany('Course');
+        return $this->hasMany('Course', 'term_id', 'id');
     }
 }
