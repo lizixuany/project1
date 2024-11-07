@@ -3,8 +3,9 @@ import {Routes, RouterModule} from '@angular/router';
 import {PersonalCenterComponent} from './personal-center/personal-center.component';
 import {WelcomeComponent} from './welcome.component';
 import {AppComponent} from './app.component';
-import {CourseScheduleComponent} from './course-schedule/course-schedule.component';
 import {IndexComponent} from './index/index.component';
+import {TripComponent} from './trip/trip.component';
+import {CourseScheduleComponent} from './course-schedule/course-schedule.component';
 
 const routes: Routes = [
   {
@@ -44,9 +45,13 @@ const routes: Routes = [
     component: CourseScheduleComponent
   },
   {
+    path: 'trip',
+    component: TripComponent
+  },
+  {
     path: 'lesson',
     loadChildren: () => import('./lesson/lesson.module').then(m => m.LessonModule)
-  },
+  }
 ];
 
 @NgModule({

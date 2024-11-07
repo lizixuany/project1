@@ -6,6 +6,7 @@ use think\Request;
 use app\common\model\Lesson;
 use app\common\model\Course;
 use app\common\model\User;
+use app\common\model\Term;
 
 class LessonController extends Controller
 {
@@ -16,8 +17,7 @@ class LessonController extends Controller
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
 
-            $list = Lesson::with(['user', 'course'])->page($page, $size)->select();
-            $total = Lesson::with(['user', 'course'])->page($page, $size)->count();
+            $courses = Course::with(['term', 'clazz', 'school'])->where($condition)->select();
 
             $pageData = [
                 'content' => $list,

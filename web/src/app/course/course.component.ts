@@ -47,9 +47,6 @@ export class CourseComponent implements OnInit {
   term = new Term();
   clazzes = new Array<Clazz>();
 
-  semesterStartDate: Date;
-  semesterEndDate: Date;
-
   days = [
     {name: '周一', value: 1},
     {name: '周二', value: 2},
