@@ -25,4 +25,8 @@ export class TermService {
   }): Observable<Term> {
     return this.httpClient.put<Term>(`/api/term//update/${id}`, term);
   }
+
+  getTerms(): Observable<Term[]> {
+    return this.httpClient.get<Term[]>(`/api/term/getTerms`);
+  }
 }

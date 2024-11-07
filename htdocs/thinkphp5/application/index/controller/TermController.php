@@ -296,4 +296,10 @@ class TermController extends Controller
             return json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
+    public function getTerms() {
+        $terms = Term::with('school')->select();
+
+        return json($terms);
+    }
 }

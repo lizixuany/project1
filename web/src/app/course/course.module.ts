@@ -43,7 +43,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatInputModule,
     MatSelectModule
   ],
-  exports: [CourseComponent],
+    exports: [CourseComponent, SoryPipe],
   bootstrap: [CourseComponent]
 })
 export class CourseModule { }

@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Clazz} from '../entity/clazz';
 import {Observable} from 'rxjs';
 import {Term} from '../entity/term';
+import {Course} from '../entity/course';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,14 @@ export class CourseService {
   }
   getTerm(termId: number): Observable<Term> {
     return this.httpClient.get<Term>(`api/course/getTerm?termId=${termId}`);
+  }
+  getCoursesByTermId(termId: number): Observable<Array<Course>> {
+    return this.httpClient.get<Array<Course>>(`api/course/getCoursesByTermId?termId=${termId}`);
+  }
+  getCoursesByTermIdWithClazzId(termId: number, clazzId: number): Observable<Array<Course>> {
+    return this.httpClient.get<Array<Course>>(`api/course/getCoursesByTermIdWithClazzId?termId=${termId}&&clazzId=${clazzId}`);
+  }
+  getCoursesByTermIdWithoutClazzId(termId: number): Observable<Array<Course>> {
+    return this.httpClient.get<Array<Course>>(`api/course/getCoursesByTermIdWithoutClazzId?termId=${termId}`);
   }
 }

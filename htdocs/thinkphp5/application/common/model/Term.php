@@ -12,4 +12,9 @@ class Term extends Model
     {
         return $this->belongsTo('School');
     }
+
+    public function courses()
+    {
+        return $this->hasMany('Course', 'term_id', 'id');
+    }
 }
