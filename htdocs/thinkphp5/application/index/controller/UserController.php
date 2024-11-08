@@ -61,9 +61,13 @@ class UserController extends controller
             
             $list = User::with(['clazz', 'school'])
                     ->where($condition)
+                    ->order('role', 'asc') // 按role字段从小到大排序
                     ->page($page, $size)
                     ->select();
-            $total = User::with(['clazz', 'school'])->where($condition)->page($page, $size)->count();
+            $total = User::with(['clazz', 'school'])
+                    ->where($condition)
+                    ->page($page, $size)
+                    ->count();
             
             $pageData = [
               'content' => $list,
@@ -169,11 +173,11 @@ class UserController extends controller
             // 获取相应账号的数据
             $results = User::where('username', $data['username'])->select();
             if ($results) {
-                    foreach ($results as $result) {
-                        if ($result->id !== $data['id']) {
-                            return json(['error' => '用户已存在'], 401);
-                        } 
+                foreach ($results as $result) {
+                    if ($result->id !== $data['id']) {
+                        return json(['error' => '用户已存在'], 401);
                     }
+                }
             }
             if ($data['role'] === 1) {
                 $roles = User::where('role', 1)->select();

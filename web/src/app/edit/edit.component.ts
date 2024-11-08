@@ -110,9 +110,6 @@ export class EditComponent implements OnInit {
     const schoolId = this.formGroup.get('school_id').value;
     const clazzId = this.formGroup.get('clazz_id').value;
     this.role = this.formGroup.get('role').value;
-    if (this.role) {
-      this.role = 3;
-    }
     const state = this.formGroup.get('state').value;
     const user = new User({
       id: userId,
