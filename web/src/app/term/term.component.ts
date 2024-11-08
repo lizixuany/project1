@@ -20,7 +20,7 @@ import {User} from '../entity/user';
 export class TermComponent implements OnInit {
   // 默认显示第一条数据
   page = 0;
-  // 每页默认三条
+  // 每页默认五条
   size = 5;
 
   // 初始化一个有0条数据的
@@ -75,7 +75,7 @@ export class TermComponent implements OnInit {
     this.loadByPage(page);
   }
 
-  loadByPage(page = 0): void {
+  loadByPage(page = 1): void {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());

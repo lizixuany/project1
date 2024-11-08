@@ -23,8 +23,8 @@ export class SchoolComponent implements OnInit {
 
   // 默认显示第一条数据
   page = 0;
-  // 每页默认三条
-  size = 3;
+  // 每页默认五条
+  size = 5;
 
   // 初始化一个有0条数据的
   pageData = new Page<School>({
@@ -79,7 +79,7 @@ export class SchoolComponent implements OnInit {
     this.loadByPage(page);
   }
 
-  loadByPage(page = 0): void {
+  loadByPage(page = 1): void {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());

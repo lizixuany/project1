@@ -12,8 +12,8 @@ class LessonController extends Controller
 {
     public function index() {
         try {
-            $page = $this->request->get('page', 1);
-            $size = $this->request->get('size', 10);
+            $page = (int)$this->request->get('page', 1);
+            $size = (int)$this->request->get('size', 10);
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
 
