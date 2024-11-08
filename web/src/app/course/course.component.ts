@@ -186,7 +186,7 @@ export class CourseComponent implements OnInit {
     );
   }
 
-  onSubmit(form: NgForm, page = 0) {
+  onSubmit(form: NgForm, page = 1) {
     console.log('调用了search');
     if (form.valid) {
       const school = form.value.school_id;

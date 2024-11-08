@@ -60,8 +60,14 @@ class LessonController extends Controller
             }
 
             // 获取用户
-            $list = Lesson::with('course')->where('user_id', $user_id)->select();
-            $total = Lesson::with('course')->where('user_id', $user_id)->count();
+            $list = Lesson::with('course')
+                    ->where('user_id', $user_id)
+                    ->where($condition)
+                    ->select();
+            $total = Lesson::with('course')
+                    ->where('user_id', $user_id)
+                    ->where($condition)
+                    ->count();
             
             $term = Term::with('school')->select();
 

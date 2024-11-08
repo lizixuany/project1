@@ -133,10 +133,12 @@ export class LessonComponent implements OnInit {
     );
   }
 
-  onSubmit(form: NgForm, page = 0) {
+  onSubmit(form: NgForm, page = 1) {
     console.log('调用了search');
+    console.log(this.searchParameters);
     if (form.valid) {
       const course = form.value.course;
+      console.log(this.searchParameters);
       const httpParams = new HttpParams()
         .append('page', this.page.toString())
         .append('size', this.size.toString());

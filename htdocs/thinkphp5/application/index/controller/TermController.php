@@ -34,8 +34,14 @@ class TermController extends Controller
                 $condition['clazz.name'] = ['like', '%' . $name . '%'];
             }
 
-            $list = Term::with('school')->where($condition)->page($page, $size)->select();
-            $total = Term::with('school')->where($condition)->page($page, $size)->count();
+            $list = Term::with('school')
+                    ->where($condition)
+                    ->page($page, $size)
+                    ->select();
+            $total = Term::with('school')
+                    ->where($condition)
+                    ->page($page, $size)
+                    ->count();
 
             $pageData = [
             'content' => $list,

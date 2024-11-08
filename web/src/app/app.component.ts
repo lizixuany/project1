@@ -153,7 +153,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onSubmit(form: NgForm, page = 0) {
+  onSubmit(form: NgForm, page = 1) {
     console.log('调用了search');
     console.log(this.searchParameters);
     if (form.valid) {
