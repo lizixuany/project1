@@ -93,7 +93,21 @@ class TermController extends Controller
                         return json(['error' => '相似时间的学期已存在'], 401);
                     }
                 }
-            } 
+            }
+
+            // 验证开始时间是否为周一
+            $startTime = $data['start_time'];
+            $startTimeOfWeek = date('w', strtotime($startTime));
+            if (!$startTime || $startTimeOfWeek !== '1') { // '1' 表示周一
+                return json(['error' => '开始时间必须是周一'], 401);
+            }
+
+            // 验证结束时间是否为周日
+            $endTime = $data['end_time'];
+            $endTimeOfWeek = date('w', strtotime($endTime));
+            if (!$endTime || $endTimeOfWeek !== '0') { // '0' 表示周日
+                return json(['error' => '结束时间必须是周日'], 401);
+            }
 
             // 验证必要字段
             if (!isset($data['name']) || empty($data['name'])){
@@ -252,6 +266,20 @@ class TermController extends Controller
                         } 
                     }
                 }
+            }
+
+            // 验证开始时间是否为周一
+            $startTime = $data['start_time'];
+            $startTimeOfWeek = date('w', strtotime($startTime));
+            if (!$startTime || $startTimeOfWeek !== '1') { // '1' 表示周一
+                return json(['error' => '开始时间必须是周一'], 401);
+            }
+
+            // 验证结束时间是否为周日
+            $endTime = $data['end_time'];
+            $endTimeOfWeek = date('w', strtotime($endTime));
+            if (!$endTime || $endTimeOfWeek !== '0') { // '0' 表示周日
+                return json(['error' => '结束时间必须是周日'], 401);
             }
 
            // 验证必要字段

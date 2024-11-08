@@ -32,7 +32,7 @@ class SchoolController extends Controller
                     ->select();
             $total = School::where($condition)
                     ->page($page, $size)
-                    S->count();
+                    ->count();
 
             $pageData = [
             'content' => $list,

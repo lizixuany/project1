@@ -81,6 +81,10 @@ export class AddComponent implements OnInit {
             this.sweetAlertService.showError('新增失败', '学期时间设置异常', '');
           } else if (error.error.error === '学期的周数不得少于16周') {
             this.sweetAlertService.showError('新增失败', '学期的周数不得少于16周', '');
+          } else if (error.error.error === '开始时间必须是周一') {
+            this.sweetAlertService.showError('新增失败', '开始时间必须是周一', '');
+          } else if (error.error.error === '结束时间必须是周日') {
+            this.sweetAlertService.showError('新增失败', '结束时间必须是周日', '');
           } else {
             this.sweetAlertService.showError('新增失败', '', '');
           }
