@@ -75,7 +75,7 @@ export class ClazzComponent implements OnInit {
     this.loadByPage(page);
   }
 
-  loadByPage(page = 0): void {
+  loadByPage(page = 1): void {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());

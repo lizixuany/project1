@@ -1,9 +1,16 @@
 <nav class="row justify-content-md-center" [ngStyle]="{'visibility': inputPage.totalPages > 1 ? 'visible' : 'hidden'}">
   <ul class="pagination col-md-auto">
-    <li [ngClass]="{disabled: inputPage.first}" class="page-item"><span class="page-link">上一页</span></li>
+    <!--上一页-->
+    <li [ngClass]="{disabled: inputPage.first}" class="page-item">
+      <span class="page-link" (click)="onPage(currentPage - 1)">上一页</span>
+    </li>
+
     <li *ngFor="let p of pages" [ngClass]="{active: currentPage === p + 1}" class="page-item">
       <span class="page-link" (click)="onPage(p + 1)">{{p + 1}}</span>
     </li>
-    <li [ngClass]="{disabled: inputPage.last}" class="page-item"><span class="page-link">下一页</span></li>
+    <!--下一页-->
+    <li [ngClass]="{disabled: inputPage.last}" class="page-item">
+      <span class="page-link" (click)="onPage(currentPage + 1)">下一页</span>
+    </li>
   </ul>
 </nav>

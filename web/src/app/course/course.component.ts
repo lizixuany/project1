@@ -22,8 +22,8 @@ import {Clazz} from '../entity/clazz';
 export class CourseComponent implements OnInit {
   // 默认显示第一条数据
   page = 0;
-  // 每页默认三条
-  size = 3;
+  // 每页默认五条
+  size = 5;
   // 初始化一个有0条数据的
 
   searchParameters = {
@@ -105,7 +105,7 @@ export class CourseComponent implements OnInit {
     return period ? period.name : '';
   }
 
-  loadByPage(page = 0): void {
+  loadByPage(page = 1): void {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());

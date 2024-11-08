@@ -9,7 +9,7 @@ import {Page} from '../../entity/page';
 export class PageComponent implements OnInit {
   inputPage: Page<any> = new Page({
     content: [],
-    number: 0,
+    number: 1,
     size: 0,
     numberOfElements: 0
   });
@@ -52,6 +52,8 @@ export class PageComponent implements OnInit {
     }
     // 设置当前页
     this.currentPage = this.inputPage.number;
+    this.inputPage.first = this.inputPage.number === 1 || this.inputPage.number === 0;
+    this.inputPage.last = this.inputPage.number === this.inputPage.totalPages;
   }
 
   @Output()
@@ -67,7 +69,10 @@ export class PageComponent implements OnInit {
   }
 
   onPage(page: number): void {
-    // 点击页码时弹出该页码
-    this.bePageChange.emit(page);
+    if (page >= 1 && page <= this.inputPage.totalPages) {
+      this.bePageChange.emit(page);
+    } else {
+      console.error('无效的页码:', page);
+    }
   }
 }

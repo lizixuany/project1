@@ -4,7 +4,6 @@ import {User} from './entity/user';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {FormGroup, NgForm} from '@angular/forms';
 import {SharedService} from './service/shared.service';
-import {Confirm} from 'notiflix';
 import {MatDialog} from '@angular/material/dialog';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
@@ -97,7 +96,7 @@ export class AppComponent implements OnInit {
     this.loadByPage(page);
   }
 
-  loadByPage(page = 0): void {
+  loadByPage(page = 1): void {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());
