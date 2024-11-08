@@ -169,8 +169,12 @@ export class LessonComponent implements OnInit {
                 this.loadByPage();
               },
               error => {
-                this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
-                console.log('删除失败', error);
+                if (error.error.error === '课程不存在') {
+                  this.sweetAlertService.showError('删除失败', '课程已存在', 'error');
+                } else {
+                  this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
+                  console.log('删除失败', error);
+                }
               });
         }
       });

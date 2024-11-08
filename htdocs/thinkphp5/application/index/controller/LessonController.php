@@ -107,7 +107,7 @@ class LessonController extends Controller
             $lesson->save();
         return json(['status' => 'success', 'id' => $lesson->id]);
         } catch (Exception $e) {
-            return json(['status' => 'error', 'message' => $e->getMessage()]);
+            return json(['error' => '课程不存在'], 401);
         }
     }
 
@@ -116,7 +116,7 @@ class LessonController extends Controller
         try {
             $lesson = LessonController::getLesson();
             if (!$lesson) {
-                return json(['status' => 'error', 'message' => '课程不存在']);
+                return json(['error' => '课程不存在'], 401);
             }
 
             // 删除课表
