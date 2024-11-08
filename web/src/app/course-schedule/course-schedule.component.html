@@ -9,8 +9,7 @@
       </div>
       <div class="form-group mb-2">
         <label class="mr-2">班级：</label>
-        <select class="form-control" [(ngModel)]="searchParameters.clazz" name="clazz_id" id="clazz_id">
-          <option [ngValue]="null">所有班级</option>
+        <select class="form-control" [(ngModel)]="searchParameters.clazz" name="clazz_id" id="clazz_id" placeholder="请选择班级">
           <option *ngFor="let clazz of clazzes" [value]="clazz.id">
             {{clazz.name}}
           </option>
@@ -19,7 +18,6 @@
       <div class="form-group mb-2">
         <label class="mr-2">学期：</label>
         <select class="form-control" [(ngModel)]="searchParameters.term" (change)="onTermChange(searchParameters.term)" name="term_id" id="term_id">
-          <option [ngValue]="null">所有学期</option>
           <option *ngFor="let term of terms" [value]="term.id">
             {{term.name}}
           </option>
@@ -28,7 +26,6 @@
       <div class="form-group mb-2">
         <label class="mr-2">周数：</label>
         <select class="form-control" [(ngModel)]="searchParameters.week" (change)="getWeekDates(searchParameters.week)" name="week" id="week">
-          <option [ngValue]="null">所有周数</option>
           <option *ngFor="let week of weeks" [value]="week">
             {{week}}
           </option>
