@@ -44,7 +44,7 @@
   </div>
 
   <br>
-  <table class="table table-striped" style="width: 1450px">
+  <table class="table table-striped" style="width: 1550px">
     <thead>
     <tr class="table-primary">
       <th>序号</th>
@@ -71,6 +71,9 @@
       <td>{{ getDayName(course.day) }}</td>
       <td>{{ getPeriodName(course.period) }}</td>
       <td>
+        <a class="btn btn-outline-success btn-sm" (click)="addLesson(course.id)" *ngIf="course.sory === 0">
+          <i class="fas fa-plus"></i>添加
+        </a>
         <a class="btn btn-outline-primary btn-sm" (click)="openEditDialog(course.id)">
           <i class="fas fa-pen"></i>编辑
         </a>

@@ -60,14 +60,10 @@ class LessonController extends Controller
             }
 
             // 获取用户
-            $user = User::get($user_id);
-
-            // 获取用户在特定学期的所有课程
-            $list = $user->course()->where($condition)->select();
+            $list = Lesson::with('course')->where('user_id', $user_id)->select();
+            $total = Lesson::with('course')->where('user_id', $user_id)->count();
             
             $term = Term::with('school')->select();
-
-            $total = $user->course()->where($condition)->count();
 
             $pageData = [
                 'content' => array_merge([$list], [$term]),
@@ -118,7 +114,7 @@ class LessonController extends Controller
     public function delete()
     {
         try {
-            $lesson = LesssonController::getLessson();
+            $lesson = LessonController::getLesson();
             if (!$lesson) {
                 return json(['status' => 'error', 'message' => '课程不存在']);
             }
@@ -143,5 +139,39 @@ class LessonController extends Controller
         }
         $lesson = Lesson::get($id);
         return $lesson;
+    }
+
+    public function addLesson() {
+        try {
+            $request = Request::instance();
+            $courseId = $request->param('courseId');
+            $userId = $request->param('userId');
+
+            $lessons = lesson::where('user_id', $userId)
+                            ->where('course_id', $courseId)
+                            ->select();
+            if($lessons) {
+                return json(['error' => '课程已存在'], 401);
+            }
+
+            // 验证必要字段
+            if (!isset($userId) || empty($userId)){
+                return json(['status' => 'error', 'message' => 'user is required']);
+            }
+            if (!isset($courseId) || empty($courseId)){
+                return json(['status' => 'error', 'message' => 'course is required']);
+            }
+
+            // 创建课程对象并保存
+            $lesson = new Lesson();
+            $lesson->course_id = $courseId;
+            $lesson->user_id = $userId;
+
+            $lesson->save();
+            return json(['status' => 'success', 'message' => '删除成功']);
+        } catch (Exception $e) {
+            // 异常处理
+            return json(['status' => 'error', 'message' => $e->getMessage()]);
+        }       
     }
 }
