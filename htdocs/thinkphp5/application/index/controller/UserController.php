@@ -303,4 +303,13 @@ class UserController extends controller
         $clazzes = Clazz::where('school_id', $schoolId)->select();
         return json($clazzes);
     }
+
+    public function getUserWhenSoryChange() {
+        $request = Request::instance();
+        $schoolId = $request->param('schoolId');
+        $clazzId = $request->param('clazzId');
+
+        $users = User::where('school_id', $schoolId)->where('clazz_id', $clazzId)->select();
+        return json($users);
+    }
 }

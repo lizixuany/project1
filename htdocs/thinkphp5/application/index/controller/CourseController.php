@@ -5,6 +5,8 @@ use think\Db;   // 引用数据库操作类
 use app\common\model\Course;
 use app\common\model\Clazz;
 use app\common\model\Term;
+use app\common\model\Lesson;
+use app\common\model\User;
 use think\request;
 
 class CourseController extends Controller
@@ -118,14 +120,13 @@ class CourseController extends Controller
                             ->where('clazz_id', $clazz['id'])
                             ->where('term_id', $term['id'])
                             ->where('sory', $data['sory'])
-                            //->where('week', $data['week'])
                             ->where('day', $data['day'])
                             ->where('period', $data['period'])
                             ->select();
 
             if ($courses) {
                 foreach ($courses as $course) {
-                    if ($course->id !== $data['id'] && $data['week'] === $course->week) {
+                    if ($data['week'] === $course->week) {
                         return json(['error' => '课程已存在'], 401);
                     } 
                 }
@@ -162,6 +163,36 @@ class CourseController extends Controller
             $course->period = $data['period'];
 
             $course->save();
+
+            $courseId = Course::where('name', $data['name'])
+                                ->where('school_id', $school['id'])
+                                ->where('clazz_id', $clazz['id'])
+                                ->where('term_id', $term['id'])
+                                ->where('sory', $data['sory'])
+                                ->where('day', $data['day'])
+                                ->where('period', $data['period'])
+                                ->select();
+                                               
+            if ($courseId) {               
+                foreach ($courseId as $newCourse) {               
+                    if ((int)$course->id === $newCourse->id) {
+                        if ($data['sory'] === 0) {
+                            $lesson = new Lesson();
+                            $lesson->course_id = $course->id;
+                            $lesson->user_id = $data['user'];
+                            $lesson->save();
+                        } elseif ($data['sory'] === 1) {
+                            $users = User::where('school_id', $school['id'])->where('clazz_id', $clazz['id'])->select();
+                            foreach ($users as $user) {
+                                $lesson = new Lesson();
+                                $lesson->course_id = $course->id;
+                                $lesson->user_id = $user->id;
+                                $lesson->save();
+                            }                  
+                        } 
+                    }
+                }
+            }
 
             return json(['status' => 'success', 'id' => $course->id]);
         } catch (Exception $e) {
@@ -208,15 +239,21 @@ class CourseController extends Controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
 
-            // 获取相应账号的数据
             $courses = Course::where('name', $data['name'])
                             ->where('school_id', $school['id'])
                             ->where('clazz_id', $clazz['id'])
                             ->where('term_id', $term['id'])
-                            ->count();
+                            ->where('sory', $data['sory'])
+                            ->where('day', $data['day'])
+                            ->where('period', $data['period'])
+                            ->select();
 
-            if ($courses > 1) {
-                return json(['error' => '课程已存在'], 401);
+            if ($courses) {
+                foreach ($courses as $course) {
+                    if ($data['id'] !== $course->id && $data['week'] === $course->week) {
+                        return json(['error' => '课程已存在'], 401);
+                    } 
+                }
             }
 
            // 验证必要字段
@@ -241,7 +278,7 @@ class CourseController extends Controller
                $data['week'] = json_encode([]);
            }
 
-            // 创建课表对象并保存
+            // 编辑对象并保存
             $course->name = $data['name'];
             $course->week = $data['week'];
             $course->school_id = $school['id'];
@@ -252,6 +289,41 @@ class CourseController extends Controller
             $course->day = $data['day'];
             $course->period = $data['period'];
             $course->save();
+
+            $deleteLessons = Lesson::where('course_id', $course->id)->select();
+            foreach ($deleteLessons as $lesson) {
+                $lesson->delete();
+            }
+
+            $courseId = Course::where('name', $data['name'])
+                                        ->where('school_id', $school['id'])
+                                        ->where('clazz_id', $clazz['id'])
+                                        ->where('term_id', $term['id'])
+                                        ->where('sory', $data['sory'])
+                                        ->where('day', $data['day'])
+                                        ->where('period', $data['period'])
+                                        ->select();
+                                               
+            if ($courseId) {
+                foreach ($courseId as $newCourse) {
+                    if ((int)$course->id === $newCourse->id) {
+                        if ($data['sory'] === 0) {
+                            $lesson = new Lesson();
+                            $lesson->course_id = $course->id;
+                            $lesson->user_id = $data['user'];
+                            $lesson->save();
+                        } elseif ($data['sory'] === 1) {
+                            $users = User::where('school_id', $school['id'])->where('clazz_id', $clazz['id'])->select();
+                            foreach ($users as $user) {
+                                $lesson = new Lesson();
+                                $lesson->course_id = $course->id;
+                                $lesson->user_id = $user->id;
+                                $lesson->save();
+                            }                  
+                        } 
+                    }
+                }
+            }
 
             return json(['status' => 'success', 'id' => $course->id]);
 

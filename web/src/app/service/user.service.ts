@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {User} from '../entity/user';
 import {catchError} from 'rxjs/operators';
 import {Clazz} from '../entity/clazz';
+import {Term} from "../entity/term";
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,8 @@ export class UserService {
 
   getClazzBySchoolId(schoolId: number): Observable<Array<Clazz>> {
     return this.httpClient.get<Array<Clazz>>(`api/user/getClazzBySchoolId?schoolId=${schoolId}`);
+  }
+  getUserWhenSoryChange(schoolId: number, clazzId: number): Observable<Array<User>> {
+    return this.httpClient.get<Array<User>>(`api/user/getUserWhenSoryChange?schoolId=${schoolId}&&clazzId=${clazzId}`);
   }
 }

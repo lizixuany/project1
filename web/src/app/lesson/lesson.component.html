@@ -44,24 +44,24 @@
         <th>操作</th>
       </tr>
       </thead>
-      <tbody *ngFor="let lesson of pageData.content | slice:0:1; index as index">
-      <tr *ngFor="let key of Object.keys(lesson)">
-        <td>{{ index + 1 }}</td>
+      <tbody *ngFor="let lesson of pageData.content | slice:0:1;index as index">
+      <tr *ngFor="let key of Object.keys(lesson);let i = index">
+        <td>{{ i + 1 }}</td>
         <td>
           <div *ngFor="let term of terms">
-            <div *ngIf="term.id === lesson[key].term_id">
+            <div *ngIf="term.id === lesson[key].course.term_id">
               {{ term.name }}
             </div>
           </div>
         </td>
-        <td>{{ lesson[key].name}}</td>
-        <td>{{ lesson[key].sory | sory}}</td>
-        <td>{{ lesson[key].week }}</td>
-        <td>{{ getDayName(lesson[key].day) }}</td>
-        <td>{{ getPeriodName(lesson[key].period) }}</td>
+        <td>{{ lesson[key].course.name}}</td>
+        <td>{{ lesson[key].course.sory | sory}}</td>
+        <td>{{ lesson[key].course.week }}</td>
+        <td>{{ getDayName(lesson[key].course.day) }}</td>
+        <td>{{ getPeriodName(lesson[key].course.period) }}</td>
         <td>
-          <div class="btn-inline" *ngIf="lesson[key].sory !== 1">
-            <span class="btn btn-sm btn-outline-danger" (click)="onDelete(lesson.id, index)">
+          <div class="btn-inline" *ngIf="lesson[key].course.sory !== 1">
+            <span class="btn btn-sm btn-outline-danger" (click)="onDelete(lesson.id, i)">
                 <i class="far fa-trash-alt"></i>删除
             </span>
           </div>

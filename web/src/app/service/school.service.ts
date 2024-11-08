@@ -16,14 +16,6 @@ export class SchoolService {
   }
 
   /**
-   * 获取学生
-   */
-  getById(id: number): Observable<any> {
-    console.log(id);
-    return this.httpClient.get<School>('/school/' + id.toString());
-  }
-
-  /**
    * 更新
    */
   update(id: number, school: {name: string}): Observable<School> {

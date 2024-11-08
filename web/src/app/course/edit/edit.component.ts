@@ -11,6 +11,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {CourseService} from '../../service/course.service';
 import {SweetAlertService} from '../../service/sweet-alert.service';
 import {Subscription} from 'rxjs';
+import {UserService} from '../../service/user.service';
+import {User} from '../../entity/user';
 
 @Component({
   selector: 'app-edit',
@@ -37,6 +39,7 @@ export class EditComponent implements OnInit {
   value = '';
   terms = new Array<Term>();
   clazzes = new Array<Clazz>();
+  users = new Array<User>();
 
   semesterStartDate: Date;
   semesterEndDate: Date;
@@ -71,7 +74,8 @@ export class EditComponent implements OnInit {
     clazz_id: new FormControl(null, Validators.required),
     week: new FormControl(null, Validators.required),
     day: new FormControl(null, Validators.required),
-    period: new FormControl(null, Validators.required)
+    period: new FormControl(null, Validators.required),
+    user_id: new FormControl(null, Validators.required)
   });
   private termIdSubscription: Subscription;
   // tslint:disable-next-line:variable-name
@@ -79,6 +83,7 @@ export class EditComponent implements OnInit {
 
 
   constructor(private httpClient: HttpClient,
+              private userService: UserService,
               private activatedRoute: ActivatedRoute,
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
@@ -133,7 +138,8 @@ export class EditComponent implements OnInit {
     const day = this.formGroup.get('day').value;
     const period = this.formGroup.get('period').value;
     const termId = this.formGroup.get('term_id').value;
-    const course = new Course({
+    const user = this.formGroup.get('user_id').value;
+    const course = {
       id: courseId,
       name,
       school: new School({id: schoolId}),
@@ -142,8 +148,9 @@ export class EditComponent implements OnInit {
       week,
       day,
       period,
-      sory
-    });
+      sory,
+      user
+    };
     console.log(course);
     this.httpClient.put<Course>(`/api/course/update`, course)
       .subscribe(() => {
@@ -215,6 +222,15 @@ export class EditComponent implements OnInit {
       });
   }
 
+  onSoryChange() {
+    this.userService.getUserWhenSoryChange(this.formGroup.get('school_id').value, this.formGroup.get('clazz_id').value)
+      .subscribe(users => {
+        this.users = users;
+      }, error => {
+        console.error('获取用户失败', error);
+      });
+  }
+
   calculateWeeks(): void {
     const oneDay = 1000 * 60 * 60 * 24;
     const startTime = new Date(this.semesterStartDate);
@@ -225,6 +241,7 @@ export class EditComponent implements OnInit {
 
     // 创建周数数组
     console.log(numberOfWeeks);
+    this.weeks = [];
     for (let i = 1; i <= numberOfWeeks; i++) {
       this.weeks.push(i);
       console.log(this.weeks);

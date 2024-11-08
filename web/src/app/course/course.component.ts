@@ -11,6 +11,7 @@ import {CourseService} from '../service/course.service';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {User} from '../entity/user';
 import {LoginService} from '../service/login.service';
+import {LessonService} from '../service/lesson.service';
 import {Term} from '../entity/term';
 import {Clazz} from '../entity/clazz';
 
@@ -69,6 +70,7 @@ export class CourseComponent implements OnInit {
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
               private courseService: CourseService,
+              private lessonService: LessonService,
               private loginService: LoginService) {
     this.loginService.getCurrentUser().subscribe(
       user => {
@@ -157,6 +159,26 @@ export class CourseComponent implements OnInit {
       width: '900px',
       height: '400px',
     });
+  }
+
+  addLesson(courseId: number): void {
+    console.log('addLesson');
+    const userId = this.me.id;
+    this.lessonService.addLesson(courseId, userId).subscribe(
+      response => {
+        console.log('Lesson added successfully', response);
+        this.sweetAlertService.showSuccess('添加成功', '');
+      },
+      error => {
+        console.log(error.error.error);
+        if (error.error.error === '课程已存在') {
+          this.sweetAlertService.showError('添加失败', '课程已存在', '');
+        } else {
+          console.error('Failed to add lesson', error);
+          this.sweetAlertService.showError('添加失败', '', '');
+        }
+      }
+    );
   }
 
   onSubmit(form: NgForm, page = 0) {
