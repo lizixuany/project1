@@ -26,7 +26,9 @@ class ScheduleController extends Controller
         if ($term_id !== null) {
             $condition['term.id'] =$term_id;
         }
-        $courses = Course::with(['term', 'clazz', 'school'])->where($condition)->select();
+        $courses = Course::with(['term', 'clazz', 'school'])
+                    ->where($condition)
+                    ->select();
 
         $result = [];
         foreach ($courses as $course) {

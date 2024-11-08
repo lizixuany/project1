@@ -31,7 +31,9 @@ class TripController extends Controller
                 $condition['term.id'] =$term_id;
             }
 
-           $courses = Course::with(['term', 'clazz', 'school'])->where($condition)->select();
+           $courses = Course::with(['term', 'clazz', 'school'])
+                    ->where($condition)
+                    ->select();
 
            $result = [];
            foreach ($courses as $course) {

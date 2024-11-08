@@ -6,7 +6,7 @@
   margin-right: 0.3em;
 }
 .main {
-  margin: 130px auto;
+  margin: 130px 100px 0px 220px;
   font-size: 24px;
 }
 
@@ -18,3 +18,4 @@
 .btn-inline:last-child {
   margin-right: 0; /* 最后一个按钮不需要右边距 */
 }
+

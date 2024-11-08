@@ -34,8 +34,14 @@ class ClazzController extends Controller
                 $condition['clazz.name'] = ['like', '%' . $name . '%'];
             }
            
-            $list = Clazz::with('school')->where($condition)->page($page, $size)->select();
-            $total = Clazz::with('school')->where($condition)->page($page, $size)->count();
+            $list = Clazz::with('school')
+                    ->where($condition)
+                    ->page($page, $size)
+                    ->select();
+            $total = Clazz::with('school')
+                    ->where($condition)
+                    ->page($page, $size)
+                    ->count();
           
             $pageData = [
               'content' => $list,

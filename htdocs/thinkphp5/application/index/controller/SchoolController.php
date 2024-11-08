@@ -27,8 +27,12 @@ class SchoolController extends Controller
             if ($name !== null && $name !== '') {
                 $condition['name'] = ['like', '%' . $name . '%'];
             }
-            $list = School::where($condition)->page($page, $size)->select();
-            $total = School::where($condition)->page($page, $size)->count();
+            $list = School::where($condition)
+                    ->page($page, $size)
+                    ->select();
+            $total = School::where($condition)
+                    ->page($page, $size)
+                    S->count();
 
             $pageData = [
             'content' => $list,

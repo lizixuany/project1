@@ -139,13 +139,14 @@ export class SchoolComponent implements OnInit {
     });
   }
 
-  onSubmit(form: NgForm, page = 0) {
+  onSubmit(form: NgForm, page = 1) {
     console.log('调用了search');
     if (form.valid) {
       console.log('提交的查询参数:', this.searchParameters);
       const httpParams = new HttpParams().append('page', this.page.toString())
         .append('size', this.size.toString());
-      this.httpClient.post<Page<School>>('/api/school', this.searchParameters, {params: httpParams}).subscribe(
+      this.httpClient.post<Page<School>>('/api/school', this.searchParameters, {params: httpParams})
+        .subscribe(
         pageData => {
           // 在请求数据之后设置当前页
           this.page = page;

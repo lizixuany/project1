@@ -51,8 +51,14 @@ class CourseController extends Controller
                 $condition['course.name'] = ['like', '%' . $name . '%'];
             }
 
-            $list = Course::with(['term', 'clazz', 'school'])->where($condition)->page($page, $size)->select();
-            $total = Course::with(['term', 'clazz', 'school'])->where($condition)->page($page, $size)->count();
+            $list = Course::with(['term', 'clazz', 'school'])
+                    ->where($condition)
+                    ->page($page, $size)
+                    ->select();
+            $total = Course::with(['term', 'clazz', 'school'])
+                    ->where($condition)
+                    ->page($page, $size)
+                    ->count();
 
             $pageData = [
                 'content' => $list,
