@@ -64,6 +64,7 @@ export class CourseComponent implements OnInit {
     {name: '第四大节', value: 4},
     {name: '第五大节', value: 5}
   ];
+  protected role: number;
 
   constructor(private httpClient: HttpClient,
               private dialog: MatDialog,
@@ -86,6 +87,10 @@ export class CourseComponent implements OnInit {
   }
 
   ngOnInit() {
+    const sessionRole = window.sessionStorage.getItem('role');
+    if (sessionRole !== 'true') {
+      this.role = 3;
+    }
     console.log('学期组件调用ngOnInit()');
     // 使用默认值 page = 0 调用loadByPage()方法
     this.loadByPage();
