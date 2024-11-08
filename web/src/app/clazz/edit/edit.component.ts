@@ -99,6 +99,8 @@ export class EditComponent implements OnInit {
         error => {
           if (error.error.error === '班级已存在') {
             this.sweetAlertService.showError('编辑失败', '班级已存在', '');
+          } else if (error.error.error === '与已有课程的时间冲突') {
+            this.sweetAlertService.showError('新增失败', '与已有课程的时间冲突', '');
           } else {
             this.sweetAlertService.showError('编辑失败', '', '');
           }

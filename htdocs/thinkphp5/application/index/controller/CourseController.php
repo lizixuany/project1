@@ -119,23 +119,36 @@ class CourseController extends Controller
             $term = $data['term'];
             $day = $data['day'];
             $period = $data['period'];
-           
+            
             // 获取相应账号的数据
             $courses = Course::where('name', $data['name'])
                             ->where('school_id', $school['id'])
                             ->where('clazz_id', $clazz['id'])
+                            ->select();
+
+            if ($courses) {               
+                return json(['error' => '课程已存在'], 401);                   
+            }
+
+            $times = Course::where('school_id', $school['id'])
+                            ->where('clazz_id', $clazz['id'])
                             ->where('term_id', $term['id'])
-                            ->where('sory', $data['sory'])
                             ->where('day', $data['day'])
                             ->where('period', $data['period'])
                             ->select();
-
-            if ($courses) {
-                foreach ($courses as $course) {
-                    if ($data['week'] === $course->week) {
-                        return json(['error' => '课程已存在'], 401);
-                    } 
-                }
+            
+            if ($times) {      
+                foreach ($times as $time) {
+                    // 将string '[1, 2]' 转化为 array [1, 2]
+                    $timeWeek = explode(', ', trim($time->week, '[]'));
+                    $intWeek = array_map('intval', $timeWeek);
+                    // 判断是否有相同元素
+                    $sameData = array_intersect($data['week'], $intWeek);
+                    if (!empty($sameData)) {
+                        return json(['error' => '与已有课程的时间冲突']);
+                    }
+                }         
+                return json(['error' => '课程已存在'], 401);                   
             }
 
             // 验证必要字段
@@ -218,7 +231,6 @@ class CourseController extends Controller
             foreach ($list as $course) {
                 $course['week'] = json_decode($course['week']); // 获取周数
             }
-
             return json($list);
         } catch (Exception $e) {
             // 异常处理
@@ -248,19 +260,37 @@ class CourseController extends Controller
             $courses = Course::where('name', $data['name'])
                             ->where('school_id', $school['id'])
                             ->where('clazz_id', $clazz['id'])
+                            ->select();
+
+            if ($courses) {               
+                foreach ($courses as $course) {
+                    if ($data['id'] !== $course->id) {
+                        return json(['error' => '课程已存在'], 401);
+                    } 
+                }                
+            }
+
+            $times = Course::where('school_id', $school['id'])
+                            ->where('clazz_id', $clazz['id'])
                             ->where('term_id', $term['id'])
-                            ->where('sory', $data['sory'])
                             ->where('day', $data['day'])
                             ->where('period', $data['period'])
                             ->select();
-
-            if ($courses) {
-                foreach ($courses as $course) {
-                    if ($data['id'] !== $course->id && $data['week'] === $course->week) {
-                        return json(['error' => '课程已存在'], 401);
-                    } 
-                }
+            
+            if ($times) {      
+                foreach ($times as $time) {
+                    // 将string '[1, 2]' 转化为 array [1, 2]
+                    $timeWeek = explode(', ', trim($time->week, '[]'));
+                    $intWeek = array_map('intval', $timeWeek);
+                    // 判断是否有相同元素
+                    $sameData = array_intersect($data['week'], $intWeek);
+                    if (!empty($sameData) && $data['id'] !== $course->id) {
+                        return json(['error' => '与已有课程的时间冲突'], 401);
+                    }
+                }         
+                return json(['error' => '课程已存在'], 401);                   
             }
+        
 
            // 验证必要字段
            if (!isset($data['name']) || empty($data['name'])){

@@ -61,7 +61,7 @@
         <td>{{ getPeriodName(lesson[key].course.period) }}</td>
         <td>
           <div class="btn-inline" *ngIf="lesson[key].course.sory !== 1">
-            <span class="btn btn-sm btn-outline-danger" (click)="onDelete(lesson.id, i)">
+            <span class="btn btn-sm btn-outline-danger" (click)="onDelete(i, lesson[key].id)">
                 <i class="far fa-trash-alt"></i>删除
             </span>
           </div>
