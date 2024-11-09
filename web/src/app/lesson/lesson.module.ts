@@ -14,14 +14,17 @@ import {MatSelectModule} from '@angular/material/select';
 import {SchoolSelectModule} from '../school/school-select/school-select.module';
 import {TermSelectModule} from '../term/term-select/term-select.module';
 import {CourseModule} from '../course/course.module';
+import { CreateComponent } from './create/create.component';
 
 @NgModule({
   declarations: [
     AddComponent,
-    LessonComponent
+    LessonComponent,
+    CreateComponent
   ],
   entryComponents: [
-    AddComponent
+    AddComponent,
+    CreateComponent
   ],
   imports: [
     CommonModule,

@@ -116,7 +116,7 @@ class LessonController extends Controller
             return json(['error' => '课程不存在'], 401);
         }
     }
-
+    
     public function delete()
     {
         try {
