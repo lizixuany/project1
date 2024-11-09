@@ -79,6 +79,10 @@ class LessonController extends Controller
                 'numberOfElements' => $total
             ];
 
+            foreach ($list as $lesson) {
+                $lesson->course['week'] = json_decode($lesson->course['week']); // 获取周数
+            }
+
             return json($pageData);
         } catch (\Exception $e) {
             return '系统错误' . $e->getMessage();

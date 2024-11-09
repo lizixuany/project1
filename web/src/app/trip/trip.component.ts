@@ -7,9 +7,9 @@ import {SharedService} from '../service/shared.service';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {CourseService} from '../service/course.service';
 import {TripService} from '../service/trip.service';
-import {NgForm} from '@angular/forms';
 import {Clazz} from '../entity/clazz';
 import {Term} from '../entity/term';
+import {TermService} from '../service/term.service';
 
 @Component({
   selector: 'app-trip',
@@ -56,6 +56,7 @@ export class TripComponent implements OnInit {
               private loginService: LoginService,
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
+              private termService: TermService,
               private courseService: CourseService,
               private tripService: TripService) {
     this.loginService.getCurrentUser().subscribe(
@@ -72,9 +73,45 @@ export class TripComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('ngOnInit');
+    this.loginService.getCurrentUser().subscribe(
+      user => {
+        this.me = user;
+        if (this.searchParameters.school === null) {
+          this.searchParameters.school = user.school_id;
+        }
+        if (this.searchParameters.clazz === null) {
+          this.searchParameters.clazz = user.clazz_id;
+        }
+        if (this.searchParameters.term === null) {
+          this.termService.getCurrentTerm(this.searchParameters.school)
+            .subscribe(response => {
+              this.searchParameters.term = response.term.id;
+              this.semesterStartDate = response.term.start_time;
+              this.semesterEndDate = response.term.end_time;
+              this.calculateWeeks();
+              this.searchParameters.week = response.week_number;
+              this.getWeekDates(this.searchParameters.week);
+              console.log(this.searchParameters);
+              this.onSearchSubmit();
+            }, error => {
+              if (error.error.error === '当前学期不存在，请先添加学期信息') {
+                this.sweetAlertService.showWithoutTerm('未识别到当前学期信息', '请先添加学期信息。', '');
+              } else if (error.error.error === '未识别到当前学校信息') {
+                this.sweetAlertService.showWithoutTerm('未识别到当前学期信息', '当前日期不在任何学期的日期范围内', '');
+              }
+            });
+        }
+      },
+      error => {
+        if (error.error.error === '无效的token') {
+          this.handleInvalidToken();
+        }
+      }
+    );
   }
 
-  onSearchSubmit(form: NgForm) {
+  onSearchSubmit() {
     console.log('调用了onSearchSubmit()方法');
     console.log(this.searchParameters.school);
     console.log(this.searchParameters.clazz);

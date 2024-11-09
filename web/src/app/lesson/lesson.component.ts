@@ -45,7 +45,7 @@ export class LessonComponent implements OnInit {
     course: null as unknown as number,
     clazz: null as unknown as number,
     school: null as unknown as number,
-    userId: null as number,
+    userId: null as unknown as number,
     term: null as unknown as number,
     sory: null as unknown as number,
   };
