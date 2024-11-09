@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {User} from '../entity/user';
-import {catchError} from 'rxjs/operators';
 import {Clazz} from '../entity/clazz';
-import {Term} from "../entity/term";
 
 @Injectable({
   providedIn: 'root'
