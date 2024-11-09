@@ -10,7 +10,7 @@ import {NavComponent} from './nav/nav.component';
 import {LoginComponent} from './login/login.component';
 import {SchoolModule} from './school/school.module';
 import {PageModule} from './clazz/page/page.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PersonalCenterModule} from './personal-center/personal-center.module';
 import {AddComponent} from './add/add.component';
 import {EditComponent} from './edit/edit.component';
@@ -24,6 +24,7 @@ import {MatOptionModule} from '@angular/material/core';
 import {TermSelectModule} from './term/term-select/term-select.module';
 import {MatSelectModule} from '@angular/material/select';
 import {TripComponent} from './trip/trip.component';
+import {MyComponent} from './my/my.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {TripComponent} from './trip/trip.component';
     AddComponent,
     EditComponent,
     CourseScheduleComponent,
-    TripComponent
+    TripComponent,
+    MyComponent
   ],
   entryComponents: [
     AddComponent, // 确保 AddComponent 在这里

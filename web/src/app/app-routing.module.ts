@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {IndexComponent} from './index/index.component';
 import {TripComponent} from './trip/trip.component';
 import {CourseScheduleComponent} from './course-schedule/course-schedule.component';
+import {MyComponent} from './my/my.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'course-schedule',
     component: CourseScheduleComponent
+  },
+  {
+    path: 'my',
+    component: MyComponent
   },
   {
     path: 'trip',

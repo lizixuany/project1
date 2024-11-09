@@ -1,25 +1,22 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
-import {CourseScheduleService} from '../service/course-schedule.service';
 import {LoginService} from '../service/login.service';
 import {SharedService} from '../service/shared.service';
 import {User} from '../entity/user';
+import {HttpClient} from '@angular/common/http';
 import {SweetAlertService} from '../service/sweet-alert.service';
+import {NgForm} from '@angular/forms';
+import {MyService} from '../service/my.service';
+import {TermService} from '../service/term.service';
 import {CourseService} from '../service/course.service';
-import {Clazz} from '../entity/clazz';
 import {Term} from '../entity/term';
 
 @Component({
-  selector: 'app-course-schedule',
-  templateUrl: './course-schedule.component.html',
-  styleUrls: ['./course-schedule.component.css']
+  selector: 'app-my',
+  templateUrl: './my.component.html',
+  styleUrls: ['./my.component.css']
 })
-export class CourseScheduleComponent implements OnInit {
-  courseTable: any[][] = []; // 确保已经初始化
-  clazzes = new Array<Clazz>();
-  terms = new Array<Term>();
-  term = new Term();
+export class MyComponent implements OnInit {
+  myTable: any[][] = []; // 确保已经初始化
   semesterStartDate: Date;
   semesterEndDate: Date;
 
@@ -41,25 +38,35 @@ export class CourseScheduleComponent implements OnInit {
     {name: '第四大节', value: 4},
     {name: '第五大节', value: 5}
   ];
+
   searchParameters = {
     school: null as unknown as number,
-    clazz: null as unknown as number,
+    userId: null as number,
     term: null as unknown as number,
-    week: null as unknown as number
+    week: null as unknown as number,
   };
 
   me = new User();
+  terms = new Array<Term>();
+  termsBySchool = new Array<Term>();
   beLogout = new EventEmitter<void>();
 
-  constructor(private courseScheduleService: CourseScheduleService,
-              private httpClient: HttpClient,
+  constructor(private httpClient: HttpClient,
               private loginService: LoginService,
               private sharedService: SharedService,
               private sweetAlertService: SweetAlertService,
-              private courseService: CourseService) {
+              private myService: MyService,
+              private courseService: CourseService,
+              private termService: TermService) {
     this.loginService.getCurrentUser().subscribe(
       user => {
         this.me = user;
+        // 用户信息加载完成后，设置搜索参数并发送请求
+        this.searchParameters.userId = user.id;
+        console.log(this.searchParameters.userId);
+        this.searchParameters.school = user.school_id;
+        console.log(this.searchParameters.school);
+        this.getTermsBySchoolId(this.searchParameters.school);
         this.sharedService.setData(user);
       },
       error => {
@@ -75,15 +82,14 @@ export class CourseScheduleComponent implements OnInit {
 
   onSearchSubmit(form: NgForm) {
     console.log('调用了onSearchSubmit()方法');
-    console.log(this.searchParameters.school);
-    console.log(this.searchParameters.clazz);
-    console.log(this.searchParameters.term);
     console.log(this.searchParameters.week);
-    this.courseScheduleService.getCourseTable(
+    console.log(this.searchParameters.school);
+    console.log(this.searchParameters.userId);
+    this.myService.getMyTable(
+      this.searchParameters.week,
+      this.searchParameters.userId,
       this.searchParameters.school,
-      this.searchParameters.clazz,
-      this.searchParameters.term,
-      this.searchParameters.week
+      this.searchParameters.term
     ).subscribe(
       (response) => {
         console.log(response); // 查看完整的响应数据
@@ -101,7 +107,7 @@ export class CourseScheduleComponent implements OnInit {
 
   processCourseData(courses: any[]) {
     // 初始化课表，最多7天，每天5个大节
-    this.courseTable = Array.from({ length: 7 }, () => new Array(5).fill(''));
+    this.myTable = Array.from({ length: 7 }, () => new Array(5).fill(''));
 
     courses.forEach((course) => {
       const dayIndex = course.day - 1; // 转换为整数并减1，因为数组索引从0开始
@@ -110,7 +116,7 @@ export class CourseScheduleComponent implements OnInit {
       // 检查索引是否在有效范围内
       if (dayIndex >= 0 && dayIndex < 7 && periodIndex >= 0 && periodIndex < 5) {
         // 直接将课程名称赋值到对应的位置
-        this.courseTable[dayIndex][periodIndex] = course.name;
+        this.myTable[dayIndex][periodIndex] = course.name;
       } else {
         console.error('无效的课程表索引:', dayIndex, periodIndex);
       }
@@ -132,31 +138,6 @@ export class CourseScheduleComponent implements OnInit {
         }
       );
     }, 1500);
-  }
-
-  getClazzBySchoolId(schoolId: number) {
-    this.courseService.getClazzBySchoolId(schoolId)
-      .subscribe(clazzes => {
-        this.clazzes = clazzes;
-      }, error => {
-        console.error('获取班级失败', error);
-      });
-  }
-
-  getTermsBySchoolId(schoolId: number) {
-    this.courseService.getTermsBySchoolId(schoolId)
-      .subscribe(terms => {
-        this.terms = terms;
-      }, error => {
-        console.error('获取学期失败', error);
-      });
-  }
-
-  onSchoolChange(schoolId: number) {
-    this.searchParameters.school = schoolId;
-    console.log(this.searchParameters.school);
-    this.getClazzBySchoolId(this.searchParameters.school);
-    this.getTermsBySchoolId(this.searchParameters.school);
   }
 
   onTermChange(termId: number) {
@@ -182,6 +163,7 @@ export class CourseScheduleComponent implements OnInit {
     const diffInDays = Math.ceil(diffInMilliseconds / oneDay); // 使用ceil确保包含最后一天
     const numberOfWeeks = Math.ceil(diffInDays / 7);
 
+    this.weeks = [];
     // 创建周数数组
     for (let i = 1; i <= numberOfWeeks; i++) {
       this.weeks.push(i);
@@ -203,5 +185,14 @@ export class CourseScheduleComponent implements OnInit {
       start.setDate(start.getDate() + 1); // 增加一天
     }
     this.dates = dates; // 返回包含格式化日期的数组
+  }
+
+  getTermsBySchoolId(schoolId: number) {
+    this.courseService.getTermsBySchoolId(schoolId)
+      .subscribe(terms => {
+        this.terms = terms;
+      }, error => {
+        console.error('获取学期失败', error);
+      });
   }
 }
