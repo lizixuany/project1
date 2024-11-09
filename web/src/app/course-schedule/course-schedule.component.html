@@ -27,7 +27,7 @@
       </div>
       <div class="form-group mb-2">
         <label class="mr-2">周数：</label>
-        <select class="form-control" [(ngModel)]="searchParameters.week" (change)="getWeekDates(searchParameters.week)" name="week" id="week">
+        <select class="form-control" [(ngModel)]="searchParameters.week" name="week" id="week">
           <option [ngValue]="null">所有周数</option>
           <option *ngFor="let week of weeks" [value]="week">
             {{week}}
