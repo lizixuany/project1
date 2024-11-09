@@ -61,7 +61,6 @@ export class AddComponent implements OnInit {
         console.log('接收到返回数据', result);
         this.dialogRef.close(result);
         this.sweetAlertService.showSuccess('新增成功!', 'success');
-        window.location.href = 'http://127.0.0.1:8088/user';
       }, (error) => {
         if (error.error.error === '用户已存在') {
           this.sweetAlertService.showError('编辑失败', '用户已存在', '');

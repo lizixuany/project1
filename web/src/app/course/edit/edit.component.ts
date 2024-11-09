@@ -158,7 +158,6 @@ export class EditComponent implements OnInit {
           try {
             this.dialogRef.close(course);
             this.sweetAlertService.showSuccess('编辑成功！', 'success');
-            window.location.href = 'http://127.0.0.1:8088/course';
           } catch (err) {
             console.log('Navigation failed', err);
           }

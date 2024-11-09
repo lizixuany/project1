@@ -94,7 +94,6 @@ export class EditComponent implements OnInit {
           // 更新成功后，关闭弹窗
             this.dialogRef.close(clazz);
             this.sweetAlertService.showSuccess('编辑成功!', 'success');
-            window.location.href = 'http://127.0.0.1:8088/clazz';
         },
         error => {
           if (error.error.error === '班级已存在') {
