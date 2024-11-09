@@ -183,9 +183,13 @@ export class LessonComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.dialog.open(AddComponent, {
+    const dialogRef = this.dialog.open(AddComponent, {
       width: '1000px',
       height: '370px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 

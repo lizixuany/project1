@@ -79,7 +79,6 @@ export class EditComponent implements OnInit {
       .subscribe(() => {
         this.dialogRef.close(school);
         this.sweetAlertService.showSuccess('编辑成功!', 'success');
-          window.location.href = 'http://127.0.0.1:8088/school';
         },
         error => {
           if (error.error.error === '学校已存在') {

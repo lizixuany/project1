@@ -66,7 +66,6 @@ export class AddComponent implements OnInit {
       .subscribe(lesson => {
           this.dialogRef.close(newLesson);
           this.sweetAlertService.showSuccess('新增成功！', 'success');
-          window.location.href = 'http://127.0.0.1:8088/lesson';
         },
         error => {
           if (error.error.error === '课程已存在') {

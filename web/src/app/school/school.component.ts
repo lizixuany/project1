@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Page} from '../entity/page';
 import {School} from '../entity/school';
@@ -17,6 +17,7 @@ import {LocalCheckerService} from '../service/local-checker.service';
   styleUrls: ['./school.component.css']
 })
 export class SchoolComponent implements OnInit {
+
   searchParameters = {
     name: ''
   };
@@ -70,6 +71,7 @@ export class SchoolComponent implements OnInit {
     }
 
     this.localCheckerService.startCheckingLocal();
+
     console.log('school组件调用ngOnInit()');
     // 使用默认值 page = 0 调用loadByPage()方法
     this.loadByPage();
@@ -123,19 +125,25 @@ export class SchoolComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.dialog.open(AddComponent, {
+    const dialogRef = this.dialog.open(AddComponent, {
       width: '900px',
       height: '300px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 
   openEditDialog(id: number): void {
-    console.log('edit dialog');
-    console.log(id);
     this.sharedService.setId(id);
-    this.dialog.open(EditComponent, {
+    const dialogRef = this.dialog.open(EditComponent, {
       width: '900px',
       height: '300px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 

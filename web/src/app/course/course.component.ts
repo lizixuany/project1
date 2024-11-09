@@ -150,9 +150,13 @@ export class CourseComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.dialog.open(AddComponent, {
+    const dialogRef = this.dialog.open(AddComponent, {
       width: '1000px',
       height: '370px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 
@@ -160,9 +164,13 @@ export class CourseComponent implements OnInit {
     console.log('edit dialog');
     console.log(id);
     this.sharedService.setId(id);
-    this.dialog.open(EditComponent, {
+    const dialogRef = this.dialog.open(EditComponent, {
       width: '900px',
       height: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 

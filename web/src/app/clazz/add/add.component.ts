@@ -41,7 +41,6 @@ export class AddComponent implements OnInit {
       .subscribe(clazz => {
         this.dialogRef.close(newClazz);
         this.sweetAlertService.showSuccess('新增成功!', 'success');
-        window.location.href = 'http://127.0.0.1:8088/clazz';
         },
         error => {
         if (error.error.error === '班级已存在') {

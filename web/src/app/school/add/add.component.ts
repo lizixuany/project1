@@ -15,6 +15,7 @@ export class AddComponent implements OnInit {
   };
 
   constructor(private httpClient: HttpClient,
+              private router: Router,
               private sweetAlertService: SweetAlertService,
               public dialogRef: MatDialogRef<AddComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -27,15 +28,7 @@ export class AddComponent implements OnInit {
     this.httpClient.post('api/school/add', this.school).subscribe({
       next: (response) => {
         console.log(response);
-        if (response['status'] === 'success') {
-          this.dialogRef.close(response);
-          this.sweetAlertService.showSuccess('新增成功!', 'success');
-          window.location.href = 'http://127.0.0.1:8088/school';
-        } else {
-          // 检查message字段是否存在于响应中
-          const errorMessage = response.hasOwnProperty('message') ? response['message'] : '未知错误';
-          console.error('保存失败', errorMessage);
-        }
+        this.dialogRef.close(response);
       },
       error: (error) => {
         if (error.error.error === '学校已存在') {

@@ -117,18 +117,26 @@ export class ClazzComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.dialog.open(AddComponent, {
+    const dialogRef = this.dialog.open(AddComponent, {
       width: '1000px',
       height: '370px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 
   openEditDialog(id: number): void {
     console.log('edit dialog');
     this.sharedService.setId(id);
-    this.dialog.open(EditComponent, {
+    const dialogRef = this.dialog.open(EditComponent, {
       width: '1000px',
       height: '370px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 

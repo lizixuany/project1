@@ -65,7 +65,6 @@ export class AddComponent implements OnInit {
       .subscribe(clazz => {
         this.dialogRef.close(newTerm);
         this.sweetAlertService.showSuccess('新增成功！', 'success');
-        window.location.href = 'http://127.0.0.1:8088/term';
         },
         error => {
           console.log(error.error.error);

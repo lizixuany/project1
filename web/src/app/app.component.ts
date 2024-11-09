@@ -137,9 +137,13 @@ export class AppComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    this.dialog.open(AddComponent, {
+    const dialogRef = this.dialog.open(AddComponent, {
       width: '1000px',
       height: '580px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 
@@ -147,9 +151,13 @@ export class AppComponent implements OnInit {
     console.log('edit dialog');
     console.log(id);
     this.sharedService.setId(id);
-    this.dialog.open(EditComponent, {
+    const dialogRef = this.dialog.open(EditComponent, {
       width: '1000px',
       height: '580px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
     });
   }
 
@@ -188,7 +196,7 @@ export class AppComponent implements OnInit {
         () => {
           console.log('logout');
           this.beLogout.emit();
-          window.location.href = 'http://127.0.0.1:8088';
+          window.location.href = 'http://127.0.0.1:8088/';
         },
         error => {
           console.error('注销失败', error);
@@ -212,3 +220,4 @@ export class AppComponent implements OnInit {
     this.getClazzBySchoolId(this.searchParameters.school);
   }
 }
+
