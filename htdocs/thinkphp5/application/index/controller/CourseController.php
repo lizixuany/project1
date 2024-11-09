@@ -332,13 +332,13 @@ class CourseController extends Controller
             }
 
             $courseId = Course::where('name', $data['name'])
-                                        ->where('school_id', $school['id'])
-                                        ->where('clazz_id', $clazz['id'])
-                                        ->where('term_id', $term['id'])
-                                        ->where('sory', $data['sory'])
-                                        ->where('day', $data['day'])
-                                        ->where('period', $data['period'])
-                                        ->select();
+                                ->where('school_id', $school['id'])
+                                ->where('clazz_id', $clazz['id'])
+                                ->where('term_id', $term['id'])
+                                ->where('sory', $data['sory'])
+                                ->where('day', $data['day'])
+                                ->where('period', $data['period'])
+                                ->select();
                                                
             if ($courseId) {
                 foreach ($courseId as $newCourse) {
