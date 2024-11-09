@@ -23,8 +23,6 @@ export class CourseScheduleComponent implements OnInit {
   term = new Term();
   semesterStartDate: Date;
   semesterEndDate: Date;
-  startTime: Date;
-  endTime: Date;
 
   weeks: number[] = [];
   dates: Date[] = [];
@@ -189,6 +187,7 @@ export class CourseScheduleComponent implements OnInit {
   }
 
   onTermChange(termId: number) {
+    this.searchParameters.week = null;
     this.searchParameters.term = termId;
     console.log(this.searchParameters.term);
     this.courseService.getTerm(termId)
@@ -211,6 +210,7 @@ export class CourseScheduleComponent implements OnInit {
     const diffInDays = Math.ceil(diffInMilliseconds / oneDay); // 使用ceil确保包含最后一天
     const numberOfWeeks = Math.ceil(diffInDays / 7);
 
+    this.weeks = [];
     // 创建周数数组
     for (let i = 1; i <= numberOfWeeks; i++) {
       this.weeks.push(i);

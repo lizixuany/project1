@@ -4,7 +4,6 @@ import {SharedService} from '../service/shared.service';
 import {User} from '../entity/user';
 import {HttpClient} from '@angular/common/http';
 import {SweetAlertService} from '../service/sweet-alert.service';
-import {NgForm} from '@angular/forms';
 import {MyService} from '../service/my.service';
 import {TermService} from '../service/term.service';
 import {CourseService} from '../service/course.service';
@@ -48,7 +47,6 @@ export class MyComponent implements OnInit {
 
   me = new User();
   terms = new Array<Term>();
-  termsBySchool = new Array<Term>();
   beLogout = new EventEmitter<void>();
 
   constructor(private httpClient: HttpClient,
@@ -78,9 +76,38 @@ export class MyComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loginService.getCurrentUser().subscribe(
+      user => {
+        this.me = user;
+        if (this.searchParameters.term === null) {
+          this.termService.getCurrentTerm(this.searchParameters.school)
+            .subscribe(response => {
+              this.searchParameters.term = response.term.id;
+              this.semesterStartDate = response.term.start_time;
+              this.semesterEndDate = response.term.end_time;
+              this.calculateWeeks();
+              this.searchParameters.week = response.week_number;
+              this.getWeekDates(this.searchParameters.week);
+              console.log(this.searchParameters);
+              this.onSearchSubmit();
+            }, error => {
+              if (error.error.error === '当前学期不存在，请先添加学期信息') {
+                this.sweetAlertService.showWithoutTerm('未识别到当前学期信息', '请先添加学期信息。', '');
+              } else if (error.error.error === '未识别到当前学校信息') {
+                this.sweetAlertService.showWithoutTerm('未识别到当前学期信息', '当前日期不在任何学期的日期范围内', '');
+              }
+            });
+        }
+      },
+      error => {
+        if (error.error.error === '无效的token') {
+          this.handleInvalidToken();
+        }
+      }
+    );
   }
 
-  onSearchSubmit(form: NgForm) {
+  onSearchSubmit() {
     console.log('调用了onSearchSubmit()方法');
     console.log(this.searchParameters.week);
     console.log(this.searchParameters.school);

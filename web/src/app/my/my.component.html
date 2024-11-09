@@ -1,10 +1,10 @@
 <div class="container-md main">
   <div class="col-md-8">
-    <form class="form-inline d-flex justify-content-between" style="width: 1050px"
-          #searchForm="ngForm" (ngSubmit)="onSearchSubmit(searchForm)">
+    <form class="form-inline d-flex justify-content-between" style="width: 1050px" (ngSubmit)="onSearchSubmit()">
       <div class="form-group mb-2">
         <label class="mr-2">学期：</label>
         <select class="form-control" [(ngModel)]="searchParameters.term" (change)="onTermChange(searchParameters.term)" name="term_id" id="term_id">
+          <option [ngValue]="null">所有学期</option>
           <option *ngFor="let term of terms" [value]="term.id">
             {{term.name}}
           </option>
@@ -13,6 +13,7 @@
       <div class="form-group mb-2">
         <label class="mr-2">周数：</label>
         <select class="form-control" [(ngModel)]="searchParameters.week" (change)="getWeekDates(searchParameters.week)" name="week" id="week">
+          <option [ngValue]="null">所有周数</option>
           <option *ngFor="let week of weeks" [value]="week">
             {{week}}
           </option>
