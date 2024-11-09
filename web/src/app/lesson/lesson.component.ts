@@ -84,7 +84,7 @@ export class LessonComponent implements OnInit {
     this.loadByPage(page);
   }
 
-// 方法来获取天的名称
+  // 方法来获取天的名称
   getDayName(value: number): string {
     const day = this.days.find(d => d.value === value);
     return day ? day.name : '';
@@ -102,7 +102,8 @@ export class LessonComponent implements OnInit {
       .append('size', this.size.toString());
 
     // 确保在用户信息加载完成后设置userId
-    this.loginService.getCurrentUser().subscribe(
+    this.loginService.getCurrentUser()
+      .subscribe(
       user => {
         this.me = user;
         this.getTermsBySchoolId(user.school_id);

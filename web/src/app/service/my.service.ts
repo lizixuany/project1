@@ -5,18 +5,18 @@ import {HttpClient} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class CourseScheduleService {
+export class MyService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getCourseTable(schoolId: number, clazzId: number, termId: number, week: number): Observable<any> {
+  getMyTable(week: number, userId: number, schoolId: number, termId: number): Observable<any> {
     const searchParameters = {
       school: schoolId,
-      clazz: clazzId,
+      user: userId,
       term: termId,
       weekNumber: week
     };
     console.log(searchParameters);
-    return this.httpClient.post(`/api/Schedule/`, searchParameters);
+    return this.httpClient.post(`/api/My/`, searchParameters);
   }
 }

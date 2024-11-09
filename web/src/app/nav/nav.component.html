@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
   <div class="top-bar">
-    <div class="title">课程管理系统</div>
+    <div class="title">课表查询系统</div>
     <form class="form-inline logout" (ngSubmit)="onSubmit()">
       <button class="btn btn-outline-light my-2 my-sm-0" type="submit">注销</button>
     </form>
@@ -39,7 +39,7 @@
         <li class="nav-item">
           <a class="nav-link"
              routerLink="course"
-             routerLinkActive="active">课表管理</a>
+             routerLinkActive="active">课程管理</a>
         </li>
         <li class="nav-item">
           <a class="nav-link"
@@ -50,6 +50,11 @@
           <a class="nav-link"
              routerLink="lesson"
              routerLinkActive="active">我的课程</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             routerLink="my"
+             routerLinkActive="active">我的课表</a>
         </li>
         <li class="nav-item">
           <a class="nav-link"
