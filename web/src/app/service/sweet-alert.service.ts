@@ -1,6 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import Swal from 'sweetalert2';
 import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class SweetAlertService {
   beLogout = new EventEmitter<void>();
   login = false;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private router: Router) {
   }
 
   public showError(title: string, text: string, icon: string): void {
@@ -27,6 +29,16 @@ export class SweetAlertService {
       icon: 'success',
       showConfirmButton: false,
       timer: 1500
+    });
+  }
+
+  public showWithoutTerm(title: string, text: string, icon: string): void {
+    Swal.fire({
+      icon: 'warning',
+      title,
+      text,
+    }).then((result) => {
+      this.router.navigate(['term']);
     });
   }
 

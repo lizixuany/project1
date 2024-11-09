@@ -336,4 +336,32 @@ class TermController extends Controller
 
         return json($terms);
     }
+
+    public function getCurrentTerm() {
+        $request = Request::instance();
+        $schoolId = $request->param('schoolId');
+
+        $terms = Term::with('school')->where('school.id', $schoolId)->select();
+
+        if ($terms) {
+            foreach ($terms as $term) {
+                $startTime = new \DateTime($term->start_time);
+                $endTime = new \DateTime($term->end_time);
+                $show = new \DateTime(date('Y-m-d'));
+
+                if ($show >= $startTime && $show <= $endTime) {
+                    // 计算开始时间到当前时间的天数差
+                    $diffInDays = floor(($show->getTimestamp() - $startTime->getTimestamp()) / (60 * 60 * 24));
+
+                    // 计算是开始时间到结束时间的第几周
+                    $weekNumber = ceil($diffInDays / 7);
+                    
+                    return json(['term' => $term, 'week_number' => $weekNumber]);
+                }             
+            }
+            return json(['error' => '当前日期不在任何学期的日期范围内'], 401);
+        } else {
+            return json(['error' => '当前学期不存在，请先添加学期信息'], 401);
+        }   
+    }
 }

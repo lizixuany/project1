@@ -29,4 +29,7 @@ export class TermService {
   getTerms(): Observable<Term[]> {
     return this.httpClient.get<Term[]>(`/api/term/getTerms`);
   }
+  getCurrentTerm(schoolId: number): any {
+    return this.httpClient.get<any>(`/api/term/getCurrentTerm/?schoolId=${schoolId}`);
+  }
 }
