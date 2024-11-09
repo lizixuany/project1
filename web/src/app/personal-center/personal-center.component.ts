@@ -1,9 +1,8 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
-import { SharedService } from '../service/shared.service';
-import { LoginService } from '../service/login.service';
+import {Component, EventEmitter, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {HttpClient} from '@angular/common/http';
+import {SharedService} from '../service/shared.service';
+import {LoginService} from '../service/login.service';
 import {SweetAlertService} from '../service/sweet-alert.service';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import {User} from '../entity/user';
@@ -19,7 +18,6 @@ export class PersonalCenterComponent implements OnInit {
   beLogout = new EventEmitter<void>();
 
   constructor(
-    private router: Router,
     private dialog: MatDialog,
     private sharedService: SharedService,
     private loginService: LoginService,
