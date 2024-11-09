@@ -82,6 +82,7 @@ export class CourseScheduleComponent implements OnInit {
                 this.semesterEndDate = response.term.end_time;
                 this.calculateWeeks();
                 this.searchParameters.week = response.week_number;
+                this.getWeekDates(this.searchParameters.week);
                 console.log(this.searchParameters);
                 this.onSearchSubmit();
             }, error => {
