@@ -145,7 +145,7 @@ class CourseController extends Controller
                     // 判断是否有相同元素
                     $sameData = array_intersect($data['week'], $intWeek);
                     if (!empty($sameData)) {
-                        return json(['error' => '与已有课程的时间冲突']);
+                        return json(['error' => '与已有课程的时间冲突'], 401);
                     }
                 }         
                 return json(['error' => '课程已存在'], 401);                   

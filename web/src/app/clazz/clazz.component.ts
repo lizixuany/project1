@@ -102,8 +102,11 @@ export class ClazzComponent implements OnInit {
                 console.log('删除成功');
                 this.sweetAlertService.showSuccess('删除成功', 'success');
                 this.pageData.content.splice(index, 1);
-                this.loadByPage();
-              },
+                if (this.pageData.content.length === 0 && this.page > 1) {
+                  this.page--; // 如果当前页没有其他记录，跳转到上一页
+                }
+                this.loadByPage(this.page);
+            },
               error => {
                 if (error.error.error === '该班级仍有用户未清空') {
                   this.sweetAlertService.showError('删除失败', '该班级仍有用户未清空', '');

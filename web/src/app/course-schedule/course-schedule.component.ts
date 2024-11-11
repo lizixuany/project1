@@ -55,7 +55,6 @@ export class CourseScheduleComponent implements OnInit {
   constructor(private courseScheduleService: CourseScheduleService,
               private httpClient: HttpClient,
               private loginService: LoginService,
-              private sharedService: SharedService,
               private termService: TermService,
               private sweetAlertService: SweetAlertService,
               private courseService: CourseService) {
@@ -71,6 +70,7 @@ export class CourseScheduleComponent implements OnInit {
         }
         if (this.searchParameters.clazz === null) {
           this.searchParameters.clazz = user.clazz_id;
+          console.log(this.searchParameters.clazz);
         }
         if (this.searchParameters.term === null) {
           this.termService.getCurrentTerm(this.searchParameters.school)

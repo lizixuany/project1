@@ -22,7 +22,7 @@
           <label class="mr-2">角色：</label>
           <select class="form-control" name="role" type="text"
                   [(ngModel)]="searchParameters.role">
-            <option value="">请选择</option>
+            <option value=null>请选择</option>
             <option value="1">超级管理员</option>
             <option value="2">管理员</option>
             <option value="3">普通用户</option>
@@ -32,7 +32,7 @@
           <label class="mr-2">状态：</label>
           <select class="form-control" name="state" type="text"
                   [(ngModel)]="searchParameters.state">
-            <option value="">请选择</option>
+            <option value=null>请选择</option>
             <option value="1">已冻结</option>
             <option value="2">已启用</option>
           </select>

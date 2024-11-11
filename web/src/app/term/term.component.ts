@@ -102,8 +102,11 @@ export class TermComponent implements OnInit {
                 console.log('删除成功');
                 this.sweetAlertService.showSuccess('删除成功', 'success');
                 this.pageData.content.splice(index, 1);
-                this.loadByPage();
-              },
+                if (this.pageData.content.length === 0 && this.page > 1) {
+                  this.page--; // 如果当前页没有其他记录，跳转到上一页
+                }
+                this.loadByPage(this.page);
+            },
               error => {
                 if (error.error.error === '该学期仍有课程未清空') {
                   this.sweetAlertService.showError('删除失败', '该学期仍有课程未清空', '');
