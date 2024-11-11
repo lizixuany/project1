@@ -138,7 +138,6 @@ export class LessonComponent implements OnInit {
     console.log('调用了search');
     console.log(this.searchParameters);
     if (form.valid) {
-      const course = form.value.course;
       console.log(this.searchParameters);
       const httpParams = new HttpParams()
         .append('page', this.page.toString())
@@ -151,7 +150,10 @@ export class LessonComponent implements OnInit {
             console.log('lesson组件接收到查询返回数据，重新设置pageData');
             console.log(pageData);
             this.pageData = pageData;
-            this.loadByPage(page);
+            if (this.pageData.content.length === 0 && this.page > 1) {
+              this.page--; // 如果当前页没有其他记录，跳转到上一页
+            }
+            this.loadByPage(this.page);
           },
           error => {
             console.error('请求数据失败', error);
@@ -169,8 +171,11 @@ export class LessonComponent implements OnInit {
                 console.log('删除成功');
                 this.sweetAlertService.showSuccess('删除成功', 'success');
                 this.pageData.content.splice(index, 1);
-                this.loadByPage();
-              },
+                if (this.pageData.content.length === 0 && this.page > 1) {
+                  this.page--; // 如果当前页没有其他记录，跳转到上一页
+                }
+                this.loadByPage(this.page);
+            },
               error => {
                 if (error.error.error === '课程不存在') {
                   this.sweetAlertService.showError('删除失败', '课程已存在', 'error');

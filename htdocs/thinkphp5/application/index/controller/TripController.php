@@ -43,13 +43,13 @@ class TripController extends Controller
                $period = $course['period'];
 
                if (isset($course['name'])) {
-               $result[] = [
-                   'name' => $course['name'],
-                   'day' => $day,
-                   'period' => $period,
-                   'course_id' => $course['id'] // 课程ID
-               ];
-              }
+                   $result[] = [
+                       'name' => $course['name'],
+                       'day' => $day,
+                       'period' => $period,
+                       'course_id' => $course['id'] // 课程ID
+                   ];
+               }
            }
 
            // 已经有了$result数组，其中包含了需要的course_id

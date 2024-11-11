@@ -6,19 +6,19 @@ body, html {
 /* 顶部导航栏样式 */
 .top-bar {
   height: 180px;
-  width :120%;
+  width :100%;
   background-color: #990099;
   color: white;
   display: flex;
   align-items: center;
   padding: 10px 10px;
-  margin: 10px 10px -20px -16px;
+  margin: 10px 20px -20px -16px;
   box-shadow: -50px 2px 4px rgba(0,0,0,0.1);
   position: fixed;
   z-index: 999;
 }
 .top-bar .title {
-  margin: 25px 20px -40px 20px;
+  margin: 25px 10px -40px 20px;
   font-size: 33px;
   font-weight: bold;
 }
@@ -29,7 +29,7 @@ body, html {
 }
 .top-bar .logout {
   margin-top: 60px;
-  margin-left: 1500px;
+  margin-left: 1410px;
   font-size: 33px;
   cursor: pointer;
   color: white;
@@ -79,4 +79,9 @@ body, html {
   height: 80px;
   box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
   z-index: 999;
+}
+
+.navbar-brand {
+  font-size: 20px;
+  text-decoration: none;
 }
