@@ -1,39 +1,32 @@
-import {Component, EventEmitter, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {LoginService} from '../../service/login.service';
+import {User} from '../../entity/user';
 import {School} from '../../entity/school';
-import {Term} from '../../entity/term';
 import {Clazz} from '../../entity/clazz';
+import {Term} from '../../entity/term';
+import {SweetAlertService} from '../../service/sweet-alert.service';
 import {HttpClient} from '@angular/common/http';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {CourseService} from '../../service/course.service';
-import {SweetAlertService} from '../../service/sweet-alert.service';
-import {User} from '../../entity/user';
-import {LoginService} from '../../service/login.service';
-import {UserService} from '../../service/user.service';
 
 @Component({
-  selector: 'app-add',
-  templateUrl: './add.component.html',
-  styleUrls: ['./add.component.css']
+  selector: 'app-create',
+  templateUrl: './create.component.html',
+  styleUrls: ['./create.component.css']
 })
-export class AddComponent implements OnInit {
-  private url = 'api/course/add';
-  course = {
+export class CreateComponent implements OnInit {
+
+  lesson = {
     name: '',
     school_id: null as unknown as number,
     term_id: null as unknown as number,
     clazz_id: null as unknown as number,
     user_id: null as unknown as number,
-    sory: 1,
+    sory: 0,
     week: [],
     day: null as unknown as number,
     period: null as unknown as number
   };
-  value = '';
-  schools = new Array<School>();
-  terms = new Array<Term>();
-  term = new Term();
-  clazzes = new Array<Clazz>();
-  users = new Array<User>();
 
   semesterStartDate: Date;
   semesterEndDate: Date;
@@ -57,50 +50,45 @@ export class AddComponent implements OnInit {
   ];
 
   me = new User();
-  beLogout = new EventEmitter<void>();
+  terms = new Array<Term>();
 
-  constructor(private httpClient: HttpClient,
-              public dialogRef: MatDialogRef<AddComponent>,
-              private loginService: LoginService,
-              private userService: UserService,
-              private sweetAlertService: SweetAlertService,
+  constructor(private loginService: LoginService,
+              private httpClient: HttpClient,
+              private courseService: CourseService,
+              public dialogRef: MatDialogRef<CreateComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private courseService: CourseService) { }
+              private sweetAlertService: SweetAlertService) { }
 
   ngOnInit() {
     this.loginService.getCurrentUser().subscribe(
       user => {
         this.me = user;
-      },
-      error => {
-        if (error.error.error === '无效的token') {
-          this.handleInvalidToken();
-        }
+        this.getTermsBySchoolId(user.school_id);
+        this.lesson.school_id = user.school_id;
+        this.lesson.clazz_id = user.clazz_id;
+        this.lesson.user_id = user.id;
       }
     );
-    // 获取所有学校
-    this.httpClient.get<Array<School>>('api/school')
-      .subscribe(schools => this.schools = schools);
   }
 
   onSubmit(): void {
     const newCourse = {
-      name: this.course.name,
-      sory: this.course.sory,
-      week: this.course.week,
-      day: this.course.day,
-      period: this.course.period,
-      school: new School({id: this.course.school_id}),
-      clazz: new Clazz({id: this.course.clazz_id}),
-      term: new Term({id: this.course.term_id}),
-      user: this.course.user_id
+      name: this.lesson.name,
+      sory: this.lesson.sory,
+      week: this.lesson.week,
+      day: this.lesson.day,
+      period: this.lesson.period,
+      school: new School({id: this.lesson.school_id}),
+      clazz: new Clazz({id: this.lesson.clazz_id}),
+      term: new Term({id: this.lesson.term_id}),
+      user: this.lesson.user_id
     };
     console.log(newCourse.sory);
     console.log(newCourse);
-    this.httpClient.post(this.url, newCourse)
+    this.httpClient.post('api/course/add', newCourse)
       .subscribe(clazz => {
-        this.dialogRef.close(newCourse);
-        this.sweetAlertService.showSuccess('新增成功！', 'success');
+          this.dialogRef.close(newCourse);
+          this.sweetAlertService.showSuccess('新增成功！', 'success');
         },
         error => {
           if (error.error.error === '课程已存在') {
@@ -118,15 +106,6 @@ export class AddComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  getClazzBySchoolId(schoolId: number) {
-    this.courseService.getClazzBySchoolId(schoolId)
-      .subscribe(clazzes => {
-        this.clazzes = clazzes;
-      }, error => {
-        console.error('获取班级失败', error);
-      });
-  }
-
   getTermsBySchoolId(schoolId: number) {
     this.courseService.getTermsBySchoolId(schoolId)
       .subscribe(terms => {
@@ -136,16 +115,9 @@ export class AddComponent implements OnInit {
       });
   }
 
-  onSchoolChange(schoolId: number) {
-    this.course.school_id = schoolId;
-    console.log(this.course.school_id);
-    this.getClazzBySchoolId(this.course.school_id);
-    this.getTermsBySchoolId(this.course.school_id);
-  }
-
   onTermChange(termId: number) {
-    this.course.term_id = termId;
-    console.log(this.course.term_id);
+    this.lesson.term_id = termId;
+    console.log(this.lesson.term_id);
     this.courseService.getTerm(termId)
       .subscribe(term => {
         console.log(term);
@@ -155,15 +127,6 @@ export class AddComponent implements OnInit {
         this.calculateWeeks();
       }, error => {
         console.error('获取学期失败', error);
-      });
-  }
-
-  onSoryChange() {
-    this.userService.getUserWhenSoryChange(this.course.school_id, this.course.clazz_id)
-      .subscribe(users => {
-        this.users = users;
-      }, error => {
-        console.error('获取用户失败', error);
       });
   }
 
@@ -182,20 +145,4 @@ export class AddComponent implements OnInit {
     console.log(this.weeks);
   }
 
-  private handleInvalidToken(): void {
-    this.sweetAlertService.showLogoutWarning('登录失效', '');
-    setTimeout(() => {
-      window.sessionStorage.removeItem('login');
-      this.httpClient.post('/api/Login/logout', {}).subscribe(
-        () => {
-          console.log('logout');
-          this.beLogout.emit();
-          window.location.href = 'http://127.0.0.1:8088/';
-        },
-        error => {
-          console.error('注销失败', error);
-        }
-      );
-    }, 1500);
-  }
 }

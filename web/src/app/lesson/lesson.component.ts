@@ -12,6 +12,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Term} from '../entity/term';
 import {CourseService} from '../service/course.service';
 import {TermService} from '../service/term.service';
+import {CreateComponent} from './create/create.component';
 
 @Component({
   selector: 'app-lesson',
@@ -190,6 +191,17 @@ export class LessonComponent implements OnInit {
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(AddComponent, {
+      width: '1000px',
+      height: '370px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadByPage();
+    });
+  }
+
+  openCreateDialog(): void {
+    const dialogRef = this.dialog.open(CreateComponent, {
       width: '1000px',
       height: '370px',
     });
