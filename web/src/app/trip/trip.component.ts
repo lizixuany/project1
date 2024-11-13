@@ -182,6 +182,9 @@ export class TripComponent implements OnInit {
   }
 
   onSchoolChange(schoolId: number) {
+    this.searchParameters.clazz = null;
+    this.searchParameters.term = null;
+    this.searchParameters.week = null;
     this.searchParameters.school = schoolId;
     console.log(this.searchParameters.school);
     this.getClazzBySchoolId(this.searchParameters.school);
@@ -190,6 +193,7 @@ export class TripComponent implements OnInit {
 
   onTermChange(termId: number) {
     this.searchParameters.term = termId;
+    this.weeks = [];
     console.log(this.searchParameters.term);
     this.courseService.getTerm(termId)
       .subscribe(term => {

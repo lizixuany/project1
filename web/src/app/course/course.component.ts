@@ -31,6 +31,7 @@ export class CourseComponent implements OnInit {
     school: null as unknown as number,
     clazz: null as unknown as number,
     term: null as unknown as number,
+    userId: null as unknown as number,
     name: ''
   };
 
@@ -77,6 +78,7 @@ export class CourseComponent implements OnInit {
       user => {
         this.me = user;
         this.sharedService.setData(user);
+        this.searchParameters.userId = user.id;
       },
       error => {
         if (error.error.error === '无效的token') {
@@ -116,6 +118,7 @@ export class CourseComponent implements OnInit {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());
+    console.log(this.searchParameters);
     this.httpClient.post<Page<Course>>('/api/course', this.searchParameters, {params: httpParams})
       .subscribe(pageData => {
           // 在请求数据之后设置当前页

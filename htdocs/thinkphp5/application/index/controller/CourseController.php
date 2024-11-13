@@ -111,7 +111,7 @@ class CourseController extends Controller
 
     // 新增呢个课表
     public function add() {
-        try{
+
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
             $school = $data['school'];
@@ -119,15 +119,16 @@ class CourseController extends Controller
             $term = $data['term'];
             $day = $data['day'];
             $period = $data['period'];
-            
+            $user = (int)$data['user'];
+
             // 获取相应账号的数据
             $courses = Course::where('name', $data['name'])
                             ->where('school_id', $school['id'])
                             ->where('clazz_id', $clazz['id'])
                             ->select();
 
-            if ($courses) {               
-                return json(['error' => '课程已存在'], 401);                   
+            if ($courses) {
+                return json(['error' => '课程已存在'], 401);
             }
 
             $times = Course::where('school_id', $school['id'])
@@ -136,7 +137,8 @@ class CourseController extends Controller
                             ->where('day', $data['day'])
                             ->where('period', $data['period'])
                             ->select();
-            
+
+            // 检查用户在相同时间内是否有其他课
             if ($times) {      
                 foreach ($times as $time) {
                     // 将string '[1, 2]' 转化为 array [1, 2]
@@ -145,10 +147,18 @@ class CourseController extends Controller
                     // 判断是否有相同元素
                     $sameData = array_intersect($data['week'], $intWeek);
                     if (!empty($sameData)) {
-                        return json(['error' => '与已有课程的时间冲突'], 401);
-                    }
-                }         
-                return json(['error' => '课程已存在'], 401);                   
+
+                        if ($data['sory'] === 0) {
+                              $lesson = Lesson::where('course_id', $time->id)
+                                                ->where('user_id', $user)
+                                                ->select();
+                            if($lesson){
+                                return json(['error' => '与已有课程的时间冲突'], 401);
+                            }
+                        } else {
+                            return json(['error' => '与已有课程的时间冲突'], 401);
+                        }
+                }
             }
 
             // 验证必要字段
@@ -196,6 +206,7 @@ class CourseController extends Controller
                 foreach ($courseId as $newCourse) {               
                     if ((int)$course->id === $newCourse->id) {
                         if ($data['sory'] === 0) {
+                        // 检查用户在相同时间内是否有其他课
                             $lesson = new Lesson();
                             $lesson->course_id = $course->id;
                             $lesson->user_id = $data['user'];
@@ -212,11 +223,8 @@ class CourseController extends Controller
                     }
                 }
             }
-
             return json(['status' => 'success', 'id' => $course->id]);
-        } catch (Exception $e) {
-            return json(['status' => 'error', 'message' => $e->getMessage()]);
-        }
+}
     }
 
     // 编辑课表
