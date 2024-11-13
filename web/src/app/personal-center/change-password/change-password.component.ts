@@ -28,6 +28,8 @@ export class ChangePasswordComponent {
         // 处理成功响应
         console.log('Password changed successfully', response);
         this.dialogRef.close(response);
+        this.sweetAlertService.showSuccess('修改成功!', 'success');
+        this.sweetAlertService.returnLogin();
       },
       (error) => {
         // 处理错误响应
