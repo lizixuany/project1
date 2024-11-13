@@ -74,6 +74,17 @@ export class LessonComponent implements OnInit {
     {name: '第五大节', value: 5}
   ];
 
+  course = {
+    name: null,
+    sory: null,
+    week: null,
+    day: null,
+    period: null,
+    school_id: null,
+    clazz_id: null,
+    term_id: null,
+  };
+
   protected readonly Object = Object;
 
   ngOnInit() {
@@ -121,6 +132,13 @@ export class LessonComponent implements OnInit {
               console.log('lesson组件接收到返回数据，重新设置pageData');
               this.pageData = pageData;
               console.log(pageData);
+              // 处理返回的数据，提取Term名称
+              pageData.content.forEach(lesson => {
+                if (lesson.course && lesson.course.term) {
+                  lesson.termName = lesson.course.term.name; // 确保term对象包含name属性
+                  console.log(lesson.termName);
+                }
+              });
             },
             error => {
               console.error('请求数据失败', error);
@@ -171,12 +189,16 @@ export class LessonComponent implements OnInit {
             .subscribe(() => {
                 console.log('删除成功');
                 this.sweetAlertService.showSuccess('删除成功', 'success');
-                this.pageData.content.splice(index, 1);
+                console.log('删除功');
+                console.log(this.pageData.content);
+                console.log(this.pageData.content.length);
+                this.pageData.content.splice(index, 1);  // 从当前页移除删除的记录
                 if (this.pageData.content.length === 0 && this.page > 1) {
+                  console.log('当前页没有其他记录');
                   this.page--; // 如果当前页没有其他记录，跳转到上一页
                 }
                 this.loadByPage(this.page);
-            },
+              },
               error => {
                 if (error.error.error === '课程不存在') {
                   this.sweetAlertService.showError('删除失败', '课程已存在', 'error');
@@ -196,7 +218,7 @@ export class LessonComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 
@@ -207,7 +229,7 @@ export class LessonComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 

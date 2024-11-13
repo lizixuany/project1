@@ -16,6 +16,10 @@ class UserController extends controller
             $size = (int)$this->request->get('size', 10);
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
+            // 将字符串 "null" 转换为 null
+            $data = array_map(function($value) {
+                return $value === 'null' ? null : $value;
+            }, $data);
             
             // 定制查询信息
             $condition = [];
@@ -171,14 +175,13 @@ class UserController extends controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
             // 获取相应账号的数据
-            $results = User::where('username', $data['username'])->select();
-            if ($results) {
-                foreach ($results as $result) {
-                    if ($result->id !== $data['id']) {
-                        return json(['error' => '用户已存在'], 401);
-                    }
-                }
+            $users = User::where('username', $data['username'])
+                            ->where('id', '<>', $id) // 排除当前用户ID
+                            ->select();
+            if (count($users) > 0) {
+                return json(['error' => '用户已存在'], 401);
             }
+
             if ($data['role'] === 1) {
                 $roles = User::where('role', 1)->select();
                 if ($roles) {

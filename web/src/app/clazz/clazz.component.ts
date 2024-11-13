@@ -126,7 +126,7 @@ export class ClazzComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 
@@ -139,7 +139,7 @@ export class ClazzComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 

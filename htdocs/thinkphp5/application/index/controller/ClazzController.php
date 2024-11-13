@@ -119,7 +119,7 @@ class ClazzController extends Controller
                 return $this->error('系统未找到ID为' . $id . '的记录');
             }
 
-            $result = Clazz::where('name', $data['name'])->where('school_id', $school['id'])->select();
+            $results = Clazz::where('name', $data['name'])->where('school_id', $school['id'])->select();
 
             if ($results) {
                 foreach ($results as $result) {

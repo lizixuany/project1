@@ -260,14 +260,11 @@ class CourseController extends Controller
             $courses = Course::where('name', $data['name'])
                             ->where('school_id', $school['id'])
                             ->where('clazz_id', $clazz['id'])
+                            ->where('id', '<>', $id) // 排除当前课程ID
                             ->select();
 
-            if ($courses) {               
-                foreach ($courses as $course) {
-                    if ($data['id'] !== $course->id) {
-                        return json(['error' => '课程已存在'], 401);
-                    } 
-                }                
+            if (count($courses) > 0) {
+                return json(['error' => '课程已存在'], 401);
             }
 
             $times = Course::where('school_id', $school['id'])
@@ -275,9 +272,10 @@ class CourseController extends Controller
                             ->where('term_id', $term['id'])
                             ->where('day', $data['day'])
                             ->where('period', $data['period'])
+                            ->where('id', '<>', $id) // 排除当前课程ID
                             ->select();
             
-            if ($times) {      
+            if (count($times) > 0) {
                 foreach ($times as $time) {
                     // 将string '[1, 2]' 转化为 array [1, 2]
                     $timeWeek = explode(', ', trim($time->week, '[]'));
@@ -343,7 +341,7 @@ class CourseController extends Controller
             if ($courseId) {
                 foreach ($courseId as $newCourse) {
                     if ((int)$course->id === $newCourse->id) {
-                        if ($data['sory'] === 0) {
+                        if ($data['sory'] === 0 && isset($data['user'])) {
                             $lesson = new Lesson();
                             $lesson->course_id = $course->id;
                             $lesson->user_id = $data['user'];

@@ -16,6 +16,10 @@ class LessonController extends Controller
             $size = (int)$this->request->get('size', 5);
             $request = Request::instance()->getContent();
             $data = json_decode($request, true);
+            // 将字符串 "null" 转换为 null
+            $data = array_map(function($value) {
+                return $value === 'null' ? null : $value;
+            }, $data);
 
             // 定制查询信息
             $condition = [];
@@ -33,12 +37,6 @@ class LessonController extends Controller
                 $condition['course.school_id'] = $school_id;
             }
 
-            $clazz_id = $data['clazz'];
-
-            if ($clazz_id !== null && $clazz_id !== '') {
-                $condition['course.clazz_id'] = $clazz_id;
-            }
-
             // 获取课程ID
             $course_name = $data['course'];
 
@@ -49,7 +47,7 @@ class LessonController extends Controller
             $course_sory = $data['sory'];
 
             if ($course_sory !== null && $course_sory !== '') {
-                $condition['course.sory'] = ['like', '%' . $course_sory . '%'];
+                $condition['course.sory'] = $course_sory;
             }
             
             // 获取用户ID
@@ -62,17 +60,25 @@ class LessonController extends Controller
             // 获取用户
             $list = Lesson::with('course')
                     ->where('user_id', $user_id)
+                    ->where('course.school_id', $school_id) // 确保课程属于同一所学校
                     ->where($condition)
+                    ->page($page, $size)
                     ->select();
+            foreach ($list as $lesson) {
+                if ($lesson->course && $lesson->course->term_id) {
+                    $term = Term::get($lesson->course->term_id);
+                    $lesson->course->term = $term;
+                }
+            }
             $total = Lesson::with('course')
                     ->where('user_id', $user_id)
+                    ->where('course.school_id', $school_id) // 确保课程属于同一所学校
                     ->where($condition)
+                    ->page($page, $size)
                     ->count();
-            
-            $term = Term::with('school')->select();
 
             $pageData = [
-                'content' => array_merge([$list], [$term]),
+                'content' => $list,
                 'number' => $page, // ThinkPHP的分页参数是从1开始的
                 'size' => $size,
                 'totalPages' => ceil($total / $size),
@@ -164,12 +170,28 @@ class LessonController extends Controller
                 return json(['error' => '课程已存在'], 401);
             }
 
+            // 获取用户和课程的学校ID
+            $user = User::where('id', $userId)->find();
+            $course = Course::where('id', $courseId)->find();
+
+            if (!$user) {
+                return json(['status' => 'error', 'message' => '用户不存在']);
+            }
+            if (!$course) {
+                return json(['status' => 'error', 'message' => '课程不存在']);
+            }
+
             // 验证必要字段
             if (!isset($userId) || empty($userId)){
                 return json(['status' => 'error', 'message' => 'user is required']);
             }
             if (!isset($courseId) || empty($courseId)){
                 return json(['status' => 'error', 'message' => 'course is required']);
+            }
+
+            // 验证用户和课程是否属于同一所学校
+            if ($user->school_id != $course->school_id) {
+                return json(['error' => '用户和课程必须属于同一所学校'], 401);
             }
 
             // 创建课程对象并保存

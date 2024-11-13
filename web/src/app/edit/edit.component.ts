@@ -134,11 +134,11 @@ export class EditComponent implements OnInit {
         },
         error => {
           if (error.error.error === '用户已存在') {
-            this.sweetAlertService.showError('新增失败', '用户已存在', '');
+            this.sweetAlertService.showError('编辑失败', '用户已存在', '');
           } else if (error.error.error === '超级管理员有且只有一位') {
-            this.sweetAlertService.showError('新增失败', '超级管理员有且只有一位', '');
+            this.sweetAlertService.showError('编辑失败', '超级管理员有且只有一位', '');
           } else {
-            this.sweetAlertService.showError('新增失败', '', '');
+            this.sweetAlertService.showError('编辑失败', '', '');
           }
           console.log(error);
         });

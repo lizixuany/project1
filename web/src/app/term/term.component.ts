@@ -126,7 +126,7 @@ export class TermComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 
@@ -140,7 +140,7 @@ export class TermComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 
