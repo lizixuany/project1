@@ -20,6 +20,7 @@ export class TripComponent implements OnInit {
   userTable: any[][] = []; // 确保已经初始化
   clazzes = new Array<Clazz>();
   terms = new Array<Term>();
+  firstChange = true;
 
   semesterStartDate: Date;
   semesterEndDate: Date;
@@ -182,6 +183,16 @@ export class TripComponent implements OnInit {
   }
 
   onSchoolChange(schoolId: number) {
+    if (this.searchParameters.school !== null) {
+      console.log(this.firstChange);
+      if (this.firstChange) {
+        this.firstChange = false;
+      } else {
+        this.searchParameters.clazz = null;
+        this.searchParameters.term = null;
+        this.searchParameters.week = null;
+      }
+    }
     this.searchParameters.school = schoolId;
     console.log(this.searchParameters.school);
     this.getClazzBySchoolId(this.searchParameters.school);
