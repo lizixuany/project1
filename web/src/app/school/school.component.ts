@@ -134,7 +134,7 @@ export class SchoolComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 
@@ -146,7 +146,7 @@ export class SchoolComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 

@@ -57,7 +57,10 @@
     <div class="col-sm-3 offset-sm-1" style="margin: 0px 0px 0px 200px">
       <button class="btn btn-primary" (click)="onSubmit()"
               [disabled]="lesson.name === '' ||
-                          lesson.term_id === null">保存
+                          lesson.term_id === null ||
+                          lesson.week === null ||
+                          lesson.day === null ||
+                          lesson.period === null"><i class="fa fa-save"></i>保存
       </button>
     </div>
     <div class="col-sm-3 offset-sm-1">

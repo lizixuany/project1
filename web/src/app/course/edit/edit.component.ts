@@ -74,8 +74,7 @@ export class EditComponent implements OnInit {
     clazz_id: new FormControl(null, Validators.required),
     week: new FormControl(null, Validators.required),
     day: new FormControl(null, Validators.required),
-    period: new FormControl(null, Validators.required),
-    user_id: new FormControl(null, Validators.required)
+    period: new FormControl(null, Validators.required)
   });
   private termIdSubscription: Subscription;
   // tslint:disable-next-line:variable-name
@@ -123,6 +122,10 @@ export class EditComponent implements OnInit {
         console.log(course[0].week);
         this.formGroup.get('period').setValue(course[0].period);
         this.formGroup.get('day').setValue(course[0].day);
+        // 如果课程是选修的，加载用户列表
+        if (course[0].sory === 0) {
+          this.onSoryChange();
+        }
       }, error => console.log(error));
   }
 
@@ -138,7 +141,6 @@ export class EditComponent implements OnInit {
     const day = this.formGroup.get('day').value;
     const period = this.formGroup.get('period').value;
     const termId = this.formGroup.get('term_id').value;
-    const user = this.formGroup.get('user_id').value;
     const course = {
       id: courseId,
       name,
@@ -148,8 +150,7 @@ export class EditComponent implements OnInit {
       week,
       day,
       period,
-      sory,
-      user
+      sory
     };
     console.log(course);
     this.httpClient.put<Course>(`/api/course/update`, course)
@@ -164,9 +165,13 @@ export class EditComponent implements OnInit {
         },
         error => {
           if (error.error.error === '课程已存在') {
-            this.sweetAlertService.showError('新增失败', '课程已存在', '');
+            this.sweetAlertService.showError('编辑失败', '课程已存在', '');
+          } else if (error.error.error === '与已有必修课程的时间冲突') {
+            this.sweetAlertService.showError('编辑失败', '与已有必修课程的时间冲突', '');
+          } else if (error.error.error === '与已有选修课程的时间冲突') {
+            this.sweetAlertService.showError('编辑失败', '与已有选修课程的时间冲突', '');
           } else {
-            this.sweetAlertService.showError('新增失败', '', '');
+            this.sweetAlertService.showError('编辑失败', '', '');
           }
           console.log(error);
         });
@@ -222,12 +227,12 @@ export class EditComponent implements OnInit {
   }
 
   onSoryChange() {
+    const sory = this.formGroup.get('sory').value;
     this.userService.getUserWhenSoryChange(this.formGroup.get('school_id').value, this.formGroup.get('clazz_id').value)
       .subscribe(users => {
         this.users = users;
-      }, error => {
-        console.error('获取用户失败', error);
-      });
+      }
+    );
   }
 
   calculateWeeks(): void {

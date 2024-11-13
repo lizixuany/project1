@@ -70,10 +70,10 @@ export class NavComponent implements OnInit {
     this.httpClient.get(url)
       .subscribe(() => {
         this.beLogout.emit();
-        this.sweetAlertService.showSuccess('注销成功！', '');
+        this.sweetAlertService.showSuccess('成功退出！', '');
         },
         error => {
-        this.sweetAlertService.showError('注销失败！', '', '');
+        this.sweetAlertService.showError('退出失败！', '', '');
         console.log('logout error', error);
         });
   }

@@ -139,13 +139,14 @@ export class CourseComponent implements OnInit {
                 console.log('删除成功');
                 this.sweetAlertService.showSuccess('删除成功', 'success');
                 this.pageData.content.splice(index, 1);
+                // 检查当前页是否还有记录
                 if (this.pageData.content.length === 0 && this.page > 1) {
                   this.page--; // 如果当前页没有其他记录，跳转到上一页
                 }
-                this.loadByPage(this.page);
+                this.loadByPage(this.page); // 重新加载当前页数据
               },
               error => {
-                  this.sweetAlertService.showError('删除失败', '请稍后再试。', 'error');
+                  this.sweetAlertService.showError('删除失败', '检查数据是否清除干净，请稍后再试。', 'error');
                   console.log('删除失败', error);
               });
         }
@@ -159,7 +160,7 @@ export class CourseComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 
@@ -173,7 +174,7 @@ export class CourseComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 
@@ -189,6 +190,8 @@ export class CourseComponent implements OnInit {
         console.log(error.error.error);
         if (error.error.error === '课程已存在') {
           this.sweetAlertService.showError('添加失败', '课程已存在', '');
+        } else if (error.error.error === '用户和课程必须属于同一所学校') {
+          this.sweetAlertService.showError('添加失败', '用户和课程必须属于同一所学校', '');
         } else {
           console.error('Failed to add lesson', error);
           this.sweetAlertService.showError('添加失败', '', '');

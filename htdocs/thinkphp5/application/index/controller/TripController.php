@@ -39,6 +39,9 @@ class TripController extends Controller
            foreach ($courses as $course) {
                $courseWeeks = json_decode($course['week'], true);
 
+                if ($week !== null && !in_array($week, $courseWeeks)) {
+                    continue;
+                }
                $day = $course['day'];
                $period = $course['period'];
 

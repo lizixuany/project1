@@ -13,7 +13,6 @@ export class Course {
   day: number;
   period: number;
 
-
   constructor(data = {} as {
     id?: number;
     name?: string;

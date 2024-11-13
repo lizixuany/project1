@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {Clazz} from '../../entity/clazz';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {School} from '../../entity/school';
 import {SharedService} from '../../service/shared.service';
@@ -33,6 +32,7 @@ export class EditComponent implements OnInit {
   });
 
   constructor(private activatedRoute: ActivatedRoute,
+              private router: Router, // 注入 Router 服务
               private sweetAlertService: SweetAlertService,
               private httpClient: HttpClient,
               private sharedService: SharedService,

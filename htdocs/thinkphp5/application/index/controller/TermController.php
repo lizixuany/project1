@@ -31,7 +31,7 @@ class TermController extends Controller
             $name = $data['name'];
 
             if ($name !== null && $name !== '') {
-                $condition['clazz.name'] = ['like', '%' . $name . '%'];
+                $condition['term.name'] = ['like', '%' . $name . '%'];
             }
 
             $list = Term::with('school')
@@ -141,6 +141,11 @@ class TermController extends Controller
            if ($totalWeeks < 16) {
                return json(['error' => '学期的周数不得少于16周'], 401);
            }
+
+            // 检查周数是否不多于22周
+            if ($totalWeeks > 22) {
+                return json(['error' => '学期的周数不得多于22周'], 401);
+            }
 
 
             // 创建学期对象并保存
@@ -313,6 +318,11 @@ class TermController extends Controller
            // 检查周数是否不少于16周
            if ($totalWeeks < 16) {
                return json(['error' => '学期的周数不得少于16周'], 401);
+           }
+
+           // 检查周数是否不多于22周
+           if ($totalWeeks > 22) {
+               return json(['error' => '学期的周数不得多于22周'], 401);
            }
 
             // 创建学期对象并保存

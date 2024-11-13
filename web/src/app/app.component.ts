@@ -100,6 +100,7 @@ export class AppComponent implements OnInit {
     console.log('触发loadByPage方法');
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());
+    console.log(this.searchParameters);
     this.httpClient.post<Page<User>>('/api/user', this.searchParameters, {params: httpParams})
       .subscribe(pageData => {
           // 在请求数据之后设置当前页
@@ -143,7 +144,7 @@ export class AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 
@@ -157,7 +158,7 @@ export class AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.loadByPage();
+      this.loadByPage(this.page);
     });
   }
 

@@ -138,6 +138,7 @@ export class CreateComponent implements OnInit {
     const diffInDays = Math.ceil(diffInMilliseconds / oneDay); // 使用ceil确保包含最后一天
     const numberOfWeeks = Math.ceil(diffInDays / 7);
 
+    this.weeks = [];
     // 创建周数数组
     for (let i = 1; i <= numberOfWeeks; i++) {
       this.weeks.push(i);
