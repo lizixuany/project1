@@ -55,7 +55,7 @@ export class PersonalCenterComponent implements OnInit {
           window.location.href = 'http://127.0.0.1:8088';
         },
         error => {
-          console.error('注销失败', error);
+          console.error('退出失败', error);
         }
       );
     }, 1500);
