@@ -37,7 +37,7 @@ class LoginController extends Controller
                         header('x-auth-token:' . $token);
                         return json($user);
                     } else {
-                        return json(['error' => '用户名或密码不正确'], 401);
+                        return json(['error' => '密码不正确'], 401);
                     }
                 } 
                 return json(['error' => '用户已冻结'], 401);

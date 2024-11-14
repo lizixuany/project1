@@ -66,8 +66,8 @@ export class LoginComponent implements OnInit {
         if (error.error.error === '用户不存在') {
           this.sweetAlertService.showError('登录失败', '用户不存在', '');
         }
-        if (error.error.error === '用户名或密码不正确') {
-          this.sweetAlertService.showError('登录失败', '用户名或密码不正确', '');
+        if (error.error.error === '密码不正确') {
+          this.sweetAlertService.showError('登录失败', '密码不正确', '');
         }
         console.log('发生错误, 登录失败。', error.error);
         });
