@@ -201,6 +201,7 @@ export class TripComponent implements OnInit {
 
   onTermChange(termId: number) {
     this.searchParameters.term = termId;
+    this.weeks = [];
     console.log(this.searchParameters.term);
     this.courseService.getTerm(termId)
       .subscribe(term => {

@@ -168,6 +168,8 @@ export class MyComponent implements OnInit {
   }
 
   onTermChange(termId: number) {
+    this.searchParameters.week = null;
+    this.weeks = [];
     this.searchParameters.term = termId;
     console.log(this.searchParameters.term);
     this.courseService.getTerm(termId)

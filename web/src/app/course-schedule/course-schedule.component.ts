@@ -45,9 +45,9 @@ export class CourseScheduleComponent implements OnInit {
   ];
   searchParameters = {
     school: null as unknown as number,
-    clazz: null as unknown as number,
-    term: null as unknown as number,
-    week: null as unknown as number
+    clazz: null,
+    term: null,
+    week: null
   };
 
   me = new User();
