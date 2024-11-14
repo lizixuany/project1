@@ -93,10 +93,10 @@ class DingdingbotController
     protected function buildDingtalkMessage($users)
     {
         if (!$users) {
-            $content = "## 今天无行程安排\n";
+            $content = "## 明天无行程安排\n";
         } else {
             // 构建 Markdown 格式的消息内容
-            $content = "## 今天的行程安排\n";
+            $content = "## 明天的行程安排\n";
             $content .= "|               |  一  |  二  |  三  |  四  |  五  |                            \n";
             $content .= "| ----- | ----- | ----- | ----- | ----- | ----- |                         \n";
             foreach ($users as $user) {

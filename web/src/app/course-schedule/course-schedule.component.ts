@@ -23,6 +23,7 @@ export class CourseScheduleComponent implements OnInit {
   term = new Term();
   semesterStartDate: Date;
   semesterEndDate: Date;
+  firstChange = true;
 
   weeks: number[] = [];
   dates: Date[] = [];
@@ -180,9 +181,16 @@ export class CourseScheduleComponent implements OnInit {
   }
 
   onSchoolChange(schoolId: number) {
-    this.searchParameters.clazz = null;
-    this.searchParameters.term = null;
-    this.searchParameters.week = null;
+    if (this.searchParameters.school !== null) {
+      console.log(this.firstChange);
+      if (this.firstChange) {
+        this.firstChange = false;
+      } else {
+        this.searchParameters.clazz = null;
+        this.searchParameters.term = null;
+        this.searchParameters.week = null;
+      }
+    }
     this.searchParameters.school = schoolId;
     console.log(this.searchParameters.school);
     this.getClazzBySchoolId(this.searchParameters.school);
